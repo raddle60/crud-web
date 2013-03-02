@@ -23,7 +23,7 @@
         <slf4j.api.version>1.6.5</slf4j.api.version>
         <logback.version>1.0.6</logback.version>
         <!-- spring -->
-        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.version>3.2.1.RELEASE</spring.version>
         <!-- cglib -->
         <cglib-nodep.version>2.2.2</cglib-nodep.version>
         <!-- servlet -->
