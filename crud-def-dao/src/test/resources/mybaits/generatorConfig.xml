@@ -9,6 +9,8 @@
 		<plugin type="com.raddle.mybatis.generator.plugin.SqlMapNameSpaceRenamePlugin">
 			<property name="namespace" value="com.raddle.crud.dao.${simpleClassName}Dao" />
 		</plugin>
+		<plugin type="com.raddle.mybatis.generator.plugin.ForceJdbcTypeTimestampPlugin">
+		</plugin>
 
 		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:xe" userId="crudweb" password="111111">
 		</jdbcConnection>
