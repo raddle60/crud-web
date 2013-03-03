@@ -36,6 +36,8 @@
 		<property name="requestContextAttribute" value="rc" />
 	</bean>
 
+	<bean class="com.raddle.crud.web.exception.resolver.LogExceptionOnlyResolver" />
+
 	<!-- other config -->
 
 </beans>
