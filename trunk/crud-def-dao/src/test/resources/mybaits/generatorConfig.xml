@@ -24,6 +24,7 @@
 
 		<javaClientGenerator type="MIXEDMAPPER" targetPackage="com.raddle.crud.dao.toolgen" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
+			<property name="rootInterface" value="com.raddle.crud.dao.SqlMapper" />
 		</javaClientGenerator>
 
 		<table tableName="CRUD_ITEM">
