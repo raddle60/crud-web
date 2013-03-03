@@ -18,7 +18,7 @@
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="com.raddle.crud.mybatis.toolgen" targetProject="src/main/resources">
+		<sqlMapGenerator targetPackage="META-INF.mybatis.mapper.toolgen" targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
