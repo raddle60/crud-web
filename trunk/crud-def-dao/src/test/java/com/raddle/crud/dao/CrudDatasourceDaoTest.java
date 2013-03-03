@@ -15,7 +15,11 @@ public class CrudDatasourceDaoTest extends BaseDaoTest {
     public void testInsert() {
         CrudDatasource record = new CrudDatasource();
         TestModelDataInitUtils.initData(record);
-        crudDatasourceDao.insert(record);
+        int insert = crudDatasourceDao.insert(record);
+        System.out.println(insert);
+        System.out.println(record.getId());
+        CrudDatasource crudDatasource = crudDatasourceDao.selectByPrimaryKey(record.getId());
+        System.out.println(crudDatasource.getCreatedAt());
     }
 
 }
