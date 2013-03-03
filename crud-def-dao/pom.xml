@@ -72,9 +72,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.3.0</version>
-			<scope>test</scope>
+			<artifactId>ojdbc6</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
