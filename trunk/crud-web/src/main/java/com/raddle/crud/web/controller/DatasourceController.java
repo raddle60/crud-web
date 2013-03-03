@@ -12,7 +12,7 @@ public class DatasourceController extends BaseController {
 
     @RequestMapping(value = "def/datasource/list")
     public String list(ModelMap model, HttpServletResponse response, HttpServletRequest request) {
-
+        model.put("input", "<input>");
         return "def/datasource/list";
     }
 }

@@ -20,7 +20,7 @@
 				<prop key="output.encoding">UTF-8</prop>
 				<prop key="contentType">text/html;charset=UTF-8</prop>
 				<prop key="velocimacro.library">macro/macros.vm</prop>
-				<prop key="eventhandler.referenceinsertion.class">com.shengpay.common.web.escape.reference.NoEscapeHtmlReference</prop>
+				<prop key="eventhandler.referenceinsertion.class">com.raddle.crud.web.velocity.NoEscapeHtmlReference</prop>
 				<prop key="eventhandler.noescape.html.match">/(?:screen_content)|(?:noescape_.*)/</prop>
 			</props>
 		</property>
@@ -34,11 +34,6 @@
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="exposeSpringMacroHelpers" value="true" />
 		<property name="requestContextAttribute" value="rc" />
-		<property name="mappings">
-			<map>
-				<entry key="*" value="layout/default.vm" />
-			</map>
-		</property>
 	</bean>
 
 	<!-- other config -->
