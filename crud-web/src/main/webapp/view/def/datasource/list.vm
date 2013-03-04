@@ -1,1 +1,37 @@
-${input}
+#set($page_title = "数据源列表")
+<b>数据源列表</b>
+<a href="#springUrl("/def/datasource/edit.htm")" target="_blank">新增</a>
+<table>
+	<thead>
+		<tr>
+			<th>名称</th>
+			<th>驱动类名</th>
+			<th>URL</th>
+			<th>用户名</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($datasource in $list)
+		<tr>
+			<td>$!{datasource.name}</td>
+			<td>$!{datasource.dirverClassName}</td>
+			<td>$!{datasource.url}</td>
+			<td>$!{datasource.username}</td>
+			<td>
+				<a href="#springUrl("/def/datasource/edit.htm")?id=$!{datasource.id}" target="_blank" >编辑</a>
+				<input type="button" id="del_btn_$!{datasource.id}" dbid="$!{datasource.id}" msg="$!{datasource.name}" value="删除">
+			</td>
+		</tr>
+		#end
+	</tbody>
+</table>
+<script>
+$(function(){
+	$("input[id^=del_btn_]").click(function(){
+		if(confirm("你确定要删除数据源["+$(this).attr("msg")+"]的配置吗？")){
+			window.open("#springUrl("/def/datasource/delete.htm")?id="+$(this).attr("dbid"));
+		};
+	});
+});
+</script>

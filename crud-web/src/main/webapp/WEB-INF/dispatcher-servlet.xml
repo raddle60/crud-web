@@ -5,6 +5,13 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	default-autowire="no">
 
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<props>
+				<prop key="crud.datasource.jndi">java:comp/env/jdbc/crud_ds</prop>
+			</props>
+		</property>
+	</bean>
 	<!-- web config -->
 	<!-- scan location -->
 	<context:component-scan base-package="com.raddle.crud.web.controller" />
@@ -39,5 +46,5 @@
 	<bean class="com.raddle.crud.web.exception.resolver.LogExceptionOnlyResolver" />
 
 	<!-- other config -->
-
+	<import resource="classpath:META-INF/spring/sping-def-dao.xml" />
 </beans>
