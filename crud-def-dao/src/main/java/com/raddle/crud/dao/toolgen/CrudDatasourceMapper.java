@@ -47,12 +47,14 @@ public interface CrudDatasourceMapper {
      * @mbggenerated
      */
     @Insert({
-        "insert into CRUD_DATASOURCE (ID, DIRVER_CLASS_NAME, ",
-        "URL, USERNAME, PASSWORD, ",
+        "insert into CRUD_DATASOURCE (ID, NAME, ",
+        "DIRVER_CLASS_NAME, URL, ",
+        "USERNAME, PASSWORD, ",
         "DELETED, CREATED_AT, ",
         "UPDATED_AT)",
-        "values (#{id,jdbcType=DECIMAL}, #{dirverClassName,jdbcType=VARCHAR}, ",
-        "#{url,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
+        "values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, ",
+        "#{dirverClassName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, ",
+        "#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
         "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
         "#{updatedAt,jdbcType=TIMESTAMP})"
     })
@@ -83,7 +85,7 @@ public interface CrudDatasourceMapper {
      */
     @Select({
         "select",
-        "ID, DIRVER_CLASS_NAME, URL, USERNAME, PASSWORD, DELETED, CREATED_AT, UPDATED_AT",
+        "ID, NAME, DIRVER_CLASS_NAME, URL, USERNAME, PASSWORD, DELETED, CREATED_AT, UPDATED_AT",
         "from CRUD_DATASOURCE",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -122,7 +124,8 @@ public interface CrudDatasourceMapper {
      */
     @Update({
         "update CRUD_DATASOURCE",
-        "set DIRVER_CLASS_NAME = #{dirverClassName,jdbcType=VARCHAR},",
+        "set NAME = #{name,jdbcType=VARCHAR},",
+          "DIRVER_CLASS_NAME = #{dirverClassName,jdbcType=VARCHAR},",
           "URL = #{url,jdbcType=VARCHAR},",
           "USERNAME = #{username,jdbcType=VARCHAR},",
           "PASSWORD = #{password,jdbcType=VARCHAR},",
