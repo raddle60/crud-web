@@ -19,5 +19,8 @@
 
     <!-- <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" /> -->
 
-
+    <Resource name="jdbc/crud_ds" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+        url="jdbc:oracle:thin:@localhost:1521:xe" username="crudweb" password="111111"
+        maxActive="1" maxIdle="0" maxWait="10000" />
+        
 </Context>

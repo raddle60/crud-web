@@ -1,0 +1,76 @@
+#if($datasource && $datasource.id)
+#set($page_title = "数据源编辑")
+<b>数据源编辑</b>
+#else
+#set($page_title = "数据源新增")
+<b>数据源新增</b>
+#end
+<form id="j_form" action="#springUrl("/def/datasource/save.htm")" method="post">
+	<input type="hidden" name="id" value="$!{datasource.id}">
+	<table>
+		<tr>
+			<th width="100">
+				名称
+			</th>
+			<td>
+				<input type="text" name="name" id="name" value="$!{datasource.name}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				驱动类名
+			</th>
+			<td>
+				<input type="text" name="dirverClassName" id="dirverClassName" value="$!{datasource.dirverClassName}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				URL
+			</th>
+			<td>
+				<input type="text" name="url" id="url" value="$!{datasource.url}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				用户名
+			</th>
+			<td>
+				<input type="text" name="username" id="username" value="$!{datasource.username}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				密码
+			</th>
+			<td>
+				<input type="password" name="password" id="password">
+			</td>
+		</tr>
+		<tr>
+			<th>
+			</th>
+			<td>
+				<input type="submit" value="保存">
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+$(function(){
+	J_formValidator = $("#j_form").validate({
+		onclick: false,
+		onkeyup : false,
+		rules : {
+			name : { msg_required:{} },
+			dirverClassName : { msg_required:{}},
+			url : { msg_required:{}},
+			username : { msg_required:{}}
+			#if(!($datasource && $datasource.id))
+			, password : { msg_required:{}}
+			#end
+		}
+	});
+});
+</script>

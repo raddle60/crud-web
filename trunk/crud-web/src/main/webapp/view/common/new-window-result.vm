@@ -1,0 +1,24 @@
+<script>
+if(window.opener != null && window.opener.location && window.opener.location.reload){
+	try{
+		window.opener.location.reload();
+	}catch(e){
+		alert("刷新页面失败,"+e);
+	}
+}
+</script>
+#if($message)
+<span id="span_msg" style="display:none">$message</span>
+<script>
+	alert($("#span_msg").text());
+</script>
+#end
+<script>
+if(window.opener != null && window.opener.location && window.opener.location.reload){
+	try{
+		window.close();
+	}catch(e){
+		alert("关闭页面失败,"+e);
+	}
+}
+</script>
