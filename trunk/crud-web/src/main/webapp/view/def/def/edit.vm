@@ -82,6 +82,25 @@
 		</tr>
 		<tr>
 			<th>
+				是否自动匹配按钮
+			</th>
+			<td>
+				<label><input type="radio" name="autoMatchBtn" value="1" #if($def.autoMatchBtn && $def.autoMatchBtn == 1)checked#end>是</label>
+				<label><input type="radio" name="autoMatchBtn" value="0" #if($def.autoMatchBtn && $def.autoMatchBtn == 0)checked#end>否</label>
+				根据相同表名的表单模板，自动显示增删改查按钮到list上
+			</td>
+		</tr>
+		<tr>
+			<th>
+				新增按钮超链接地址
+			</th>
+			<td>
+				<input type="text" name="addHref" id="addHref" size="100" value="$!{def.addHref}">
+				如果不自动匹配，可以自定义新增按钮
+			</td>
+		</tr>
+		<tr>
+			<th>
 				创建时间列名
 			</th>
 			<td>
