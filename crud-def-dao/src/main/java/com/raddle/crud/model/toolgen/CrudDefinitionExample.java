@@ -805,6 +805,136 @@ public class CrudDefinitionExample {
             return (Criteria) this;
         }
 
+        public Criteria andAddHrefIsNull() {
+            addCriterion("ADD_HREF is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefIsNotNull() {
+            addCriterion("ADD_HREF is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefEqualTo(String value) {
+            addCriterion("ADD_HREF =", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefNotEqualTo(String value) {
+            addCriterion("ADD_HREF <>", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefGreaterThan(String value) {
+            addCriterion("ADD_HREF >", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefGreaterThanOrEqualTo(String value) {
+            addCriterion("ADD_HREF >=", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefLessThan(String value) {
+            addCriterion("ADD_HREF <", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefLessThanOrEqualTo(String value) {
+            addCriterion("ADD_HREF <=", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefLike(String value) {
+            addCriterion("ADD_HREF like", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefNotLike(String value) {
+            addCriterion("ADD_HREF not like", value, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefIn(List<String> values) {
+            addCriterion("ADD_HREF in", values, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefNotIn(List<String> values) {
+            addCriterion("ADD_HREF not in", values, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefBetween(String value1, String value2) {
+            addCriterion("ADD_HREF between", value1, value2, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddHrefNotBetween(String value1, String value2) {
+            addCriterion("ADD_HREF not between", value1, value2, "addHref");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnIsNull() {
+            addCriterion("AUTO_MATCH_BTN is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnIsNotNull() {
+            addCriterion("AUTO_MATCH_BTN is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnEqualTo(Short value) {
+            addCriterion("AUTO_MATCH_BTN =", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnNotEqualTo(Short value) {
+            addCriterion("AUTO_MATCH_BTN <>", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnGreaterThan(Short value) {
+            addCriterion("AUTO_MATCH_BTN >", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnGreaterThanOrEqualTo(Short value) {
+            addCriterion("AUTO_MATCH_BTN >=", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnLessThan(Short value) {
+            addCriterion("AUTO_MATCH_BTN <", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnLessThanOrEqualTo(Short value) {
+            addCriterion("AUTO_MATCH_BTN <=", value, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnIn(List<Short> values) {
+            addCriterion("AUTO_MATCH_BTN in", values, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnNotIn(List<Short> values) {
+            addCriterion("AUTO_MATCH_BTN not in", values, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnBetween(Short value1, Short value2) {
+            addCriterion("AUTO_MATCH_BTN between", value1, value2, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoMatchBtnNotBetween(Short value1, Short value2) {
+            addCriterion("AUTO_MATCH_BTN not between", value1, value2, "autoMatchBtn");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTmColIsNull() {
             addCriterion("CREATE_TM_COL is null");
             return (Criteria) this;
