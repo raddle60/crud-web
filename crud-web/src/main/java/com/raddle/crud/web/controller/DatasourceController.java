@@ -1,5 +1,6 @@
 package com.raddle.crud.web.controller;
 
+import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -68,4 +70,24 @@ public class DatasourceController extends BaseController {
         model.put("message", "删除成功");
         return "common/new-window-result";
     }
+
+    @RequestMapping(value = "def/datasource/test-connection")
+    public String testConn(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        CrudDatasource datasource = crudDatasourceDao.selectByPrimaryKey(id);
+        try {
+            DriverManagerDataSource ds = new DriverManagerDataSource();
+            ds.setDriverClassName(datasource.getDirverClassName());
+            ds.setUrl(datasource.getUrl());
+            ds.setUsername(datasource.getUsername());
+            ds.setPassword(datasource.getPassword());
+            Connection connection = ds.getConnection();
+            connection.close();
+            model.put("message", "连接成功");
+        } catch (Exception e) {
+            model.put("message", "连接失败, " + e.getMessage());
+        }
+
+        return "common/new-window-result";
+    }
+
 }

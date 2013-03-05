@@ -21,7 +21,7 @@
 				驱动类名
 			</th>
 			<td>
-				<input type="text" name="dirverClassName" id="dirverClassName" value="$!{datasource.dirverClassName}">
+				<input type="text" name="dirverClassName" id="dirverClassName" size="40" value="$!{datasource.dirverClassName}">
 			</td>
 		</tr>
 		<tr>
@@ -29,7 +29,7 @@
 				URL
 			</th>
 			<td>
-				<input type="text" name="url" id="url" value="$!{datasource.url}">
+				<input type="text" name="url" id="url" size="60" value="$!{datasource.url}">
 			</td>
 		</tr>
 		<tr>
