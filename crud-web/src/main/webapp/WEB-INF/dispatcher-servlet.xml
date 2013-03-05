@@ -47,4 +47,5 @@
 
 	<!-- other config -->
 	<import resource="classpath:META-INF/spring/sping-def-dao.xml" />
+	<import resource="classpath:META-INF/spring/sping-def-biz.xml" />
 </beans>
