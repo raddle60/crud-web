@@ -1145,6 +1145,66 @@ public class CrudItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andItemOrderIsNull() {
+            addCriterion("ITEM_ORDER is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderIsNotNull() {
+            addCriterion("ITEM_ORDER is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderEqualTo(Integer value) {
+            addCriterion("ITEM_ORDER =", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderNotEqualTo(Integer value) {
+            addCriterion("ITEM_ORDER <>", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderGreaterThan(Integer value) {
+            addCriterion("ITEM_ORDER >", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderGreaterThanOrEqualTo(Integer value) {
+            addCriterion("ITEM_ORDER >=", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderLessThan(Integer value) {
+            addCriterion("ITEM_ORDER <", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderLessThanOrEqualTo(Integer value) {
+            addCriterion("ITEM_ORDER <=", value, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderIn(List<Integer> values) {
+            addCriterion("ITEM_ORDER in", values, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderNotIn(List<Integer> values) {
+            addCriterion("ITEM_ORDER not in", values, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderBetween(Integer value1, Integer value2) {
+            addCriterion("ITEM_ORDER between", value1, value2, "itemOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andItemOrderNotBetween(Integer value1, Integer value2) {
+            addCriterion("ITEM_ORDER not between", value1, value2, "itemOrder");
+            return (Criteria) this;
+        }
+
         public Criteria andDeletedIsNull() {
             addCriterion("DELETED is null");
             return (Criteria) this;
