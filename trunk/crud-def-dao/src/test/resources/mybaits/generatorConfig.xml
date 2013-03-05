@@ -37,12 +37,12 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-<!-- 		<table tableName="CRUD_ITEM"> -->
-<!-- 			<generatedKey column="ID" sqlStatement="SELECT SEQ_CRUD_ITEM.NEXTVAL FROM DUAL" /> -->
-<!-- 		</table> -->
-		<table tableName="CRUD_DEFINITION">
-			<generatedKey column="ID" sqlStatement="SELECT SEQ_CRUD_DEFINITION.NEXTVAL FROM DUAL" />
+		<table tableName="CRUD_ITEM">
+			<generatedKey column="ID" sqlStatement="SELECT SEQ_CRUD_ITEM.NEXTVAL FROM DUAL" />
 		</table>
+<!-- 		<table tableName="CRUD_DEFINITION"> -->
+<!-- 			<generatedKey column="ID" sqlStatement="SELECT SEQ_CRUD_DEFINITION.NEXTVAL FROM DUAL" /> -->
+<!-- 		</table> -->
 <!-- 		<table tableName="CRUD_DATASOURCE"> -->
 <!-- 			<generatedKey column="ID" sqlStatement="SELECT SEQ_CRUD_DATASOURCE.NEXTVAL FROM DUAL" /> -->
 <!-- 		</table> -->
