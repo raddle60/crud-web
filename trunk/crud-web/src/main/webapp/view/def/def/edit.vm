@@ -1,6 +1,6 @@
 #if($def && $def.id)
 #set($page_title = "表单编辑")
-<b>表单编辑</b>
+<b class="title">表单编辑</b>
 #else
 #set($page_title = "表单新增")
 <b>表单新增</b>

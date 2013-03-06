@@ -3,7 +3,7 @@
 <b>数据源编辑</b>
 #else
 #set($page_title = "数据源新增")
-<b>数据源新增</b>
+<b class="title">数据源新增</b>
 #end
 <form id="j_form" action="#springUrl("/def/datasource/save.htm")" method="post">
 	<input type="hidden" name="id" value="$!{datasource.id}">
