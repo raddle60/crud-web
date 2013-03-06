@@ -50,7 +50,7 @@ public class ItemController extends BaseController {
         criteria.andDeletedEqualTo((short) 0);
         criteria.andCrudDefIdEqualTo(defId);
         criteria.andFkTypeEqualTo(fkType.name());
-        example.setOrderByClause("created_at desc");
+        example.setOrderByClause("item_order");
         List<CrudItem> list = crudItemDao.selectByExample(example);
         model.put("list", list);
         model.put("defId", defId);
