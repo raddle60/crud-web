@@ -1,3 +1,55 @@
+@CHARSET "utf-8";
+
 label.error {
-	color : red;
+	color: red;
+}
+
+/************************* 表格列表 ************************/
+table.list {
+	width: 100%;
+	border: 1px solid #b6c3d3;
+	border-collapse: collapse;
+	margin: 10px 0;
+}
+
+table.list th {
+	border: 1px solid #d8e4f2;
+	background: #e4f4fd;
+	color: #3a6fa5;
+	height: 28px;
+	vertical-align: middle;
+}
+
+table.list td {
+	border: 1px solid #d8e4f2;
+	background: #fff;
+	color: #333;
+	padding: 3px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/************************* 编辑表单 ************************/
+table.form {
+	width: 100%;
+	border: 1px solid #b6c3d3;
+	border-collapse: collapse;
+	margin: 10px 0;
+}
+
+table.form th {
+	border: 1px solid #d8e4f2;
+	background: #e4f4fd;
+	color: #3a6fa5;
+	height: 28px;
+	vertical-align: middle;
+}
+
+table.form td {
+	border: 1px solid #d8e4f2;
+	background: #fff;
+	color: #333;
+	padding: 3px;
+	vertical-align: middle;
+	text-align: left;
 }

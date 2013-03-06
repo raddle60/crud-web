@@ -1,7 +1,7 @@
 #set($page_title = ${listTitle} + "列表" + ${def.name})
 <b>${listTitle}列表-${def.name}</b>
 <a href="#springUrl("/def/item/edit.htm")?defId=$!{defId}&fkType=$!{fkType}" target="_blank">新增</a>
-<table>
+<table class="list">
 	<thead>
 		<tr>
 			<th>标题</th>
