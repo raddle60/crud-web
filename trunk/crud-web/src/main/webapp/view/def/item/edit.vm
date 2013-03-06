@@ -1,0 +1,147 @@
+#if($def && $item.id)
+#set($page_title = "表单项编辑")
+<b>表单项编辑</b>
+#else
+#set($page_title = "表单项新增")
+<b>表单项新增</b>
+#end
+<form id="j_form" action="#springUrl("/def/item/save.htm")" method="post">
+	<input type="hidden" name="id" value="$!{item.id}">
+	<input type="hidden" name="crudDefId" value="$!{item.crudDefId}">
+	<input type="hidden" name="fkType" value="$!{item.fkType}">
+	<table>
+		<tr>
+			<th width="200">
+				标题
+			</th>
+			<td>
+				<input type="text" name="title" id="title" value="$!{item.title}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				变量名
+			</th>
+			<td>
+				<input type="text" name="varName" id="varName" value="$!{item.varName}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				表单项类型
+			</th>
+			<td>
+				<select name="itemType" id="itemType">
+					#foreach($itemType in $itemTypes)
+						<option value="$itemType.name()" #if($item.itemType && $item.itemType == $itemType.name())selected#end>$itemType.name()</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				输入项类型
+			</th>
+			<td>
+				<select name="inputType" id="inputType">
+					<option value=""></option>
+					#foreach($inputType in $inputTypes)
+						<option value="$inputType.name()" #if($item.inputType && $item.inputType == $inputType.name())selected#end>$inputType.name()</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				输入项大小
+			</th>
+			<td>
+				<input type="text" name="inputSize" id="inputSize" value="$!{item.inputSize}">输入框的size，Textarea的rows,cols
+			</td>
+		</tr>
+		<tr>
+			<th>
+				选项类型
+			</th>
+			<td>
+				<select name="optionType" id="optionType">
+					<option value=""></option>
+					#foreach($optionType in $optionTypes)
+						<option value="$optionType.name()" #if($item.optionType && $item.optionType == $optionType.name())selected#end>$optionType.name()</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				选项值
+			</th>
+			<td>
+				静态类型就是value,value或key:value,key:value<br>
+				sql类型就是sql语句，返回KEY和VALUE列<br>
+				<textarea name="optionValue" id="optionValue" rows="20" cols="80">$!{item.optionValue}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				数据源
+			</th>
+			<td>
+				<select name="crudDsId" id="crudDsId">
+					#foreach($datasource in $datasources)
+						<option value="$datasource.id" #if($item.crudDsId && $item.crudDsId == $datasource.id)selected#end>$datasource.name</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				动作按钮类型
+			</th>
+			<td>
+				<select name="actionType" id="actionType">
+					<option value=""></option>
+					#foreach($actionType in $actionTypes)
+						<option value="$actionType.name()" #if($item.actionType && $item.actionType == $actionType.name())selected#end>$actionType.name()</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				超链接
+			</th>
+			<td>
+				<input type="text" name="href" id="href" size="80" value="$!{item.href}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				排序号
+			</th>
+			<td>
+				<input type="text" name="itemOrder" id="itemOrder" value="$!{item.itemOrder}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+			</th>
+			<td>
+				<input type="submit" value="保存">
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+$(function(){
+	J_formValidator = $("#j_form").validate({
+		onclick: false,
+		onkeyup : false,
+		rules : {
+			title : { msg_required:{} },
+			itemType : { msg_required:{} },
+			itemOrder : { msg_required:{},msg_digits:{}}
+		}
+	});
+});
+</script>

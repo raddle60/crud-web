@@ -11,6 +11,7 @@
 			<th>类型</th>
 			<th>数据源</th>
 			<th>表名</th>
+			<th>表单项</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -22,6 +23,14 @@
 			<td>$!{def.defType}</td>
 			<td>$!{def.crudDsId}</td>
 			<td>$!{def.tableName}</td>
+			<td>
+			#if($def.defType == "LIST")
+				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑条件</a>
+				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF_LIST" target="_blank" >编辑显示列</a>
+			#else
+				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑表单项</a>
+			#end
+			</td>
 			<td>
 				<a href="#springUrl("/def/def/edit.htm")?id=$!{def.id}" target="_blank" >编辑</a>
 				<input type="button" id="del_btn_$!{def.id}" dbid="$!{def.id}" msg="$!{def.name}" value="删除">
