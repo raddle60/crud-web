@@ -50,21 +50,21 @@ public interface CrudItemMapper {
         "insert into CRUD_ITEM (ID, CRUD_DEF_ID, ",
         "FK_TYPE, TITLE, VAR_NAME, ",
         "ITEM_TYPE, INPUT_TYPE, ",
-        "ACTION_TYPE, HREF, ",
-        "WEB_CHK_RULE, SERVER_CHK_RULE, ",
-        "OPTION_TYPE, OPTION_VALUE, ",
-        "CRUD_DS_ID, ITEM_ORDER, ",
-        "DELETED, CREATED_AT, ",
-        "UPDATED_AT)",
+        "INPUT_SIZE, ACTION_TYPE, ",
+        "HREF, WEB_CHK_RULE, ",
+        "SERVER_CHK_RULE, OPTION_TYPE, ",
+        "OPTION_VALUE, CRUD_DS_ID, ",
+        "ITEM_ORDER, DELETED, ",
+        "CREATED_AT, UPDATED_AT)",
         "values (#{id,jdbcType=DECIMAL}, #{crudDefId,jdbcType=DECIMAL}, ",
         "#{fkType,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{varName,jdbcType=VARCHAR}, ",
         "#{itemType,jdbcType=VARCHAR}, #{inputType,jdbcType=VARCHAR}, ",
-        "#{actionType,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR}, ",
-        "#{webChkRule,jdbcType=VARCHAR}, #{serverChkRule,jdbcType=VARCHAR}, ",
-        "#{optionType,jdbcType=VARCHAR}, #{optionValue,jdbcType=VARCHAR}, ",
-        "#{crudDsId,jdbcType=DECIMAL}, #{itemOrder,jdbcType=DECIMAL}, ",
-        "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
-        "#{updatedAt,jdbcType=TIMESTAMP})"
+        "#{inputSize,jdbcType=CHAR}, #{actionType,jdbcType=VARCHAR}, ",
+        "#{href,jdbcType=VARCHAR}, #{webChkRule,jdbcType=VARCHAR}, ",
+        "#{serverChkRule,jdbcType=VARCHAR}, #{optionType,jdbcType=VARCHAR}, ",
+        "#{optionValue,jdbcType=VARCHAR}, #{crudDsId,jdbcType=DECIMAL}, ",
+        "#{itemOrder,jdbcType=DECIMAL}, #{deleted,jdbcType=DECIMAL}, ",
+        "#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_ITEM.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudItem record);
@@ -93,9 +93,9 @@ public interface CrudItemMapper {
      */
     @Select({
         "select",
-        "ID, CRUD_DEF_ID, FK_TYPE, TITLE, VAR_NAME, ITEM_TYPE, INPUT_TYPE, ACTION_TYPE, ",
-        "HREF, WEB_CHK_RULE, SERVER_CHK_RULE, OPTION_TYPE, OPTION_VALUE, CRUD_DS_ID, ",
-        "ITEM_ORDER, DELETED, CREATED_AT, UPDATED_AT",
+        "ID, CRUD_DEF_ID, FK_TYPE, TITLE, VAR_NAME, ITEM_TYPE, INPUT_TYPE, INPUT_SIZE, ",
+        "ACTION_TYPE, HREF, WEB_CHK_RULE, SERVER_CHK_RULE, OPTION_TYPE, OPTION_VALUE, ",
+        "CRUD_DS_ID, ITEM_ORDER, DELETED, CREATED_AT, UPDATED_AT",
         "from CRUD_ITEM",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -140,6 +140,7 @@ public interface CrudItemMapper {
           "VAR_NAME = #{varName,jdbcType=VARCHAR},",
           "ITEM_TYPE = #{itemType,jdbcType=VARCHAR},",
           "INPUT_TYPE = #{inputType,jdbcType=VARCHAR},",
+          "INPUT_SIZE = #{inputSize,jdbcType=CHAR},",
           "ACTION_TYPE = #{actionType,jdbcType=VARCHAR},",
           "HREF = #{href,jdbcType=VARCHAR},",
           "WEB_CHK_RULE = #{webChkRule,jdbcType=VARCHAR},",

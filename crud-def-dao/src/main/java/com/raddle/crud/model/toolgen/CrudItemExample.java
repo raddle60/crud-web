@@ -665,6 +665,76 @@ public class CrudItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andInputSizeIsNull() {
+            addCriterion("INPUT_SIZE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeIsNotNull() {
+            addCriterion("INPUT_SIZE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeEqualTo(String value) {
+            addCriterion("INPUT_SIZE =", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeNotEqualTo(String value) {
+            addCriterion("INPUT_SIZE <>", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeGreaterThan(String value) {
+            addCriterion("INPUT_SIZE >", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeGreaterThanOrEqualTo(String value) {
+            addCriterion("INPUT_SIZE >=", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeLessThan(String value) {
+            addCriterion("INPUT_SIZE <", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeLessThanOrEqualTo(String value) {
+            addCriterion("INPUT_SIZE <=", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeLike(String value) {
+            addCriterion("INPUT_SIZE like", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeNotLike(String value) {
+            addCriterion("INPUT_SIZE not like", value, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeIn(List<String> values) {
+            addCriterion("INPUT_SIZE in", values, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeNotIn(List<String> values) {
+            addCriterion("INPUT_SIZE not in", values, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeBetween(String value1, String value2) {
+            addCriterion("INPUT_SIZE between", value1, value2, "inputSize");
+            return (Criteria) this;
+        }
+
+        public Criteria andInputSizeNotBetween(String value1, String value2) {
+            addCriterion("INPUT_SIZE not between", value1, value2, "inputSize");
+            return (Criteria) this;
+        }
+
         public Criteria andActionTypeIsNull() {
             addCriterion("ACTION_TYPE is null");
             return (Criteria) this;

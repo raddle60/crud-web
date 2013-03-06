@@ -50,17 +50,19 @@ public interface CrudDefinitionMapper {
         "insert into CRUD_DEFINITION (ID, CODE, ",
         "NAME, DEF_TYPE, TABLE_NAME, ",
         "CRUD_DS_ID, PRE_SQL, ",
-        "SQL_TYPE, SQL, ADD_HREF, ",
-        "AUTO_MATCH_BTN, CREATE_TM_COL, ",
-        "UPDATE_TM_COL, DELETED, ",
-        "CREATED_AT, UPDATED_AT)",
+        "READ_SQL, UPDATE_SQL, ",
+        "ADD_HREF, AUTO_MATCH_BTN, ",
+        "CREATE_TM_COL, UPDATE_TM_COL, ",
+        "DELETED, CREATED_AT, ",
+        "UPDATED_AT)",
         "values (#{id,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{defType,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, ",
         "#{crudDsId,jdbcType=DECIMAL}, #{preSql,jdbcType=VARCHAR}, ",
-        "#{sqlType,jdbcType=VARCHAR}, #{sql,jdbcType=VARCHAR}, #{addHref,jdbcType=VARCHAR}, ",
-        "#{autoMatchBtn,jdbcType=DECIMAL}, #{createTmCol,jdbcType=VARCHAR}, ",
-        "#{updateTmCol,jdbcType=VARCHAR}, #{deleted,jdbcType=DECIMAL}, ",
-        "#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})"
+        "#{readSql,jdbcType=VARCHAR}, #{updateSql,jdbcType=VARCHAR}, ",
+        "#{addHref,jdbcType=VARCHAR}, #{autoMatchBtn,jdbcType=DECIMAL}, ",
+        "#{createTmCol,jdbcType=VARCHAR}, #{updateTmCol,jdbcType=VARCHAR}, ",
+        "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
+        "#{updatedAt,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_DEFINITION.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudDefinition record);
@@ -89,8 +91,9 @@ public interface CrudDefinitionMapper {
      */
     @Select({
         "select",
-        "ID, CODE, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, SQL_TYPE, SQL, ADD_HREF, ",
-        "AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, DELETED, CREATED_AT, UPDATED_AT",
+        "ID, CODE, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, READ_SQL, UPDATE_SQL, ",
+        "ADD_HREF, AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, DELETED, CREATED_AT, ",
+        "UPDATED_AT",
         "from CRUD_DEFINITION",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -135,8 +138,8 @@ public interface CrudDefinitionMapper {
           "TABLE_NAME = #{tableName,jdbcType=VARCHAR},",
           "CRUD_DS_ID = #{crudDsId,jdbcType=DECIMAL},",
           "PRE_SQL = #{preSql,jdbcType=VARCHAR},",
-          "SQL_TYPE = #{sqlType,jdbcType=VARCHAR},",
-          "SQL = #{sql,jdbcType=VARCHAR},",
+          "READ_SQL = #{readSql,jdbcType=VARCHAR},",
+          "UPDATE_SQL = #{updateSql,jdbcType=VARCHAR},",
           "ADD_HREF = #{addHref,jdbcType=VARCHAR},",
           "AUTO_MATCH_BTN = #{autoMatchBtn,jdbcType=DECIMAL},",
           "CREATE_TM_COL = #{createTmCol,jdbcType=VARCHAR},",
