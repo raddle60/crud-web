@@ -25,11 +25,20 @@ table.list th {
 
 table.list td {
 	border: 1px solid #d8e4f2;
-	background: #fff;
 	color: #333;
 	padding: 3px;
 	vertical-align: middle;
 	text-align: center;
+}
+
+table.list tr.odd {
+background: #F0F8FF;
+}
+table.list tr.even {
+	background: #DDFFFF;
+}
+table.list tr.over {
+	background: #FFFFCC;
 }
 
 /************************* 编辑表单 ************************/
