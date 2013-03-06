@@ -8,7 +8,7 @@
 <form id="j_form" action="#springUrl("/def/def/save.htm")" method="post">
 	<input type="hidden" name="id" value="$!{def.id}">
 	<input type="hidden" name="defType" value="$!{def.defType}">
-	<table>
+	<table class="form">
 		<tr>
 			<th width="200">
 				名称

@@ -9,7 +9,7 @@
 	<input type="hidden" name="id" value="$!{item.id}">
 	<input type="hidden" name="crudDefId" value="$!{item.crudDefId}">
 	<input type="hidden" name="fkType" value="$!{item.fkType}">
-	<table>
+	<table class="form">
 		<tr>
 			<th width="200">
 				标题

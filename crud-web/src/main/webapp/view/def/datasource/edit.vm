@@ -7,7 +7,7 @@
 #end
 <form id="j_form" action="#springUrl("/def/datasource/save.htm")" method="post">
 	<input type="hidden" name="id" value="$!{datasource.id}">
-	<table>
+	<table class="form">
 		<tr>
 			<th width="100">
 				名称

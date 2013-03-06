@@ -3,7 +3,7 @@
 #foreach($defType in $defTypes)
 <a href="#springUrl("/def/def/edit.htm")?defType=${defType}" target="_blank">新增${defType}表单</a>
 #end
-<table>
+<table class="list">
 	<thead>
 		<tr>
 			<th>名称</th>
