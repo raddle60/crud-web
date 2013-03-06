@@ -1,0 +1,41 @@
+#set($page_title = ${listTitle} + "列表" + ${def.name})
+<b>${listTitle}列表-${def.name}</b>
+<a href="#springUrl("/def/item/edit.htm")?defId=$!{defId}&fkType=$!{fkType}" target="_blank">新增</a>
+<table>
+	<thead>
+		<tr>
+			<th>标题</th>
+			<th>变量名</th>
+			<th>表单项类型</th>
+			<th>输入类型</th>
+			<th>动作类型</th>
+			<th>顺序</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($item in $list)
+		<tr>
+			<td>$!{item.title}</td>
+			<td>$!{item.varName}</td>
+			<td>$!{item.itemType}</td>
+			<td>$!{item.inputType}</td>
+			<td>$!{item.actionType}</td>
+			<td>$!{item.itemOrder}</td>
+			<td>
+				<a href="#springUrl("/def/item/edit.htm")?id=$!{item.id}" target="_blank" >编辑</a>
+				<input type="button" id="del_btn_$!{item.id}" dbid="$!{item.id}" msg="$!{item.title}" value="删除">
+			</td>
+		</tr>
+		#end
+	</tbody>
+</table>
+<script>
+$(function(){
+	$("input[id^=del_btn_]").click(function(){
+		if(confirm("你确定要删除表单项["+$(this).attr("msg")+"]的配置吗？")){
+			window.open("#springUrl("/def/item/delete.htm")?id="+$(this).attr("dbid"));
+		};
+	});
+});
+</script>
