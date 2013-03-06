@@ -665,143 +665,143 @@ public class CrudDefinitionExample {
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeIsNull() {
-            addCriterion("SQL_TYPE is null");
+        public Criteria andReadSqlIsNull() {
+            addCriterion("READ_SQL is null");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeIsNotNull() {
-            addCriterion("SQL_TYPE is not null");
+        public Criteria andReadSqlIsNotNull() {
+            addCriterion("READ_SQL is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeEqualTo(String value) {
-            addCriterion("SQL_TYPE =", value, "sqlType");
+        public Criteria andReadSqlEqualTo(String value) {
+            addCriterion("READ_SQL =", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeNotEqualTo(String value) {
-            addCriterion("SQL_TYPE <>", value, "sqlType");
+        public Criteria andReadSqlNotEqualTo(String value) {
+            addCriterion("READ_SQL <>", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeGreaterThan(String value) {
-            addCriterion("SQL_TYPE >", value, "sqlType");
+        public Criteria andReadSqlGreaterThan(String value) {
+            addCriterion("READ_SQL >", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("SQL_TYPE >=", value, "sqlType");
+        public Criteria andReadSqlGreaterThanOrEqualTo(String value) {
+            addCriterion("READ_SQL >=", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeLessThan(String value) {
-            addCriterion("SQL_TYPE <", value, "sqlType");
+        public Criteria andReadSqlLessThan(String value) {
+            addCriterion("READ_SQL <", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeLessThanOrEqualTo(String value) {
-            addCriterion("SQL_TYPE <=", value, "sqlType");
+        public Criteria andReadSqlLessThanOrEqualTo(String value) {
+            addCriterion("READ_SQL <=", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeLike(String value) {
-            addCriterion("SQL_TYPE like", value, "sqlType");
+        public Criteria andReadSqlLike(String value) {
+            addCriterion("READ_SQL like", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeNotLike(String value) {
-            addCriterion("SQL_TYPE not like", value, "sqlType");
+        public Criteria andReadSqlNotLike(String value) {
+            addCriterion("READ_SQL not like", value, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeIn(List<String> values) {
-            addCriterion("SQL_TYPE in", values, "sqlType");
+        public Criteria andReadSqlIn(List<String> values) {
+            addCriterion("READ_SQL in", values, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeNotIn(List<String> values) {
-            addCriterion("SQL_TYPE not in", values, "sqlType");
+        public Criteria andReadSqlNotIn(List<String> values) {
+            addCriterion("READ_SQL not in", values, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeBetween(String value1, String value2) {
-            addCriterion("SQL_TYPE between", value1, value2, "sqlType");
+        public Criteria andReadSqlBetween(String value1, String value2) {
+            addCriterion("READ_SQL between", value1, value2, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlTypeNotBetween(String value1, String value2) {
-            addCriterion("SQL_TYPE not between", value1, value2, "sqlType");
+        public Criteria andReadSqlNotBetween(String value1, String value2) {
+            addCriterion("READ_SQL not between", value1, value2, "readSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlIsNull() {
-            addCriterion("SQL is null");
+        public Criteria andUpdateSqlIsNull() {
+            addCriterion("UPDATE_SQL is null");
             return (Criteria) this;
         }
 
-        public Criteria andSqlIsNotNull() {
-            addCriterion("SQL is not null");
+        public Criteria andUpdateSqlIsNotNull() {
+            addCriterion("UPDATE_SQL is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSqlEqualTo(String value) {
-            addCriterion("SQL =", value, "sql");
+        public Criteria andUpdateSqlEqualTo(String value) {
+            addCriterion("UPDATE_SQL =", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlNotEqualTo(String value) {
-            addCriterion("SQL <>", value, "sql");
+        public Criteria andUpdateSqlNotEqualTo(String value) {
+            addCriterion("UPDATE_SQL <>", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlGreaterThan(String value) {
-            addCriterion("SQL >", value, "sql");
+        public Criteria andUpdateSqlGreaterThan(String value) {
+            addCriterion("UPDATE_SQL >", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlGreaterThanOrEqualTo(String value) {
-            addCriterion("SQL >=", value, "sql");
+        public Criteria andUpdateSqlGreaterThanOrEqualTo(String value) {
+            addCriterion("UPDATE_SQL >=", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlLessThan(String value) {
-            addCriterion("SQL <", value, "sql");
+        public Criteria andUpdateSqlLessThan(String value) {
+            addCriterion("UPDATE_SQL <", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlLessThanOrEqualTo(String value) {
-            addCriterion("SQL <=", value, "sql");
+        public Criteria andUpdateSqlLessThanOrEqualTo(String value) {
+            addCriterion("UPDATE_SQL <=", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlLike(String value) {
-            addCriterion("SQL like", value, "sql");
+        public Criteria andUpdateSqlLike(String value) {
+            addCriterion("UPDATE_SQL like", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlNotLike(String value) {
-            addCriterion("SQL not like", value, "sql");
+        public Criteria andUpdateSqlNotLike(String value) {
+            addCriterion("UPDATE_SQL not like", value, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlIn(List<String> values) {
-            addCriterion("SQL in", values, "sql");
+        public Criteria andUpdateSqlIn(List<String> values) {
+            addCriterion("UPDATE_SQL in", values, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlNotIn(List<String> values) {
-            addCriterion("SQL not in", values, "sql");
+        public Criteria andUpdateSqlNotIn(List<String> values) {
+            addCriterion("UPDATE_SQL not in", values, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlBetween(String value1, String value2) {
-            addCriterion("SQL between", value1, value2, "sql");
+        public Criteria andUpdateSqlBetween(String value1, String value2) {
+            addCriterion("UPDATE_SQL between", value1, value2, "updateSql");
             return (Criteria) this;
         }
 
-        public Criteria andSqlNotBetween(String value1, String value2) {
-            addCriterion("SQL not between", value1, value2, "sql");
+        public Criteria andUpdateSqlNotBetween(String value1, String value2) {
+            addCriterion("UPDATE_SQL not between", value1, value2, "updateSql");
             return (Criteria) this;
         }
 
