@@ -32,7 +32,7 @@ public class CrudWebTomcat {
         host.addChild(ctxtRoot);
         tomcat.addEngine(engine);
         // http
-        Connector httpConnector = tomcat.createConnector((String) null, 8081, false);
+        Connector httpConnector = tomcat.createConnector((String) null, 8082, false);
         tomcat.addConnector(httpConnector);
         tomcat.start();
         while (true) {

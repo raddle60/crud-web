@@ -64,20 +64,19 @@
 		</tr>
 		<tr>
 			<th>
-				SQL生成类型
+				查询SQL
 			</th>
 			<td>
-				#foreach($sqlType in $sqlTypes)
-					<label><input type="radio" name="sqlType" value="$!{sqlType}" #if($def.sqlType && $def.sqlType == $sqlType.name())checked#end>$!{sqlType}</label>
-				#end
+				查询列表或为更新页面查询单条显示记录<br>
+				<textarea name="readSql" id="readSql" rows="20" cols="80">$!{def.readSql}</textarea>
 			</td>
 		</tr>
 		<tr>
 			<th>
-				SQL
+				更新SQL
 			</th>
 			<td>
-				<textarea name="sql" id="sql" rows="20" cols="80">$!{def.sql}</textarea>
+				<textarea name="updateSql" id="updateSql" rows="20" cols="80">$!{def.updateSql}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -133,8 +132,7 @@ $(function(){
 			name : { msg_required:{} },
 			code : { msg_required:{} },
 			defType : { msg_required:{}},
-			crudDsId : { msg_required:{}},
-			sqlType : { msg_required:{}}
+			crudDsId : { msg_required:{}}
 		}
 	});
 });
