@@ -1,5 +1,5 @@
 #set($page_title = "表单列表")
-<b>表单列表</b>
+<b class="title">表单列表</b>
 #foreach($defType in $defTypes)
 <a href="#springUrl("/def/def/edit.htm")?defType=${defType}" target="_blank">新增${defType}表单</a>
 #end

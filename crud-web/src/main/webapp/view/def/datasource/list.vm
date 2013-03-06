@@ -1,5 +1,5 @@
 #set($page_title = "数据源列表")
-<b>数据源列表</b>
+<b class="title">数据源列表</b>
 <a href="#springUrl("/def/datasource/edit.htm")" target="_blank">新增</a>
 <table class="list">
 	<thead>

@@ -4,6 +4,9 @@ label.error {
 	color: red;
 }
 
+b.title {
+	color: #3a6fa5;
+}
 /************************* 表格列表 ************************/
 table.list {
 	width: 100%;
