@@ -1,7 +1,5 @@
 package com.raddle.crud.web.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import com.raddle.crud.biz.CrudDefinitionManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
 import com.raddle.crud.enums.DefType;
-import com.raddle.crud.enums.SqlType;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
@@ -58,12 +55,6 @@ public class DefinitionController extends BaseController {
         if (defType == null) {
             throw new RuntimeException("表单类型不能为空");
         }
-        List<SqlType> sqlTypes = new ArrayList<SqlType>(Arrays.asList(SqlType.values()));
-        if (defType == DefType.LIST) {
-            sqlTypes.remove(SqlType.AUTO);
-        }
-        model.put("sqlTypes", sqlTypes);
-        //
         CrudDatasourceExample example = new CrudDatasourceExample();
         example.createCriteria().andDeletedEqualTo((short) 0);
         example.setOrderByClause("created_at desc");
