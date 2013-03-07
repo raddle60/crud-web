@@ -1345,6 +1345,76 @@ public class CrudItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andDescIsNull() {
+            addCriterion("DESC is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescIsNotNull() {
+            addCriterion("DESC is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescEqualTo(String value) {
+            addCriterion("DESC =", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescNotEqualTo(String value) {
+            addCriterion("DESC <>", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescGreaterThan(String value) {
+            addCriterion("DESC >", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescGreaterThanOrEqualTo(String value) {
+            addCriterion("DESC >=", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescLessThan(String value) {
+            addCriterion("DESC <", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescLessThanOrEqualTo(String value) {
+            addCriterion("DESC <=", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescLike(String value) {
+            addCriterion("DESC like", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescNotLike(String value) {
+            addCriterion("DESC not like", value, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescIn(List<String> values) {
+            addCriterion("DESC in", values, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescNotIn(List<String> values) {
+            addCriterion("DESC not in", values, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescBetween(String value1, String value2) {
+            addCriterion("DESC between", value1, value2, "desc");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescNotBetween(String value1, String value2) {
+            addCriterion("DESC not between", value1, value2, "desc");
+            return (Criteria) this;
+        }
+
         public Criteria andDeletedIsNull() {
             addCriterion("DELETED is null");
             return (Criteria) this;
