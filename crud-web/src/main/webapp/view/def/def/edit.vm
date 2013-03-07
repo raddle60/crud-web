@@ -91,6 +91,15 @@
 		</tr>
 		<tr>
 			<th>
+				是否分页
+			</th>
+			<td>
+				<label><input type="radio" name="isPaging" value="1" #if($def.isPaging && $def.isPaging == 1)checked#end>是</label>
+				<label><input type="radio" name="isPaging" value="0" #if($def.isPaging && $def.isPaging == 0)checked#end>否</label>
+			</td>
+		</tr>
+		<tr>
+			<th>
 				新增按钮超链接地址
 			</th>
 			<td>
