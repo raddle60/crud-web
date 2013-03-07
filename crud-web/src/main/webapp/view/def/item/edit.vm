@@ -23,6 +23,7 @@
 				变量名
 			</th>
 			<td>
+				全小写,一般就是列名<br>
 				<input type="text" name="varName" id="varName" value="$!{item.varName}">
 			</td>
 		</tr>
@@ -138,7 +139,7 @@
 			</th>
 			<td>
 				会显示在输入框上面<br>
-				<textarea name="desc" id="desc" rows="20" cols="40">$!{item.desc}</textarea>
+				<textarea name="descript" id="descript" rows="10" cols="80">$!{item.descript}</textarea>
 			</td>
 		</tr>
 		<tr>

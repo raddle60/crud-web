@@ -15,6 +15,7 @@ import com.raddle.crud.biz.CrudDefinitionManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
 import com.raddle.crud.enums.DefType;
+import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
@@ -101,9 +102,15 @@ public class DefinitionController extends BaseController {
     }
 
     @RequestMapping(value = "def/def/auto-create-item")
-    public String autoCreateItem(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String autoCreateItem(Long id, ItemFkType fkType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (id == null) {
+            throw new RuntimeException("表单id不能为空");
+        }
+        if (fkType == null) {
+            throw new RuntimeException("外键类型不能为空");
+        }
         // 根据表名，自动创建item
-        CommonResult<?> commonResult = crudDefinitionManager.autoCreateItemsByTable(id);
+        CommonResult<?> commonResult = crudDefinitionManager.autoCreateItemsByTable(id, fkType);
         if (commonResult.isSuccess()) {
             model.put("message", "创建成功，已存在的不重复创建(包括已删除的)");
         } else {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -107,6 +108,7 @@ public class ItemController extends BaseController {
         if (item.getFkType() == null || ItemFkType.valueOf(item.getFkType()) == null) {
             throw new RuntimeException("外键类型不能为空");
         }
+        item.setVarName(StringUtils.lowerCase(item.getVarName()));
         if (item.getId() != null) {
             crudItemDao.updateByPrimaryKeySelective(item);
         } else {
