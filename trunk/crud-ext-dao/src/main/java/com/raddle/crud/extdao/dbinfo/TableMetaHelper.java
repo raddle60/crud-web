@@ -44,6 +44,16 @@ public class TableMetaHelper {
     /**
      * 获取表结构信息
      * @param tableNames
+     * @param types Typical types are "TABLE", "VIEW", "SYSTEM TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "ALIAS", "SYNONYM".
+     * @return
+     */
+    public List<TableInfo> getTableInfo(String[] tableNames, String[] types) {
+        return getTableInfo(tableNames, null, types);
+    }
+
+    /**
+     * 获取表结构信息
+     * @param tableNames
      * @param schema
      * @param types Typical types are "TABLE", "VIEW", "SYSTEM TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "ALIAS", "SYNONYM".
      * @return
@@ -122,6 +132,7 @@ public class TableMetaHelper {
             JdbcUtils.close(colRet);
             JdbcUtils.close(pkRet);
             logger.debug("***************************************************");
+            logger.info("Get information for table [{}] end , column count [{}]", tableInfo.getTableName(), tableInfo.getColumnInfos().size());
             tableInfoList.add(tableInfo);
         }
     }
