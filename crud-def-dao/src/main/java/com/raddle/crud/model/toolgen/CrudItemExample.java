@@ -735,6 +735,76 @@ public class CrudItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andFormatIsNull() {
+            addCriterion("FORMAT is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatIsNotNull() {
+            addCriterion("FORMAT is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatEqualTo(String value) {
+            addCriterion("FORMAT =", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatNotEqualTo(String value) {
+            addCriterion("FORMAT <>", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatGreaterThan(String value) {
+            addCriterion("FORMAT >", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatGreaterThanOrEqualTo(String value) {
+            addCriterion("FORMAT >=", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatLessThan(String value) {
+            addCriterion("FORMAT <", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatLessThanOrEqualTo(String value) {
+            addCriterion("FORMAT <=", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatLike(String value) {
+            addCriterion("FORMAT like", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatNotLike(String value) {
+            addCriterion("FORMAT not like", value, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatIn(List<String> values) {
+            addCriterion("FORMAT in", values, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatNotIn(List<String> values) {
+            addCriterion("FORMAT not in", values, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatBetween(String value1, String value2) {
+            addCriterion("FORMAT between", value1, value2, "format");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormatNotBetween(String value1, String value2) {
+            addCriterion("FORMAT not between", value1, value2, "format");
+            return (Criteria) this;
+        }
+
         public Criteria andActionTypeIsNull() {
             addCriterion("ACTION_TYPE is null");
             return (Criteria) this;
