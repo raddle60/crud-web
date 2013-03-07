@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raddle.crud.dao.CrudDefinitionDao">
+	<resultMap id="ListResultMap" type="com.raddle.crud.vo.CrudDefinitionVo" extends="BaseResultMap">
+		<result column="crud_ds_name" jdbcType="VARCHAR" property="crudDsName" />
+	</resultMap>
+	<select id="selectCrudDefinitionVoByExample" parameterType="com.raddle.crud.model.toolgen.CrudDefinitionExample" resultMap="ListResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		(select ds.name from CRUD_DATASOURCE ds where ds.id = def.CRUD_DS_ID) as crud_ds_name
+		from CRUD_DEFINITION def
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+</mapper>
