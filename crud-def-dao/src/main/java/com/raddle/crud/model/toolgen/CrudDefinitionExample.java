@@ -875,6 +875,66 @@ public class CrudDefinitionExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsPagingIsNull() {
+            addCriterion("IS_PAGING is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingIsNotNull() {
+            addCriterion("IS_PAGING is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingEqualTo(Short value) {
+            addCriterion("IS_PAGING =", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingNotEqualTo(Short value) {
+            addCriterion("IS_PAGING <>", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingGreaterThan(Short value) {
+            addCriterion("IS_PAGING >", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingGreaterThanOrEqualTo(Short value) {
+            addCriterion("IS_PAGING >=", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingLessThan(Short value) {
+            addCriterion("IS_PAGING <", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingLessThanOrEqualTo(Short value) {
+            addCriterion("IS_PAGING <=", value, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingIn(List<Short> values) {
+            addCriterion("IS_PAGING in", values, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingNotIn(List<Short> values) {
+            addCriterion("IS_PAGING not in", values, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingBetween(Short value1, Short value2) {
+            addCriterion("IS_PAGING between", value1, value2, "isPaging");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPagingNotBetween(Short value1, Short value2) {
+            addCriterion("IS_PAGING not between", value1, value2, "isPaging");
+            return (Criteria) this;
+        }
+
         public Criteria andAutoMatchBtnIsNull() {
             addCriterion("AUTO_MATCH_BTN is null");
             return (Criteria) this;
