@@ -1,13 +1,15 @@
 package com.raddle.crud.extdao.dbinfo.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TableInfo {
 
-    private String                  tableName;
-    private String                  comment;
+    private String tableName;
+    private String comment;
     private Map<String, ColumnInfo> columnMap = new HashMap<String, ColumnInfo>();
 
     public void addColumnInfo(String columnName, ColumnInfo columnInfo) {
@@ -15,11 +17,21 @@ public class TableInfo {
     }
 
     public ColumnInfo getColumnInfo(String columnName) {
-        return ((ColumnInfo) this.columnMap.get(columnName));
+        return this.columnMap.get(columnName);
     }
 
     public Collection<ColumnInfo> getColumnInfos() {
         return this.columnMap.values();
+    }
+
+    public Collection<ColumnInfo> getPKColumnInfos() {
+        List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>();
+        for (ColumnInfo columnInfo : columnMap.values()) {
+            if (columnInfo.isPrimaryKey()) {
+                columnInfos.add(columnInfo);
+            }
+        }
+        return columnInfos;
     }
 
     public String getTableName() {
