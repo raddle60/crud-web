@@ -19,6 +19,7 @@ import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.model.toolgen.CrudDefinitionExample;
+import com.raddle.crud.vo.CommonResult;
 import com.raddle.crud.vo.CrudDefinitionVo;
 
 @Controller
@@ -99,4 +100,15 @@ public class DefinitionController extends BaseController {
         return "common/new-window-result";
     }
 
+    @RequestMapping(value = "def/def/auto-create-item")
+    public String autoCreateItem(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        // 根据表名，自动创建item
+        CommonResult<?> commonResult = crudDefinitionManager.autoCreateItemsByTable(id);
+        if (commonResult.isSuccess()) {
+            model.put("message", "创建成功，已存在的不重复创建(包括已删除的)");
+        } else {
+            model.put("message", "创建失败，" + commonResult.getMessage());
+        }
+        return "common/new-window-result";
+    }
 }

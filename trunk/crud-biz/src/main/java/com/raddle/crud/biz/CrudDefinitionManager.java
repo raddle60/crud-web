@@ -1,6 +1,7 @@
 package com.raddle.crud.biz;
 
 import com.raddle.crud.model.toolgen.CrudDefinition;
+import com.raddle.crud.vo.CommonResult;
 
 /**
  * 类CrudDefinitionManager.java的实现描述：
@@ -14,4 +15,12 @@ public interface CrudDefinitionManager {
      * @return
      */
     public CrudDefinition getCrudDefinitionByCode(String code);
+
+    /**
+     * 根据表列名，生成列<br>
+     * 已存在的不生成，包括已删除的
+     * @param id
+     * @return
+     */
+    public CommonResult<?> autoCreateItemsByTable(Long id);
 }
