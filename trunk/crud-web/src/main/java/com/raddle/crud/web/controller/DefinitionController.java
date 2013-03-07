@@ -19,6 +19,7 @@ import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.model.toolgen.CrudDefinitionExample;
+import com.raddle.crud.vo.CrudDefinitionVo;
 
 @Controller
 public class DefinitionController extends BaseController {
@@ -35,7 +36,7 @@ public class DefinitionController extends BaseController {
         CrudDefinitionExample example = new CrudDefinitionExample();
         example.createCriteria().andDeletedEqualTo((short) 0);
         example.setOrderByClause("created_at desc");
-        List<CrudDefinition> list = crudDefinitionDao.selectByExample(example);
+        List<CrudDefinitionVo> list = crudDefinitionDao.selectCrudDefinitionVoByExample(example);
         model.put("list", list);
         model.put("defTypes", DefType.values());
         return "def/def/list";

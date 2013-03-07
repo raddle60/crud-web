@@ -21,7 +21,7 @@
 			<td>$!{def.name}</td>
 			<td>$!{def.code}</td>
 			<td>$!{def.defType}</td>
-			<td>$!{def.crudDsId}</td>
+			<td>$!{def.crudDsName}</td>
 			<td>$!{def.tableName}</td>
 			<td>
 			#if($def.defType == "LIST")
