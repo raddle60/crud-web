@@ -28,6 +28,15 @@
 		</tr>
 		<tr>
 			<th>
+				数据格式
+			</th>
+			<td>
+				<input type="text" name="format" id="format" value="$!{item.format}">
+				数字或日期的格式
+			</td>
+		</tr>
+		<tr>
+			<th>
 				表单项类型
 			</th>
 			<td>
