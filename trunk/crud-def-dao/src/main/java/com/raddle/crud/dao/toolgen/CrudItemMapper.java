@@ -55,8 +55,8 @@ public interface CrudItemMapper {
         "WEB_CHK_RULE, SERVER_CHK_RULE, ",
         "OPTION_TYPE, OPTION_VALUE, ",
         "CRUD_DS_ID, ITEM_ORDER, ",
-        "DESC, DELETED, CREATED_AT, ",
-        "UPDATED_AT)",
+        "DESCRIPT, DELETED, ",
+        "CREATED_AT, UPDATED_AT)",
         "values (#{id,jdbcType=DECIMAL}, #{crudDefId,jdbcType=DECIMAL}, ",
         "#{fkType,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{varName,jdbcType=VARCHAR}, ",
         "#{itemType,jdbcType=VARCHAR}, #{inputType,jdbcType=VARCHAR}, ",
@@ -65,8 +65,8 @@ public interface CrudItemMapper {
         "#{webChkRule,jdbcType=VARCHAR}, #{serverChkRule,jdbcType=VARCHAR}, ",
         "#{optionType,jdbcType=VARCHAR}, #{optionValue,jdbcType=VARCHAR}, ",
         "#{crudDsId,jdbcType=DECIMAL}, #{itemOrder,jdbcType=DECIMAL}, ",
-        "#{desc,jdbcType=VARCHAR}, #{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
-        "#{updatedAt,jdbcType=TIMESTAMP})"
+        "#{descript,jdbcType=VARCHAR}, #{deleted,jdbcType=DECIMAL}, ",
+        "#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_ITEM.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudItem record);
@@ -97,7 +97,7 @@ public interface CrudItemMapper {
         "select",
         "ID, CRUD_DEF_ID, FK_TYPE, TITLE, VAR_NAME, ITEM_TYPE, INPUT_TYPE, INPUT_SIZE, ",
         "FORMAT, ACTION_TYPE, HREF, WEB_CHK_RULE, SERVER_CHK_RULE, OPTION_TYPE, OPTION_VALUE, ",
-        "CRUD_DS_ID, ITEM_ORDER, DESC, DELETED, CREATED_AT, UPDATED_AT",
+        "CRUD_DS_ID, ITEM_ORDER, DESCRIPT, DELETED, CREATED_AT, UPDATED_AT",
         "from CRUD_ITEM",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -152,7 +152,7 @@ public interface CrudItemMapper {
           "OPTION_VALUE = #{optionValue,jdbcType=VARCHAR},",
           "CRUD_DS_ID = #{crudDsId,jdbcType=DECIMAL},",
           "ITEM_ORDER = #{itemOrder,jdbcType=DECIMAL},",
-          "DESC = #{desc,jdbcType=VARCHAR},",
+          "DESCRIPT = #{descript,jdbcType=VARCHAR},",
           "DELETED = #{deleted,jdbcType=DECIMAL},",
           "CREATED_AT = #{createdAt,jdbcType=TIMESTAMP},",
           "UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}",

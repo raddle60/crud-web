@@ -31,6 +31,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.raddle.crud</groupId>
+			<artifactId>crud-ext-dao</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.raddle.crud</groupId>
 			<artifactId>crud-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>

@@ -23,7 +23,7 @@
     <result column="OPTION_VALUE" jdbcType="VARCHAR" property="optionValue" />
     <result column="CRUD_DS_ID" jdbcType="DECIMAL" property="crudDsId" />
     <result column="ITEM_ORDER" jdbcType="DECIMAL" property="itemOrder" />
-    <result column="DESC" jdbcType="VARCHAR" property="desc" />
+    <result column="DESCRIPT" jdbcType="VARCHAR" property="descript" />
     <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
     <result column="CREATED_AT" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="UPDATED_AT" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -101,7 +101,7 @@
     -->
     ID, CRUD_DEF_ID, FK_TYPE, TITLE, VAR_NAME, ITEM_TYPE, INPUT_TYPE, INPUT_SIZE, FORMAT, 
     ACTION_TYPE, HREF, WEB_CHK_RULE, SERVER_CHK_RULE, OPTION_TYPE, OPTION_VALUE, CRUD_DS_ID, 
-    ITEM_ORDER, DESC, DELETED, CREATED_AT, UPDATED_AT
+    ITEM_ORDER, DESCRIPT, DELETED, CREATED_AT, UPDATED_AT
   </sql>
   <select id="selectByExample" parameterType="com.raddle.crud.model.toolgen.CrudItemExample" resultMap="BaseResultMap">
     <!--
@@ -190,8 +190,8 @@
       <if test="itemOrder != null">
         ITEM_ORDER,
       </if>
-      <if test="desc != null">
-        DESC,
+      <if test="descript != null">
+        DESCRIPT,
       </if>
       <if test="deleted != null">
         DELETED,
@@ -253,8 +253,8 @@
       <if test="itemOrder != null">
         #{itemOrder,jdbcType=DECIMAL},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="descript != null">
+        #{descript,jdbcType=VARCHAR},
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=DECIMAL},
@@ -335,8 +335,8 @@
       <if test="record.itemOrder != null">
         ITEM_ORDER = #{record.itemOrder,jdbcType=DECIMAL},
       </if>
-      <if test="record.desc != null">
-        DESC = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.descript != null">
+        DESCRIPT = #{record.descript,jdbcType=VARCHAR},
       </if>
       <if test="record.deleted != null">
         DELETED = #{record.deleted,jdbcType=DECIMAL},
@@ -375,7 +375,7 @@
       OPTION_VALUE = #{record.optionValue,jdbcType=VARCHAR},
       CRUD_DS_ID = #{record.crudDsId,jdbcType=DECIMAL},
       ITEM_ORDER = #{record.itemOrder,jdbcType=DECIMAL},
-      DESC = #{record.desc,jdbcType=VARCHAR},
+      DESCRIPT = #{record.descript,jdbcType=VARCHAR},
       DELETED = #{record.deleted,jdbcType=DECIMAL},
       CREATED_AT = #{record.createdAt,jdbcType=TIMESTAMP},
       UPDATED_AT = #{record.updatedAt,jdbcType=TIMESTAMP}
@@ -438,8 +438,8 @@
       <if test="itemOrder != null">
         ITEM_ORDER = #{itemOrder,jdbcType=DECIMAL},
       </if>
-      <if test="desc != null">
-        DESC = #{desc,jdbcType=VARCHAR},
+      <if test="descript != null">
+        DESCRIPT = #{descript,jdbcType=VARCHAR},
       </if>
       <if test="deleted != null">
         DELETED = #{deleted,jdbcType=DECIMAL},

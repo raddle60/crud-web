@@ -38,7 +38,8 @@
 				表名
 			</th>
 			<td>
-				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}">自动生成sql时
+				自动生成sql时用来获得列名，大小写敏感<br>
+				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}">
 			</td>
 		</tr>
 		<tr>

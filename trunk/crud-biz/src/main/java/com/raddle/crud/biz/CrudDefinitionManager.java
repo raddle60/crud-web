@@ -1,5 +1,6 @@
 package com.raddle.crud.biz;
 
+import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.vo.CommonResult;
 
@@ -20,7 +21,8 @@ public interface CrudDefinitionManager {
      * 根据表列名，生成列<br>
      * 已存在的不生成，包括已删除的
      * @param id
+     * @param fkType
      * @return
      */
-    public CommonResult<?> autoCreateItemsByTable(Long id);
+    public CommonResult<?> autoCreateItemsByTable(Long id, ItemFkType fkType);
 }

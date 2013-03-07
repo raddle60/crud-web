@@ -1345,73 +1345,73 @@ public class CrudItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andDescIsNull() {
-            addCriterion("DESC is null");
+        public Criteria andDescriptIsNull() {
+            addCriterion("DESCRIPT is null");
             return (Criteria) this;
         }
 
-        public Criteria andDescIsNotNull() {
-            addCriterion("DESC is not null");
+        public Criteria andDescriptIsNotNull() {
+            addCriterion("DESCRIPT is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDescEqualTo(String value) {
-            addCriterion("DESC =", value, "desc");
+        public Criteria andDescriptEqualTo(String value) {
+            addCriterion("DESCRIPT =", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotEqualTo(String value) {
-            addCriterion("DESC <>", value, "desc");
+        public Criteria andDescriptNotEqualTo(String value) {
+            addCriterion("DESCRIPT <>", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescGreaterThan(String value) {
-            addCriterion("DESC >", value, "desc");
+        public Criteria andDescriptGreaterThan(String value) {
+            addCriterion("DESCRIPT >", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescGreaterThanOrEqualTo(String value) {
-            addCriterion("DESC >=", value, "desc");
+        public Criteria andDescriptGreaterThanOrEqualTo(String value) {
+            addCriterion("DESCRIPT >=", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescLessThan(String value) {
-            addCriterion("DESC <", value, "desc");
+        public Criteria andDescriptLessThan(String value) {
+            addCriterion("DESCRIPT <", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescLessThanOrEqualTo(String value) {
-            addCriterion("DESC <=", value, "desc");
+        public Criteria andDescriptLessThanOrEqualTo(String value) {
+            addCriterion("DESCRIPT <=", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescLike(String value) {
-            addCriterion("DESC like", value, "desc");
+        public Criteria andDescriptLike(String value) {
+            addCriterion("DESCRIPT like", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotLike(String value) {
-            addCriterion("DESC not like", value, "desc");
+        public Criteria andDescriptNotLike(String value) {
+            addCriterion("DESCRIPT not like", value, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescIn(List<String> values) {
-            addCriterion("DESC in", values, "desc");
+        public Criteria andDescriptIn(List<String> values) {
+            addCriterion("DESCRIPT in", values, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotIn(List<String> values) {
-            addCriterion("DESC not in", values, "desc");
+        public Criteria andDescriptNotIn(List<String> values) {
+            addCriterion("DESCRIPT not in", values, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescBetween(String value1, String value2) {
-            addCriterion("DESC between", value1, value2, "desc");
+        public Criteria andDescriptBetween(String value1, String value2) {
+            addCriterion("DESCRIPT between", value1, value2, "descript");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotBetween(String value1, String value2) {
-            addCriterion("DESC not between", value1, value2, "desc");
+        public Criteria andDescriptNotBetween(String value1, String value2) {
+            addCriterion("DESCRIPT not between", value1, value2, "descript");
             return (Criteria) this;
         }
 

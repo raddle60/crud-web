@@ -5,5 +5,5 @@ package com.raddle.crud.enums;
  * @author raddle60 2013-3-6 下午10:34:35
  */
 public enum InputType {
-    INPUT, TEXTAREA, CHECKBOX, RADIO, SELECT;
+    TEXT, TEXTAREA, CHECKBOX, RADIO, SELECT, MULTI_SELECT;
 }
