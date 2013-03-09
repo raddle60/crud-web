@@ -7,4 +7,13 @@
 
 	<context:component-scan base-package="com.raddle.crud.biz" />
 
+	<bean id="dynamicFormManager" class="com.raddle.crud.biz.impl.VelocityFormManager">
+		<property name="velocityProps">
+			<props>
+				<prop key="input.encoding">utf-8</prop>
+				<prop key="output.encoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>

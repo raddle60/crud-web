@@ -3,12 +3,17 @@ package com.raddle.crud.extdao.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.raddle.crud.extdao.DynamicFormDao;
 import com.raddle.crud.extdao.dbinfo.TableMetaHelper;
@@ -44,6 +49,31 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
                 return null;
             }
         });
+    }
+
+    @Override
+    public List<Map<String, Object>> queryForList(String selectSql, Map<String, Object> params) {
+        if (!selectSql.trim().toLowerCase().startsWith("select")) {
+            throw new IllegalArgumentException("不是select语句");
+        }
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        return jdbcTemplate.query(selectSql, params, new ColumnMapRowMapper() {
+
+            @Override
+            protected String getColumnKey(String columnName) {
+                return StringUtils.lowerCase(columnName);
+            }
+
+        });
+    }
+
+    @Override
+    public Map<String, Object> queryForObject(String selectSql, Map<String, Object> params) {
+        List<Map<String, Object>> queryForList = queryForList(selectSql, params);
+        if (queryForList.size() > 1) {
+            throw new IncorrectResultSizeDataAccessException(1, queryForList.size());
+        }
+        return queryForList.get(0);
     }
 
     public DataSource getDataSource() {

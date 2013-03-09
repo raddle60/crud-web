@@ -1,5 +1,8 @@
 package com.raddle.crud.extdao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.raddle.crud.extdao.dbinfo.model.TableInfo;
 
 /**
@@ -8,5 +11,26 @@ import com.raddle.crud.extdao.dbinfo.model.TableInfo;
  */
 public interface DynamicFormDao {
 
+    /**
+     * 根据表名获得列信息
+     * @param tableName
+     * @return
+     */
     public TableInfo getTableInfo(String tableName);
+
+    /**
+     * 执行select语句
+     * @param selectSql
+     * @param params
+     * @return 列表
+     */
+    public List<Map<String, Object>> queryForList(String selectSql, Map<String, Object> params);
+
+    /**
+     * 执行select语句
+     * @param selectSql
+     * @param params
+     * @return 单条记录
+     */
+    public Map<String, Object> queryForObject(String selectSql, Map<String, Object> params);
 }
