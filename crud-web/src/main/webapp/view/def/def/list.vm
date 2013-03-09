@@ -25,6 +25,7 @@
 			<td>$!{def.tableName}</td>
 			<td>
 			#if($def.defType == "LIST")
+				<a href="#springUrl("/form/show.htm")?defId=$!{def.id}" target="_blank" >进入页面</a>
 				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑条件</a>
 				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF_LIST" target="_blank" >编辑显示列</a>
 			#else

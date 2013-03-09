@@ -1,0 +1,75 @@
+#set($page_title = ${def.name} + " - " + ${def.defType})
+<b class="title">"${def.name} - ${def.defType}"</b>
+<form id="j_form" action="#springUrl("/form/show.htm")" method="post">
+	<input type="hidden" name="defId" value="$!{def.id}">
+	## 输出hidden框
+	#foreach($item in $defWheres)
+		#if($item.itemType = "HIDDEN")
+			#set($itemBean = $params)
+			#parse("/form/item/$formTool.getItemVmFileName($item)")
+		#end
+	#end
+	<table class="form">
+	#foreach($item in $defWheres)
+		#if($item.itemType != "HIDDEN")
+		<tr>
+			<th #if($foreach.count == 1)width="200"#end>
+				$!item.title
+			</th>
+			<td>
+				#set($itemBean = $params)
+				#parse("/form/item/$formTool.getItemVmFileName($item)")
+			</td>
+		</tr>
+		#end
+	#end
+		<tr>
+			<th>
+			</th>
+			<td>
+				<input type="submit" value="查询">
+			</td>
+		</tr>
+	</table>
+</form>
+<table class="list">
+	<thead>
+		<tr>
+		#foreach($item in $defCols)
+			<th>
+				$!item.title
+			</th>
+		#end
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($record in $result)
+		<tr>
+			#foreach($item in $defCols)
+			<td>
+				#set($itemBean = $record)
+				#parse("/form/item/$formTool.getItemVmFileName($item)")
+			</td>
+			#end
+		</tr>
+		#end
+	</tbody>
+</table>
+<script>
+$(function(){
+	J_formValidator = $("#j_form").validate({
+		onclick: false,
+		onkeyup : false,
+		rules : {
+			#set($hasRule = false)
+			#foreach($item in $defItems)
+				#if($hasRule) , #end
+				#if($item.webChkRule)
+					#set($hasRule = true)
+					$item.varName : { $item.webChkRule }
+				#end
+			#end
+		}
+	});
+});
+</script>

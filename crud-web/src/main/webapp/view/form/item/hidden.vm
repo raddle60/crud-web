@@ -1,0 +1,3 @@
+#if($itemBean && $item)
+	<input type="hidden" name="$!{item.varName}" id="$!{item.varName}" value="$!formTool.v($itemBean,$item.varName,$request)">
+#end
