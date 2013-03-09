@@ -18,7 +18,7 @@ public class DynamicFormTool {
         StringBuilder sb = new StringBuilder();
         sb.append(item.getItemType().toLowerCase());
         if (item.getItemType().equals(ItemType.INPUT.name()) && StringUtils.isNotEmpty(item.getInputType())) {
-            sb.append("-" + item.getItemType().toLowerCase());
+            sb.append("-" + item.getInputType().toLowerCase());
         }
         if (item.getItemType().equals(ItemType.ACTION.name()) && StringUtils.isNotEmpty(item.getActionType())) {
             sb.append("-" + item.getActionType().toLowerCase());

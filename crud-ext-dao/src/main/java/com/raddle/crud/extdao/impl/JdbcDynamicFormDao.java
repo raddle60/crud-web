@@ -76,6 +76,15 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
         return queryForList.get(0);
     }
 
+    @Override
+    public int update(String updateSql, Map<String, Object> params) {
+        if (updateSql.trim().toLowerCase().startsWith("select")) {
+            throw new IllegalArgumentException("不是update语句");
+        }
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        return jdbcTemplate.update(updateSql, params);
+    }
+
     public DataSource getDataSource() {
         return dataSource;
     }

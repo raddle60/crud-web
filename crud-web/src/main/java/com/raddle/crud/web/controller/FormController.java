@@ -62,7 +62,9 @@ public class FormController extends BaseController {
         CrudItemExample where = new CrudItemExample();
         Criteria criteria = where.createCriteria();
         criteria.andDeletedEqualTo((short) 0);
+        criteria.andCrudDefIdEqualTo(crudDefinition.getId());
         criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
+        where.setOrderByClause("item_order");
         model.put("defItems", crudItemDao.selectByExample(where));
         model.put("def", crudDefinition);
         return "form/show";
@@ -74,12 +76,16 @@ public class FormController extends BaseController {
         CrudItemExample where = new CrudItemExample();
         Criteria criteria = where.createCriteria();
         criteria.andDeletedEqualTo((short) 0);
+        criteria.andCrudDefIdEqualTo(crudDefinition.getId());
         criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
+        where.setOrderByClause("item_order");
         model.put("defWheres", crudItemDao.selectByExample(where));
         CrudItemExample whereCols = new CrudItemExample();
         Criteria criteriaCols = whereCols.createCriteria();
         criteriaCols.andDeletedEqualTo((short) 0);
+        criteriaCols.andCrudDefIdEqualTo(crudDefinition.getId());
         criteriaCols.andFkTypeEqualTo(ItemFkType.DEF_LIST.name());
+        whereCols.setOrderByClause("item_order");
         model.put("defCols", crudItemDao.selectByExample(whereCols));
         model.put("def", crudDefinition);
         model.put("params", createParams(request));
