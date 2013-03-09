@@ -9,26 +9,36 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.DynamicFormManager;
 import com.raddle.crud.dao.CrudDefinitionDao;
+import com.raddle.crud.dao.CrudItemDao;
 import com.raddle.crud.enums.DefType;
+import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.model.toolgen.CrudDefinition;
+import com.raddle.crud.model.toolgen.CrudItemExample;
+import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 
 /**
  * 类FormController.java的实现描述：表单页面
  * @author raddle60 2013-3-9 下午3:41:30
  */
+@Controller
 public class FormController extends BaseController {
 
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
 
     @Autowired
+    private CrudItemDao crudItemDao;
+
+    @Autowired
     private CrudDatasourceManager datasourceManager;
+
     @Autowired
     private DynamicFormManager dynamicFormManager;
 
@@ -49,12 +59,30 @@ public class FormController extends BaseController {
     private String toSingleResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
         Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
+        CrudItemExample where = new CrudItemExample();
+        Criteria criteria = where.createCriteria();
+        criteria.andDeletedEqualTo((short) 0);
+        criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
+        model.put("defItems", crudItemDao.selectByExample(where));
+        model.put("def", crudDefinition);
         return "form/show";
     }
 
     private String toListResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
         Object result = dynamicFormManager.queryForList(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
+        CrudItemExample where = new CrudItemExample();
+        Criteria criteria = where.createCriteria();
+        criteria.andDeletedEqualTo((short) 0);
+        criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
+        model.put("defWheres", crudItemDao.selectByExample(where));
+        CrudItemExample whereCols = new CrudItemExample();
+        Criteria criteriaCols = whereCols.createCriteria();
+        criteriaCols.andDeletedEqualTo((short) 0);
+        criteriaCols.andFkTypeEqualTo(ItemFkType.DEF_LIST.name());
+        model.put("defCols", crudItemDao.selectByExample(whereCols));
+        model.put("def", crudDefinition);
+        model.put("params", createParams(request));
         return "form/list";
     }
 
