@@ -33,4 +33,12 @@ public interface DynamicFormDao {
      * @return 单条记录
      */
     public Map<String, Object> queryForObject(String selectSql, Map<String, Object> params);
+
+    /**
+     * 执行update语句
+     * @param updateSql
+     * @param params
+     * @return 更新条数
+     */
+    public int update(String updateSql, Map<String, Object> params);
 }
