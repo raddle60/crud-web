@@ -7,7 +7,11 @@
             <pattern>${default_pattern}</pattern>
         </encoder>
     </appender>
-
+    
+	<logger name="com.raddle.crud.dao">
+		<level value="DEBUG" />
+	</logger>
+	
     <root>
         <level value="INFO" />
         <appender-ref ref="STDOUT" />
