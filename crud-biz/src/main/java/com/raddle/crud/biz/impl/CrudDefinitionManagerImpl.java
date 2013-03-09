@@ -93,6 +93,11 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
                 } else {
                     item.setItemType(ItemType.LABEL.name());
                 }
+                if (columnInfo.isPrimaryKey()) {
+                    // 如果是主键，放到hidden里
+                    item.setItemType(ItemType.HIDDEN.name());
+                    item.setInputType(null);
+                }
                 item.setTitle(columnInfo.getColumnName().toLowerCase());
                 item.setVarName(columnInfo.getColumnName().toLowerCase());
                 item.setItemOrder(i);
