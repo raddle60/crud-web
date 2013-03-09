@@ -28,6 +28,9 @@
 			</th>
 			<td>
 				<input type="submit" value="查询">
+				#if($defAdd)
+				<a href="${request.contextPath}/form/show.htm?defId=${defAdd.id}" target="_blank">${defAdd.name}</a>
+				#end
 			</td>
 		</tr>
 	</table>

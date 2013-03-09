@@ -1,7 +1,9 @@
 package com.raddle.crud.web.controller;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +19,17 @@ import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.DynamicFormManager;
 import com.raddle.crud.dao.CrudDefinitionDao;
 import com.raddle.crud.dao.CrudItemDao;
+import com.raddle.crud.enums.ActionType;
 import com.raddle.crud.enums.DefType;
 import com.raddle.crud.enums.ItemFkType;
+import com.raddle.crud.enums.ItemType;
+import com.raddle.crud.extdao.DynamicFormDao;
+import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
+import com.raddle.crud.extdao.dbinfo.model.TableInfo;
+import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDefinition;
+import com.raddle.crud.model.toolgen.CrudDefinitionExample;
+import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 
@@ -59,37 +69,91 @@ public class FormController extends BaseController {
     private String toSingleResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
         Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
+        List<CrudItem> defItems = queryDefItems(crudDefinition);
+        model.put("defItems", defItems);
+        model.put("def", crudDefinition);
+        return "form/show";
+    }
+
+    private List<CrudItem> queryDefItems(CrudDefinition crudDefinition) {
         CrudItemExample where = new CrudItemExample();
         Criteria criteria = where.createCriteria();
         criteria.andDeletedEqualTo((short) 0);
         criteria.andCrudDefIdEqualTo(crudDefinition.getId());
         criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
         where.setOrderByClause("item_order");
-        model.put("defItems", crudItemDao.selectByExample(where));
-        model.put("def", crudDefinition);
-        return "form/show";
+        List<CrudItem> defItems = crudItemDao.selectByExample(where);
+        return defItems;
     }
 
     private String toListResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
         Object result = dynamicFormManager.queryForList(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
+        List<CrudItem> whereItems = queryDefItems(crudDefinition);
+        model.put("defWheres", whereItems);
+        List<CrudItem> defListItems = queryDefListItems(crudDefinition);
+        if (new Short((short) 1).equals(crudDefinition.getAutoMatchBtn()) && StringUtils.isNotBlank(crudDefinition.getTableName())) {
+            putAddDef(crudDefinition, model);
+            CrudDefinitionExample updateWhere = new CrudDefinitionExample();
+            com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria criteria = updateWhere.createCriteria();
+            criteria.andDeletedEqualTo((short) 0);
+            criteria.andTableNameEqualTo(crudDefinition.getTableName());
+            criteria.andDefTypeIn(Arrays.asList(new String[] { DefType.EDIT.name(), DefType.VIEW.name(), DefType.DELETE.name() }));
+            List<CrudDefinition> updaeList = crudDefinitionDao.selectByExample(updateWhere);
+            if (updaeList.size() > 0) {
+                for (CrudDefinition updateDef : updaeList) {
+                    // 创建按钮列
+                    CrudItem actionItem = new CrudItem();
+                    actionItem.setCrudDefId(crudDefinition.getId());
+                    actionItem.setTitle(updateDef.getDefType());
+                    actionItem.setItemType(ItemType.ACTION.name());
+                    actionItem.setActionType(ActionType.HREF.name());
+                    StringBuilder href = new StringBuilder();
+                    href.append(request.getContextPath() + "/form/show?defId=" + updateDef.getId());
+                    DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                    TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+                    boolean hasPk = false;
+                    for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+                        if (columnInfo.isPrimaryKey()) {
+                            hasPk = true;
+                            href.append("&" + columnInfo.getColumnName().toLowerCase() + "=${" + columnInfo.getColumnName().toLowerCase() + "}");
+                        }
+                    }
+                    if (!hasPk) {
+                        throw new IllegalStateException("表" + crudDefinition.getTableName() + "没有主键");
+                    }
+                    actionItem.setHref(href.toString());
+                    defListItems.add(actionItem);
+                }
+            }
+        }
+        model.put("defCols", defListItems);
+        model.put("def", crudDefinition);
+        model.put("params", createParams(request));
+        return "form/list";
+    }
+
+    private void putAddDef(CrudDefinition crudDefinition, ModelMap model) {
+        CrudDefinitionExample addWhere = new CrudDefinitionExample();
+        com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria criteria = addWhere.createCriteria();
+        criteria.andDeletedEqualTo((short) 0);
+        criteria.andTableNameEqualTo(crudDefinition.getTableName());
+        criteria.andDefTypeEqualTo(DefType.ADD.name());
+        List<CrudDefinition> addList = crudDefinitionDao.selectByExample(addWhere);
+        if (addList.size() > 0) {
+            model.put("defAdd", addList.get(0));
+        }
+    }
+
+    private List<CrudItem> queryDefListItems(CrudDefinition crudDefinition) {
         CrudItemExample where = new CrudItemExample();
         Criteria criteria = where.createCriteria();
         criteria.andDeletedEqualTo((short) 0);
         criteria.andCrudDefIdEqualTo(crudDefinition.getId());
-        criteria.andFkTypeEqualTo(ItemFkType.DEF.name());
+        criteria.andFkTypeEqualTo(ItemFkType.DEF_LIST.name());
         where.setOrderByClause("item_order");
-        model.put("defWheres", crudItemDao.selectByExample(where));
-        CrudItemExample whereCols = new CrudItemExample();
-        Criteria criteriaCols = whereCols.createCriteria();
-        criteriaCols.andDeletedEqualTo((short) 0);
-        criteriaCols.andCrudDefIdEqualTo(crudDefinition.getId());
-        criteriaCols.andFkTypeEqualTo(ItemFkType.DEF_LIST.name());
-        whereCols.setOrderByClause("item_order");
-        model.put("defCols", crudItemDao.selectByExample(whereCols));
-        model.put("def", crudDefinition);
-        model.put("params", createParams(request));
-        return "form/list";
+        List<CrudItem> defItems = crudItemDao.selectByExample(where);
+        return defItems;
     }
 
     private String getReadSql(CrudDefinition crudDefinition) {
