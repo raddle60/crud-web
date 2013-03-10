@@ -1,7 +1,6 @@
 package com.raddle.crud.biz.impl;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -22,8 +21,6 @@ import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
 import com.raddle.crud.extdao.dbinfo.model.TableInfo;
 import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDefinition;
-import com.raddle.crud.model.toolgen.CrudDefinitionExample;
-import com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria;
 import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.vo.CommonResult;
@@ -43,19 +40,6 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
 
     @Autowired
     private CrudItemDao crudItemDao;
-
-    @Override
-    public CrudDefinition getCrudDefinitionByCode(String code) {
-        CrudDefinitionExample example = new CrudDefinitionExample();
-        Criteria criteria = example.createCriteria();
-        criteria.andDeletedEqualTo((short) 0);
-        criteria.andCodeEqualTo(code);
-        List<CrudDefinition> list = crudDefinitionDao.selectByExample(example);
-        if (list.size() > 0) {
-            return list.get(0);
-        }
-        return null;
-    }
 
     @Override
     @Transactional("crudTransactionManager")
