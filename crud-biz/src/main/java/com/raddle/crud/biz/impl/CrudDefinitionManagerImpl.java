@@ -68,30 +68,49 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
             int count = crudItemDao.countByExample(crudItemExample);
             if (count == 0) {
                 // 创建表单项
-                CrudItem item = new CrudItem();
-                item.setCrudDefId(id);
-                item.setFkType(fkType.name());
-                if (crudDefinition.getDefType().equals(DefType.ADD.name()) || crudDefinition.getDefType().equals(DefType.EDIT.name()) || (crudDefinition.getDefType().equals(DefType.LIST.name()) && fkType == ItemFkType.DEF)) {
-                    item.setItemType(ItemType.INPUT.name());
-                    item.setInputType(InputType.TEXT.name());
+                if (columnInfo.isPrimaryKey()) {
+                    if (crudDefinition.getDefType().equals(DefType.ADD.name()) || crudDefinition.getDefType().equals(DefType.EDIT.name())) {
+                        // 新增，编辑放入hidden
+                        addItem(id, fkType, ItemType.HIDDEN, null, i, columnInfo);
+                    } else if (crudDefinition.getDefType().equals(DefType.LIST.name()) && fkType == ItemFkType.DEF) {
+                        // 查询条件是输入框
+                        addItem(id, fkType, ItemType.INPUT, InputType.TEXT, i, columnInfo);
+                    } else if (crudDefinition.getDefType().equals(DefType.DELETE.name())) {
+                        // 删除，放一个hidden，放一个查看的
+                        addItem(id, fkType, ItemType.HIDDEN, null, i, columnInfo);
+                        i++;
+                        addItem(id, fkType, ItemType.LABEL, null, i, columnInfo);
+                    } else {
+                        // 查看和列表是label
+                        addItem(id, fkType, ItemType.LABEL, null, i, columnInfo);
+                    }
                 } else {
-                    item.setItemType(ItemType.LABEL.name());
+                    if (crudDefinition.getDefType().equals(DefType.ADD.name()) || crudDefinition.getDefType().equals(DefType.EDIT.name()) || (crudDefinition.getDefType().equals(DefType.LIST.name()) && fkType == ItemFkType.DEF)) {
+                        // 新增，编辑，查询条件是输入框
+                        addItem(id, fkType, ItemType.INPUT, InputType.TEXT, i, columnInfo);
+                    } else {
+                        // 查看，删除和列表是label
+                        addItem(id, fkType, ItemType.LABEL, null, i, columnInfo);
+                    }
                 }
-                if (columnInfo.isPrimaryKey() && !crudDefinition.getDefType().equals(DefType.LIST.name())) {
-                    // 如果是主键，放到hidden里
-                    item.setItemType(ItemType.HIDDEN.name());
-                    item.setInputType(null);
-                }
-                item.setTitle(columnInfo.getColumnName().toLowerCase());
-                item.setVarName(columnInfo.getColumnName().toLowerCase());
-                item.setItemOrder(i);
-                item.setDescript(columnInfo.getComment());
-                item.setDeleted((short) 0);
-                item.setCreatedAt(new Date());
-                item.setUpdatedAt(new Date());
-                crudItemDao.insertSelective(item);
             }
         }
         return new CommonResult<Object>(true);
+    }
+
+    private void addItem(Long id, ItemFkType fkType, ItemType itemType, InputType inputType, int i, ColumnInfo columnInfo) {
+        CrudItem item = new CrudItem();
+        item.setCrudDefId(id);
+        item.setFkType(fkType.name());
+        item.setItemType(itemType.name());
+        item.setInputType(inputType != null ? inputType.name() : null);
+        item.setTitle(columnInfo.getColumnName().toLowerCase());
+        item.setVarName(columnInfo.getColumnName().toLowerCase());
+        item.setItemOrder(i);
+        item.setDescript(columnInfo.getComment());
+        item.setDeleted((short) 0);
+        item.setCreatedAt(new Date());
+        item.setUpdatedAt(new Date());
+        crudItemDao.insertSelective(item);
     }
 }
