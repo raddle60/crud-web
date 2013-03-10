@@ -127,6 +127,23 @@ public class DynamicFormTool {
     }
 
     public boolean eq(Object a, Object b) {
-        return ObjectUtils.equals(a + "", b + "");
+        return ObjectUtils.equals(a != null ? String.valueOf(a) : "", b != null ? String.valueOf(b) : "");
+    }
+
+    public boolean in(Object a, Object b) {
+        String as = a != null ? String.valueOf(a) : "";
+        String bs = b != null ? String.valueOf(b) : "";
+        if (eq(as, bs)) {
+            return true;
+        }
+        if (as.length() > bs.length()) {
+            return include(as, bs);
+        } else {
+            return include(bs, as);
+        }
+    }
+
+    private boolean include(String container, String v) {
+        return ("," + container + ",").indexOf("," + v + ",") != -1;
     }
 }
