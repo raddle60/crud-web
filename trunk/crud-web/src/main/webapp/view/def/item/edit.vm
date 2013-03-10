@@ -147,7 +147,7 @@
 				描述
 			</th>
 			<td>
-				会显示在输入框上面<br>
+				会显示在输入框后面<br>
 				<textarea name="descript" id="descript" rows="10" cols="80">$!{item.descript}</textarea>
 			</td>
 		</tr>
