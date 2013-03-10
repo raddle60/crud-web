@@ -73,7 +73,11 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
         if (queryForList.size() > 1) {
             throw new IncorrectResultSizeDataAccessException(1, queryForList.size());
         }
-        return queryForList.get(0);
+        if (queryForList.size() > 0) {
+            return queryForList.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
