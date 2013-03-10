@@ -1,1 +1,6 @@
-尚未支持
+#if($item)
+	#foreach($option in $!formTool.ops($item))
+		<label><input type="radio" name="$!{item.varName}" id="$!{item.varName}" value="$!option.key" #if($!formTool.eq($!formTool.v($itemBean,$item.varName),$!option.key)) checked #end>$!option.value</label>
+	#end
+	<label><input type="radio" name="$!{item.varName}" id="$!{item.varName}" value="" #if($!formTool.eq($!formTool.v($itemBean,$item.varName),"")) checked #end>不选</label>
+#end
