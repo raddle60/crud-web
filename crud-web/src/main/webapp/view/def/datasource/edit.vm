@@ -53,6 +53,7 @@
 			</th>
 			<td>
 				<input type="submit" value="保存">
+				<input type="button" onclick="window.close()" value="关闭">
 			</td>
 		</tr>
 	</table>
