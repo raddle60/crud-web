@@ -67,8 +67,10 @@ public class FormController extends BaseController {
     }
 
     private String toSingleResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
-        Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
-        model.put("result", result);
+        if (StringUtils.isNotBlank(readSql)) {
+            Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            model.put("result", result);
+        }
         List<CrudItem> defItems = queryDefItems(crudDefinition);
         model.put("defItems", defItems);
         model.put("def", crudDefinition);
@@ -161,7 +163,7 @@ public class FormController extends BaseController {
             throw new RuntimeException("表名和读取sql必须有一项不为空");
         }
         String readSql = crudDefinition.getReadSql();
-        if (StringUtils.isBlank(readSql)) {
+        if (StringUtils.isBlank(readSql) && !DefType.ADD.name().equals(crudDefinition.getDefType())) {
             readSql = dynamicFormManager.generateDynamicSelectSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         }
         return readSql;
