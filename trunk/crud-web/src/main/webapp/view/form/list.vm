@@ -67,8 +67,8 @@ $(function(){
 			rules : {
 				#set($hasRule = false)
 				#foreach($item in $defItems)
-					#if($hasRule) , #end
 					#if($item.webChkRule)
+						#if($hasRule) , #end
 						#set($hasRule = true)
 						$item.varName : { $item.webChkRule }
 					#end
