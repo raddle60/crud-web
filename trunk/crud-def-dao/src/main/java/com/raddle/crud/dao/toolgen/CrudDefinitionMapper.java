@@ -47,22 +47,24 @@ public interface CrudDefinitionMapper {
      * @mbggenerated
      */
     @Insert({
-        "insert into CRUD_DEFINITION (ID, CODE, ",
-        "NAME, DEF_TYPE, TABLE_NAME, ",
+        "insert into CRUD_DEFINITION (ID, NAME, ",
+        "DEF_TYPE, TABLE_NAME, ",
         "CRUD_DS_ID, PRE_SQL, ",
-        "READ_SQL, UPDATE_SQL, ",
-        "ADD_HREF, IS_PAGING, ",
-        "AUTO_MATCH_BTN, CREATE_TM_COL, ",
-        "UPDATE_TM_COL, DELETED, ",
-        "CREATED_AT, UPDATED_AT)",
-        "values (#{id,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, ",
-        "#{name,jdbcType=VARCHAR}, #{defType,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, ",
+        "READ_SQL, KEY_SELECT_SQL, ",
+        "UPDATE_SQL, ADD_HREF, ",
+        "IS_PAGING, AUTO_MATCH_BTN, ",
+        "CREATE_TM_COL, UPDATE_TM_COL, ",
+        "DELETED, CREATED_AT, ",
+        "UPDATED_AT)",
+        "values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, ",
+        "#{defType,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, ",
         "#{crudDsId,jdbcType=DECIMAL}, #{preSql,jdbcType=VARCHAR}, ",
-        "#{readSql,jdbcType=VARCHAR}, #{updateSql,jdbcType=VARCHAR}, ",
-        "#{addHref,jdbcType=VARCHAR}, #{isPaging,jdbcType=DECIMAL}, ",
-        "#{autoMatchBtn,jdbcType=DECIMAL}, #{createTmCol,jdbcType=VARCHAR}, ",
-        "#{updateTmCol,jdbcType=VARCHAR}, #{deleted,jdbcType=DECIMAL}, ",
-        "#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})"
+        "#{readSql,jdbcType=VARCHAR}, #{keySelectSql,jdbcType=VARCHAR}, ",
+        "#{updateSql,jdbcType=VARCHAR}, #{addHref,jdbcType=VARCHAR}, ",
+        "#{isPaging,jdbcType=DECIMAL}, #{autoMatchBtn,jdbcType=DECIMAL}, ",
+        "#{createTmCol,jdbcType=VARCHAR}, #{updateTmCol,jdbcType=VARCHAR}, ",
+        "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
+        "#{updatedAt,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_DEFINITION.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudDefinition record);
@@ -91,9 +93,9 @@ public interface CrudDefinitionMapper {
      */
     @Select({
         "select",
-        "ID, CODE, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, READ_SQL, UPDATE_SQL, ",
-        "ADD_HREF, IS_PAGING, AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, DELETED, ",
-        "CREATED_AT, UPDATED_AT",
+        "ID, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, READ_SQL, KEY_SELECT_SQL, ",
+        "UPDATE_SQL, ADD_HREF, IS_PAGING, AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, ",
+        "DELETED, CREATED_AT, UPDATED_AT",
         "from CRUD_DEFINITION",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -132,13 +134,13 @@ public interface CrudDefinitionMapper {
      */
     @Update({
         "update CRUD_DEFINITION",
-        "set CODE = #{code,jdbcType=VARCHAR},",
-          "NAME = #{name,jdbcType=VARCHAR},",
+        "set NAME = #{name,jdbcType=VARCHAR},",
           "DEF_TYPE = #{defType,jdbcType=VARCHAR},",
           "TABLE_NAME = #{tableName,jdbcType=VARCHAR},",
           "CRUD_DS_ID = #{crudDsId,jdbcType=DECIMAL},",
           "PRE_SQL = #{preSql,jdbcType=VARCHAR},",
           "READ_SQL = #{readSql,jdbcType=VARCHAR},",
+          "KEY_SELECT_SQL = #{keySelectSql,jdbcType=VARCHAR},",
           "UPDATE_SQL = #{updateSql,jdbcType=VARCHAR},",
           "ADD_HREF = #{addHref,jdbcType=VARCHAR},",
           "IS_PAGING = #{isPaging,jdbcType=DECIMAL},",

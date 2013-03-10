@@ -68,18 +68,9 @@ public class DefinitionController extends BaseController {
 
     @RequestMapping(value = "def/def/save")
     public String save(CrudDefinition def, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
-        CrudDefinition byCode = crudDefinitionManager.getCrudDefinitionByCode(def.getCode());
         if (def.getId() != null) {
-            if (byCode != null && byCode.getId().longValue() != def.getId()) {
-                model.put("message", "编码重复");
-                return "common/new-window-result";
-            }
             crudDefinitionDao.updateByPrimaryKeySelective(def);
         } else {
-            if (byCode != null) {
-                model.put("message", "编码重复");
-                return "common/new-window-result";
-            }
             def.setDeleted((short) 0);
             def.setCreatedAt(new Date());
             def.setUpdatedAt(new Date());

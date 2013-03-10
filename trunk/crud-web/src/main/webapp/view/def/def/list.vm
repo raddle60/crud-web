@@ -7,7 +7,6 @@
 	<thead>
 		<tr>
 			<th>名称</th>
-			<th>编码</th>
 			<th>类型</th>
 			<th>数据源</th>
 			<th>表名</th>
@@ -19,7 +18,6 @@
 		#foreach($def in $list)
 		<tr>
 			<td>$!{def.name}</td>
-			<td>$!{def.code}</td>
 			<td>$!{def.defType}</td>
 			<td>$!{def.crudDsName}</td>
 			<td>$!{def.tableName}</td>
