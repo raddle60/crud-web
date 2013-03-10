@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.raddle.crud.model.toolgen.CrudItem;
+
 public interface DynamicFormManager {
 
     /**
@@ -66,4 +68,10 @@ public interface DynamicFormManager {
      */
     public String generateDynamicDeleteSql(String tableName, DataSource dataSource);
 
+    /**
+     * 获得选项
+     * @param crudItem
+     * @return
+     */
+    public List<Map<String, Object>> getItemOptions(CrudItem crudItem);
 }

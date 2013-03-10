@@ -1,6 +1,7 @@
 package com.raddle.crud.biz.impl;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +9,21 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.DynamicFormManager;
+import com.raddle.crud.enums.OptionType;
 import com.raddle.crud.extdao.DynamicFormDao;
 import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
 import com.raddle.crud.extdao.dbinfo.model.TableInfo;
 import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
+import com.raddle.crud.model.toolgen.CrudItem;
 
 /**
  * 类DynamicFormManagerImpl.java的实现描述：动态表单
@@ -28,6 +34,9 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     private Properties velocityProps;
 
     private VelocityEngine velocityEngine;
+
+    @Autowired
+    private CrudDatasourceManager datasourceManager;
 
     @Override
     public List<Map<String, Object>> queryForList(String dynamicSelectSql, Map<String, Object> params, DataSource dataSource) {
@@ -177,6 +186,44 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     }
 
     @Override
+    public List<Map<String, Object>> getItemOptions(CrudItem crudItem) {
+        Assert.hasText(crudItem.getOptionType(), "选项类型为空");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        if (OptionType.STATIC.name().equals(crudItem.getOptionType())) {
+            if (StringUtils.isNotBlank(crudItem.getOptionValue())) {
+                // 逗号分割
+                String[] split = StringUtils.split(crudItem.getOptionValue(), ",");
+                for (String option : split) {
+                    option = StringUtils.trim(option);
+                    if (StringUtils.isNotEmpty(option)) {
+                        if (option.indexOf(":") != -1) {
+                            // 冒号分隔的keyvalue
+                            String[] options = StringUtils.split(option, ":");
+                            if (options.length > 1) {
+                                Map<String, Object> map = new HashMap<String, Object>();
+                                map.put("key", options[0]);
+                                map.put("value", options[1]);
+                                list.add(map);
+                            }
+                        } else {
+                            Map<String, Object> map = new HashMap<String, Object>();
+                            map.put("key", option);
+                            map.put("value", option);
+                            list.add(map);
+                        }
+                    }
+                }
+            }
+        }
+        if (OptionType.SQL.name().equals(crudItem.getOptionType())) {
+            Assert.hasText(crudItem.getOptionValue(), "选项sql为空");
+            Assert.notNull(crudItem.getCrudDsId(), "选项数据源为空");
+            return queryForList(crudItem.getOptionValue(), new HashMap<String, Object>(), datasourceManager.getDatasource(crudItem.getCrudDsId()));
+        }
+        return list;
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         velocityEngine = new VelocityEngine();
         if (velocityProps != null) {
@@ -191,5 +238,4 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     public void setVelocityProps(Properties velocityProps) {
         this.velocityProps = velocityProps;
     }
-
 }
