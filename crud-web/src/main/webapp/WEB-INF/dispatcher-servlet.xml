@@ -45,6 +45,8 @@
 
 	<bean class="com.raddle.crud.web.exception.resolver.LogExceptionOnlyResolver" />
 
+	<bean id="mvcVelocityEngine" class="com.raddle.crud.web.velocity.engine.MvcVelocityEngine" />
+
 	<!-- other config -->
 	<import resource="classpath:META-INF/spring/sping-def-dao.xml" />
 	<import resource="classpath:META-INF/spring/sping-def-biz.xml" />
