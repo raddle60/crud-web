@@ -1,3 +1,3 @@
 #if($item)
-	$formTool.v($itemBean,$item.varName,$request)
+	$!formTool.v($itemBean,$item.varName)
 #end
