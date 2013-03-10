@@ -18,7 +18,8 @@
 			</th>
 			<td>
 				#set($itemBean = $result)
-				#parse("/form/item/$formTool.getItemVmFileName($item)") #if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end
+				#parse("/form/item/$formTool.getItemVmFileName($item)")
+				#if($item.itemType == "INPUT") #if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end #end
 			</td>
 		</tr>
 		#end
@@ -27,8 +28,11 @@
 			<th>
 			</th>
 			<td>
-				#if($def.defType == "ADD" || $def.defType == "EDIT" || $def.defType == "DELETE")
+				#if($def.defType == "ADD" || $def.defType == "EDIT")
 				<input type="submit" value="保存">
+				#end
+				#if($def.defType == "DELETE")
+				<input type="button" onclick="confirmDelete()" value="删除">
 				#end
 				<input type="button" onclick="window.close()" value="关闭">
 			</td>
@@ -59,4 +63,9 @@ $(function(){
 		alert("js执行异常，"+e);
 	}
 });
+function confirmDelete(){
+	if(confirm("确定要删除这条记录吗？")){
+		$("#j_form").submit();
+	}
+}
 </script>

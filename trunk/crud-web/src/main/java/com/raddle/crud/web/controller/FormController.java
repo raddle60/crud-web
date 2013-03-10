@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,6 +36,7 @@ import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 import com.raddle.crud.vo.CommonResult;
+import com.raddle.crud.web.velocity.engine.MvcVelocityEngine;
 
 /**
  * 类FormController.java的实现描述：表单页面
@@ -55,11 +57,15 @@ public class FormController extends BaseController {
     @Autowired
     private DynamicFormManager dynamicFormManager;
 
+    @Resource(name = "mvcVelocityEngine")
+    private MvcVelocityEngine mvcVelocityEngine;
+
     @RequestMapping(value = "form/show")
     public String showForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (defId == null) {
             throw new RuntimeException("表单id不能为空");
         }
+        model.put("mvcVelocityEngine", mvcVelocityEngine);
         CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
         String readSql = getReadSql(crudDefinition);
         if (crudDefinition.getDefType().equals(DefType.LIST.name())) {
@@ -123,7 +129,7 @@ public class FormController extends BaseController {
                 actionItem.setItemType(ItemType.ACTION.name());
                 actionItem.setActionType(ActionType.HREF.name());
                 StringBuilder href = new StringBuilder();
-                href.append(request.getContextPath() + "/form/show?defId=" + updateDef.getId());
+                href.append(request.getContextPath() + "/form/show.htm?defId=" + updateDef.getId());
                 DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
                 TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
                 boolean hasPk = false;
