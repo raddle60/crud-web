@@ -1,1 +1,5 @@
-尚未支持
+#if($item)
+	#foreach($option in $!formTool.ops($item))
+		<label><input type="checkbox" name="$!{item.varName}" id="$!{item.varName}" value="$!option.key" #if($!formTool.in($!formTool.v($itemBean,$item.varName),$!option.key)) checked #end>$!option.value</label>
+	#end
+#end
