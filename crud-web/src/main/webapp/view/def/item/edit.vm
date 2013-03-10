@@ -42,6 +42,21 @@
 			</th>
 			<td>
 				jquery-validator的rules,规则名:{参数名:参数值}，比如msg_required:{},msg_minlength:{minlength:5}<br>
+				可用规则为：<br>
+				msg_required:{}<br>
+				msg_minlength:{minlength:长度}<br>
+				msg_maxlength:{maxlength:长度}<br>
+				msg_rangelength:{minlength:长度,maxlength:长度}<br>
+				msg_min:{min:值}<br>
+				msg_max:{max:值}<br>
+				msg_range:{min:值,max:值}<br>
+				msg_digits:{}<br>
+				msg_mobile:{}<br>
+				msg_email:{}<br>
+				msg_idcard:{}<br>
+				msg_equalTo:{target:jquery筛选表达式}<br>
+				msg_regex:{regex:正则表达式(非字符串)}<br>
+				msg_depend:{depend:jquery筛选表达式}<br>
 				<textarea name="webChkRule" id="webChkRule" rows="10" cols="40">$!{item.webChkRule}</textarea>
 			</td>
 		</tr>
@@ -164,12 +179,24 @@
 </form>
 <script>
 $(function(){
+	$.validator.addMethod("msg_jsformat", function(value, element, param) {
+		if (this.optional(element)) {
+			return true;
+		}
+		try{
+			eval("{"+value+"}");
+			return true;
+		}catch(e){
+			return false;
+		};
+	}, '格式不正确');
 	J_formValidator = $("#j_form").validate({
 		onclick: false,
 		onkeyup : false,
 		rules : {
 			title : { msg_required:{} },
 			itemType : { msg_required:{} },
+			webChkRule : { msg_jsformat:{}},
 			itemOrder : { msg_required:{},msg_digits:{}}
 		}
 	});

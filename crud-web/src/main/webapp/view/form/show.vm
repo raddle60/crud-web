@@ -18,7 +18,7 @@
 			</th>
 			<td>
 				#set($itemBean = $result)
-				#parse("/form/item/$formTool.getItemVmFileName($item)")	#if($item.descript)$!item.descript#end
+				#parse("/form/item/$formTool.getItemVmFileName($item)") #if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end
 			</td>
 		</tr>
 		#end
