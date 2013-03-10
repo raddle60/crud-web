@@ -186,9 +186,17 @@ public class FormController extends BaseController {
             CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
             String updateSql = getUpdateSql(crudDefinition);
             Map<String, Object> params = createParams(request);
-            if (crudDefinition.getDefType().equals(DefType.ADD.name())) {
-                Map<String, Object> insertKey = dynamicFormManager.queryForObject("select seq_crud_test.nextval as key from dual", params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
-                params.put("id", insertKey.get("key"));
+            if (crudDefinition.getDefType().equals(DefType.ADD.name()) && StringUtils.isNotBlank(crudDefinition.getKeySelectSql())) {
+                Map<String, Object> insertKey = dynamicFormManager.queryForObject(crudDefinition.getKeySelectSql(), params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+                for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+                    if (columnInfo.isPrimaryKey()) {
+                        // 这种方式，只支持单主键的
+                        params.put(columnInfo.getColumnName().toLowerCase(), insertKey.get("key"));
+                        break;
+                    }
+                }
             }
             int count = dynamicFormManager.update(updateSql, params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             result.setSuccess(true);

@@ -77,7 +77,7 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
                 } else {
                     item.setItemType(ItemType.LABEL.name());
                 }
-                if (columnInfo.isPrimaryKey()) {
+                if (columnInfo.isPrimaryKey() && !crudDefinition.getDefType().equals(DefType.LIST.name())) {
                     // 如果是主键，放到hidden里
                     item.setItemType(ItemType.HIDDEN.name());
                     item.setInputType(null);
