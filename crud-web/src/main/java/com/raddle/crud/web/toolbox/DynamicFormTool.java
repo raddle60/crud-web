@@ -37,7 +37,7 @@ public class DynamicFormTool {
             return null;
         }
         Object v = null;
-        if (bean != null && PropertyUtils.isReadable(varName, varName)) {
+        if (bean != null) {
             v = PropertyUtils.getProperty(bean, varName);
         }
         if (v == null) {
