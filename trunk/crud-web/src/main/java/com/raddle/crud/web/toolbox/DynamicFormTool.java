@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +122,11 @@ public class DynamicFormTool {
         return writer.toString();
     }
 
-    public List<Map<String, Object>> getItemOptions(CrudItem crudItem) {
+    public List<Map<String, Object>> ops(CrudItem crudItem) {
         return dynamicFormManager.getItemOptions(crudItem);
+    }
+
+    public boolean eq(Object a, Object b) {
+        return ObjectUtils.equals(a + "", b + "");
     }
 }
