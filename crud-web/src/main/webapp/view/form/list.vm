@@ -60,19 +60,23 @@
 </table>
 <script>
 $(function(){
-	J_formValidator = $("#j_form").validate({
-		onclick: false,
-		onkeyup : false,
-		rules : {
-			#set($hasRule = false)
-			#foreach($item in $defItems)
-				#if($hasRule) , #end
-				#if($item.webChkRule)
-					#set($hasRule = true)
-					$item.varName : { $item.webChkRule }
+	try {
+		J_formValidator = $("#j_form").validate({
+			onclick: false,
+			onkeyup : false,
+			rules : {
+				#set($hasRule = false)
+				#foreach($item in $defItems)
+					#if($hasRule) , #end
+					#if($item.webChkRule)
+						#set($hasRule = true)
+						$item.varName : { $item.webChkRule }
+					#end
 				#end
-			#end
-		}
-	});
+			}
+		});
+	} catch(e) {
+		alert("js执行异常，"+e);
+	}
 });
 </script>
