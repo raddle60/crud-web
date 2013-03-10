@@ -1,4 +1,4 @@
-#if($def && $item.id)
+#if($item && $item.id)
 #set($page_title = "表单项编辑")
 <b class="title">表单项编辑</b>
 #else
