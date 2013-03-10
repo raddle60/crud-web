@@ -36,7 +36,7 @@ import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 import com.raddle.crud.vo.CommonResult;
-import com.raddle.crud.web.velocity.engine.MvcVelocityEngine;
+import com.raddle.crud.web.toolbox.DynamicFormTool;
 
 /**
  * 类FormController.java的实现描述：表单页面
@@ -57,15 +57,15 @@ public class FormController extends BaseController {
     @Autowired
     private DynamicFormManager dynamicFormManager;
 
-    @Resource(name = "mvcVelocityEngine")
-    private MvcVelocityEngine mvcVelocityEngine;
+    @Resource(name = "dynamicFormTool")
+    private DynamicFormTool dynamicFormTool;
 
     @RequestMapping(value = "form/show")
     public String showForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (defId == null) {
             throw new RuntimeException("表单id不能为空");
         }
-        model.put("mvcVelocityEngine", mvcVelocityEngine);
+        model.put("formTool", dynamicFormTool);
         CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
         String readSql = getReadSql(crudDefinition);
         if (crudDefinition.getDefType().equals(DefType.LIST.name())) {
