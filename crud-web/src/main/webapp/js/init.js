@@ -1,6 +1,6 @@
 $(function() {
 	// trim文本框
-	$("form input[type=text]").blur(function() {
+	$("form input[type=text],form textarea").blur(function() {
 		$(this).val($.trim($(this).val()));
 	});
 	// table颜色
