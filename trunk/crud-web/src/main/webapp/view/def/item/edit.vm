@@ -107,6 +107,7 @@
 			</th>
 			<td>
 				<select name="crudDsId" id="crudDsId">
+					<option value=""></option>
 					#foreach($datasource in $datasources)
 						<option value="$datasource.id" #if($item.crudDsId && $item.crudDsId == $datasource.id)selected#end>$datasource.name</option>
 					#end

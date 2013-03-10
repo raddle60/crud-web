@@ -66,6 +66,15 @@
 		</tr>
 		<tr>
 			<th>
+				主键查询sql
+			</th>
+			<td>
+				返回列名为key的sql，比如select seq_xxx.nextval as key from dual <br>
+				<textarea name="keySelectSql" id="keySelectSql" rows="5" cols="80">$!{def.keySelectSql}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>
 				更新SQL
 			</th>
 			<td>
