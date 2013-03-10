@@ -255,76 +255,6 @@ public class CrudDefinitionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCodeIsNull() {
-            addCriterion("CODE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeIsNotNull() {
-            addCriterion("CODE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeEqualTo(String value) {
-            addCriterion("CODE =", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotEqualTo(String value) {
-            addCriterion("CODE <>", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeGreaterThan(String value) {
-            addCriterion("CODE >", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("CODE >=", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeLessThan(String value) {
-            addCriterion("CODE <", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeLessThanOrEqualTo(String value) {
-            addCriterion("CODE <=", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeLike(String value) {
-            addCriterion("CODE like", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotLike(String value) {
-            addCriterion("CODE not like", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeIn(List<String> values) {
-            addCriterion("CODE in", values, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotIn(List<String> values) {
-            addCriterion("CODE not in", values, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeBetween(String value1, String value2) {
-            addCriterion("CODE between", value1, value2, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotBetween(String value1, String value2) {
-            addCriterion("CODE not between", value1, value2, "code");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("NAME is null");
             return (Criteria) this;
@@ -732,6 +662,76 @@ public class CrudDefinitionExample {
 
         public Criteria andReadSqlNotBetween(String value1, String value2) {
             addCriterion("READ_SQL not between", value1, value2, "readSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlIsNull() {
+            addCriterion("KEY_SELECT_SQL is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlIsNotNull() {
+            addCriterion("KEY_SELECT_SQL is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlEqualTo(String value) {
+            addCriterion("KEY_SELECT_SQL =", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlNotEqualTo(String value) {
+            addCriterion("KEY_SELECT_SQL <>", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlGreaterThan(String value) {
+            addCriterion("KEY_SELECT_SQL >", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlGreaterThanOrEqualTo(String value) {
+            addCriterion("KEY_SELECT_SQL >=", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlLessThan(String value) {
+            addCriterion("KEY_SELECT_SQL <", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlLessThanOrEqualTo(String value) {
+            addCriterion("KEY_SELECT_SQL <=", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlLike(String value) {
+            addCriterion("KEY_SELECT_SQL like", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlNotLike(String value) {
+            addCriterion("KEY_SELECT_SQL not like", value, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlIn(List<String> values) {
+            addCriterion("KEY_SELECT_SQL in", values, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlNotIn(List<String> values) {
+            addCriterion("KEY_SELECT_SQL not in", values, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlBetween(String value1, String value2) {
+            addCriterion("KEY_SELECT_SQL between", value1, value2, "keySelectSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andKeySelectSqlNotBetween(String value1, String value2) {
+            addCriterion("KEY_SELECT_SQL not between", value1, value2, "keySelectSql");
             return (Criteria) this;
         }
 

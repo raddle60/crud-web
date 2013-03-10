@@ -19,14 +19,6 @@
 		</tr>
 		<tr>
 			<th>
-				编码
-			</th>
-			<td>
-				<input type="text" name="code" id="code" value="$!{def.code}">
-			</td>
-		</tr>
-		<tr>
-			<th>
 				表单类型
 			</th>
 			<td>
@@ -141,7 +133,6 @@ $(function(){
 		onkeyup : false,
 		rules : {
 			name : { msg_required:{} },
-			code : { msg_required:{} },
 			defType : { msg_required:{}},
 			crudDsId : { msg_required:{}}
 		}
