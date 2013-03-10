@@ -2,7 +2,7 @@
 	<select name="$!{item.varName}" id="$!{item.varName}">
 		<option value=""></option>
 		#foreach($option in $!formTool.ops($item))
-			<option value="$!option.key" #if($!formTool.eq($!formTool.v($itemBean,$item.varName),$!option.value)) selected #end>$!option.value</option>
+			<option value="$!option.key" #if($!formTool.eq($!formTool.v($itemBean,$item.varName),$!option.key)) selected #end>$!option.value</option>
 		#end
 	</select>
 #end
