@@ -40,4 +40,35 @@ public class DynamicFormTool {
         }
         return v;
     }
+
+    /**
+     * 获得行数
+     * @param inputSize
+     * @return
+     */
+    public String rows(String inputSize) {
+        if (StringUtils.isBlank(inputSize)) {
+            return "10";
+        } else {
+            return StringUtils.split(inputSize, ",")[0];
+        }
+    }
+
+    /**
+     * 获得列数
+     * @param inputSize
+     * @return
+     */
+    public String cols(String inputSize) {
+        if (StringUtils.isBlank(inputSize)) {
+            return "60";
+        } else {
+            String[] split = StringUtils.split(inputSize, ",");
+            if (split.length > 1) {
+                return split[1];
+            } else {
+                return "60";
+            }
+        }
+    }
 }
