@@ -1,6 +1,6 @@
 #set($page_title = ${def.name} + " - " + ${def.defType})
 <b class="title">${def.name} - ${def.defType}</b>
-<form id="j_form" action="#springUrl("/form/save.htm")" method="post">
+<form id="j_form" action="#springUrl("/form/save.ajax")" method="post">
 	<input type="hidden" name="defId" value="$!{def.id}">
 	## 输出hidden框
 	#foreach($item in $defItems)
@@ -50,6 +50,9 @@ $(function(){
 						$item.varName : { $item.webChkRule }
 					#end
 				#end
+			},
+			submitHandler: function(form){
+				ajaxSubmit(form);
 			}
 		});
 	} catch(e) {

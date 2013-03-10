@@ -1,5 +1,7 @@
 package com.raddle.crud.web.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import com.raddle.crud.model.toolgen.CrudDefinitionExample;
 import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
+import com.raddle.crud.vo.CommonResult;
 
 /**
  * 类FormController.java的实现描述：表单页面
@@ -96,43 +99,47 @@ public class FormController extends BaseController {
         List<CrudItem> defListItems = queryDefListItems(crudDefinition);
         if (new Short((short) 1).equals(crudDefinition.getAutoMatchBtn()) && StringUtils.isNotBlank(crudDefinition.getTableName())) {
             putAddDef(crudDefinition, model);
-            CrudDefinitionExample updateWhere = new CrudDefinitionExample();
-            com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria criteria = updateWhere.createCriteria();
-            criteria.andDeletedEqualTo((short) 0);
-            criteria.andTableNameEqualTo(crudDefinition.getTableName());
-            criteria.andDefTypeIn(Arrays.asList(new String[] { DefType.EDIT.name(), DefType.VIEW.name(), DefType.DELETE.name() }));
-            List<CrudDefinition> updaeList = crudDefinitionDao.selectByExample(updateWhere);
-            if (updaeList.size() > 0) {
-                for (CrudDefinition updateDef : updaeList) {
-                    // 创建按钮列
-                    CrudItem actionItem = new CrudItem();
-                    actionItem.setCrudDefId(crudDefinition.getId());
-                    actionItem.setTitle(updateDef.getDefType());
-                    actionItem.setItemType(ItemType.ACTION.name());
-                    actionItem.setActionType(ActionType.HREF.name());
-                    StringBuilder href = new StringBuilder();
-                    href.append(request.getContextPath() + "/form/show?defId=" + updateDef.getId());
-                    DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
-                    TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
-                    boolean hasPk = false;
-                    for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
-                        if (columnInfo.isPrimaryKey()) {
-                            hasPk = true;
-                            href.append("&" + columnInfo.getColumnName().toLowerCase() + "=${" + columnInfo.getColumnName().toLowerCase() + "}");
-                        }
-                    }
-                    if (!hasPk) {
-                        throw new IllegalStateException("表" + crudDefinition.getTableName() + "没有主键");
-                    }
-                    actionItem.setHref(href.toString());
-                    defListItems.add(actionItem);
-                }
-            }
+            putUpdateDef(crudDefinition, defListItems, request);
         }
         model.put("defCols", defListItems);
         model.put("def", crudDefinition);
         model.put("params", createParams(request));
         return "form/list";
+    }
+
+    private void putUpdateDef(CrudDefinition crudDefinition, List<CrudItem> defListItems, HttpServletRequest request) {
+        CrudDefinitionExample updateWhere = new CrudDefinitionExample();
+        com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria criteria = updateWhere.createCriteria();
+        criteria.andDeletedEqualTo((short) 0);
+        criteria.andTableNameEqualTo(crudDefinition.getTableName());
+        criteria.andDefTypeIn(Arrays.asList(new String[] { DefType.EDIT.name(), DefType.VIEW.name(), DefType.DELETE.name() }));
+        List<CrudDefinition> updaeList = crudDefinitionDao.selectByExample(updateWhere);
+        if (updaeList.size() > 0) {
+            for (CrudDefinition updateDef : updaeList) {
+                // 创建按钮列
+                CrudItem actionItem = new CrudItem();
+                actionItem.setCrudDefId(crudDefinition.getId());
+                actionItem.setTitle(updateDef.getDefType());
+                actionItem.setItemType(ItemType.ACTION.name());
+                actionItem.setActionType(ActionType.HREF.name());
+                StringBuilder href = new StringBuilder();
+                href.append(request.getContextPath() + "/form/show?defId=" + updateDef.getId());
+                DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+                boolean hasPk = false;
+                for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+                    if (columnInfo.isPrimaryKey()) {
+                        hasPk = true;
+                        href.append("&" + columnInfo.getColumnName().toLowerCase() + "=${" + columnInfo.getColumnName().toLowerCase() + "}");
+                    }
+                }
+                if (!hasPk) {
+                    throw new IllegalStateException("表" + crudDefinition.getTableName() + "没有主键");
+                }
+                actionItem.setHref(href.toString());
+                defListItems.add(actionItem);
+            }
+        }
     }
 
     private void putAddDef(CrudDefinition crudDefinition, ModelMap model) {
@@ -170,26 +177,71 @@ public class FormController extends BaseController {
     }
 
     @RequestMapping(value = "form/save")
-    public String saveForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
-        if (defId == null) {
-            throw new RuntimeException("表单id不能为空");
+    public String saveForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        CommonResult<Object> result = new CommonResult<Object>(false);
+        try {
+            if (defId == null) {
+                throw new RuntimeException("表单id不能为空");
+            }
+            CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
+            String updateSql = getUpdateSql(crudDefinition);
+            Map<String, Object> params = createParams(request);
+            if (crudDefinition.getDefType().equals(DefType.ADD.name())) {
+                Map<String, Object> insertKey = dynamicFormManager.queryForObject("select seq_crud_test.nextval as key from dual", params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                params.put("id", insertKey.get("key"));
+            }
+            int count = dynamicFormManager.update(updateSql, params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            result.setSuccess(true);
+            result.setMessage("操作成功，影响条数[" + count + "]");
+            return writeJson(result, response);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            result.setMessage("执行异常，" + e.getMessage());
+            return writeJson(result, response);
         }
-        return null;
+    }
+
+    private String getUpdateSql(CrudDefinition crudDefinition) {
+        if (StringUtils.isBlank(crudDefinition.getTableName()) && StringUtils.isBlank(crudDefinition.getUpdateSql())) {
+            throw new RuntimeException("表名和更新sql必须有一项不为空");
+        }
+        String updateSql = crudDefinition.getUpdateSql();
+        if (StringUtils.isBlank(updateSql)) {
+            if (crudDefinition.getDefType().equals(DefType.ADD.name())) {
+                updateSql = dynamicFormManager.generateDynamicInsertSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            }
+            if (crudDefinition.getDefType().equals(DefType.EDIT.name())) {
+                updateSql = dynamicFormManager.generateDynamicUpdateSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            }
+            if (crudDefinition.getDefType().equals(DefType.DELETE.name())) {
+                updateSql = dynamicFormManager.generateDynamicDeleteSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            }
+        }
+        return updateSql;
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> createParams(HttpServletRequest request) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("request", request);
-        Enumeration<String> attributeNames = request.getAttributeNames();
-        while (attributeNames != null && attributeNames.hasMoreElements()) {
-            String name = attributeNames.nextElement();
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames != null && parameterNames.hasMoreElements()) {
+            String name = parameterNames.nextElement();
             String[] values = request.getParameterValues(name);
-            if (values != null && values.length > 0) {
-                if (values.length == 0) {
-                    params.put(name, values[0]);
-                } else {
-                    params.put(name, values);
+            // 去掉空字符串
+            if (values != null) {
+                List<String> trimedValues = new ArrayList<String>();
+                for (String value : values) {
+                    if (StringUtils.isNotBlank(value)) {
+                        trimedValues.add(value.trim());
+                    }
+                }
+                if (trimedValues.size() > 0) {
+                    if (trimedValues.size() == 1) {
+                        params.put(name, trimedValues.get(0));
+                    } else {
+                        params.put(name, StringUtils.join(trimedValues, ","));
+                    }
                 }
             }
         }

@@ -102,6 +102,33 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     }
 
     @Override
+    public String generateDynamicInsertSql(String tableName, DataSource dataSource) {
+        DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);
+        StringBuilder sb = new StringBuilder();
+        sb.append("insert into " + tableName + " ( ");
+        sb.append(" #set($hasInsert = false) \n");
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+            sb.append(" #if($" + columnInfo.getColumnName().toLowerCase() + ") \n");
+            sb.append("   #if($hasInsert) , #end \n");
+            sb.append("   " + columnInfo.getColumnName() + " \n");
+            sb.append("   #set($hasInsert = true) \n");
+            sb.append(" #end \n");
+        }
+        sb.append(" ) values ( \n");
+        sb.append(" #set($hasInsert = false) \n");
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
+            sb.append(" #if($" + columnInfo.getColumnName().toLowerCase() + ") \n");
+            sb.append("   #if($hasInsert) , #end \n");
+            sb.append("   :" + columnInfo.getColumnName().toLowerCase() + " \n");
+            sb.append("   #set($hasInsert = true) \n");
+            sb.append(" #end \n");
+        }
+        sb.append(" ) ");
+        return sb.toString();
+    }
+
+    @Override
     public String generateDynamicUpdateSql(String tableName, DataSource dataSource) {
         DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
         TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);

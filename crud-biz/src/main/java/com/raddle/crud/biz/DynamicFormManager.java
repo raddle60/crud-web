@@ -26,7 +26,7 @@ public interface DynamicFormManager {
     public Map<String, Object> queryForObject(String dynamicSelectSql, Map<String, Object> params, DataSource dataSource);
 
     /**
-     * 执行动态update语句
+     * 执行动态insert，update，delete语句
      * @param dynamicUpdateSql
      * @param params
      * @param dataSource
@@ -41,6 +41,14 @@ public interface DynamicFormManager {
      * @return
      */
     public String generateDynamicSelectSql(String tableName, DataSource dataSource);
+
+    /**
+     * 根据表自动生成插入sql
+     * @param tableName
+     * @param dataSource
+     * @return
+     */
+    public String generateDynamicInsertSql(String tableName, DataSource dataSource);
 
     /**
      * 根据表自动生成更新sql
