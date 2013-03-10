@@ -45,7 +45,7 @@
 
 	<bean class="com.raddle.crud.web.exception.resolver.LogExceptionOnlyResolver" />
 
-	<bean id="mvcVelocityEngine" class="com.raddle.crud.web.velocity.engine.MvcVelocityEngine" />
+	<bean id="dynamicFormTool" class="com.raddle.crud.web.toolbox.DynamicFormTool" />
 
 	<!-- other config -->
 	<import resource="classpath:META-INF/spring/sping-def-dao.xml" />

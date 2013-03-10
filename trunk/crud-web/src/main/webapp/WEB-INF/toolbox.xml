@@ -10,9 +10,4 @@
   		<scope>application</scope>
   		<class>com.raddle.crud.web.toolbox.DateTool</class>
      </tool>
-	<tool>
- 		<key>formTool</key>
-  		<scope>application</scope>
-  		<class>com.raddle.crud.web.toolbox.DynamicFormTool</class>
-     </tool>
 </toolbox>
