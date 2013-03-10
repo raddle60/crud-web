@@ -1,7 +1,5 @@
 package com.raddle.crud.web.toolbox;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -32,16 +30,13 @@ public class DynamicFormTool {
      * @return
      * @throws Exception
      */
-    public Object v(Object bean, String varName, HttpServletRequest request) throws Exception {
+    public Object v(Object bean, String varName) throws Exception {
         if (bean == null || StringUtils.isEmpty(varName)) {
             return null;
         }
         Object v = null;
         if (bean != null) {
             v = PropertyUtils.getProperty(bean, varName);
-        }
-        if (v == null) {
-            v = request.getParameter(varName);
         }
         return v;
     }
