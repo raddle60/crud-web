@@ -38,6 +38,15 @@
 		</tr>
 		<tr>
 			<th>
+				js校验规则
+			</th>
+			<td>
+				jquery-validator的rules,规则名:{参数名:参数值}，比如msg_required:{},msg_minlength:{minlength:5}<br>
+				<textarea name="webChkRule" id="webChkRule" rows="10" cols="40">$!{item.webChkRule}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>
 				表单项类型
 			</th>
 			<td>
