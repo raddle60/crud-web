@@ -28,7 +28,9 @@
 			</th>
 			<td>
 				<input type="submit" value="查询">
-				#if($defAdd)
+				#if($def.addHref)
+				<a href="$!formTool.randerExpr(${def.addHref},$params,$request)" target="_blank">新增</a>
+				#elseif($defAdd)
 				<a href="${request.contextPath}/form/show.htm?defId=${defAdd.id}" target="_blank">${defAdd.name}</a>
 				#end
 			</td>
