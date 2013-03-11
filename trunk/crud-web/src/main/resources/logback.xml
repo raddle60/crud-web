@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="default_pattern" value="%date [%thread] %-5level %logger{30} - %msg%n" />
+    <property name="log.basedir" value="${user.home}/logs/crud-web" />
+
+    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log.basedir}/crud-web-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.basedir}/crud-web-info.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${default_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log.basedir}/crud-web-warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.basedir}/crud-web-warn.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${default_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${log.basedir}/crud-web-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.basedir}/crud-web-error.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${default_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="FILE-INFO" />
+        <appender-ref ref="FILE-WARN" />
+        <appender-ref ref="FILE-ERROR" />
+    </root>
+</configuration>
