@@ -1,0 +1,59 @@
+<form name="J_form" id="J_form" action="#springUrl("/def/def/copy-item-index.htm")" method="post">
+	<input type="hidden" name="id" value="$!{id}">
+	<input type="hidden" name="fkType" value="$!{fkType}">
+从<select id="fromDefId" name="fromDefId">
+		<option value=""></option>
+		#foreach($fromDef in $!fromDefs)
+			<option value="$!fromDef.id" #if($formTool.eq($fromDef.id,$fromDefId)) selected #end>$!fromDef.name</option>
+		#end
+</select>
+复制表单项到[${def.name}]<br>
+复制内容
+#foreach($copyType in $copyTypes)
+	<label><input type="checkbox" name="copyType" value="$!copyType" #if($!formTool.in($copyType,$selectedCopyType)) checked #end>$copyType</label>
+#end
+#if($items)
+	<table class="list">
+		<thead>
+			<tr>
+				<th><label><input type="checkbox" id="chkAll">全选</label></th>
+				<th>标题</th>
+				<th>变量名</th>
+				<th>表单项类型</th>
+				<th>输入类型</th>
+				<th>动作类型</th>
+				<th>顺序</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($item in $items)
+			<tr>
+				<td><input type="checkbox" id="itemId" name="itemId" value="$!{item.id}"></td>
+				<td>$!{item.title}</td>
+				<td>$!{item.varName}</td>
+				<td>$!{item.itemType}</td>
+				<td>$!{item.inputType}</td>
+				<td>$!{item.actionType}</td>
+				<td>$!{item.itemOrder}</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+#end
+<input type="button" id="copyBtn" value="复制">
+</form>
+<script>
+$(function(){
+	$("#fromDefId").change(function(){
+		$("#J_form").submit();
+	});
+	$("#chkAll").click(function(){
+		$("input[name=itemId]").attr("checked",$(this)[0].checked);
+	});
+	$("#copyBtn").click(function(){
+		if(confirm("确定要复制属性吗？")){
+			ajaxSubmitWithUrl($("#J_form"),"#springUrl("/def/def/copy-item.htm")");
+		}
+	});
+});
+</script>
