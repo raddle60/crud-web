@@ -8,7 +8,6 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>crud-ext-dao</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<name>${project.artifactId} v${project.version}</name>
 	<packaging>jar</packaging>
 
@@ -32,6 +31,14 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
