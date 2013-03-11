@@ -1,3 +1,3 @@
 #if($item)
-	<a href="$!formTool.randerExpr(${item.href},$itemBean,$request)" target="_blank">${item.title}</a>
+	<a href="$!formTool.randerExpr(${item.href},$itemBean,$request)" target="_blank">#if($item.varName)$!formTool.v($itemBean,$item.varName)#else$!{item.title}#end</a>
 #end
