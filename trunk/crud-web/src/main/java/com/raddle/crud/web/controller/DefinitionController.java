@@ -1,11 +1,14 @@
 package com.raddle.crud.web.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,14 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.raddle.crud.biz.CrudDefinitionManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
+import com.raddle.crud.dao.CrudItemDao;
 import com.raddle.crud.enums.DefType;
+import com.raddle.crud.enums.ItemCopyType;
 import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.model.toolgen.CrudDefinitionExample;
+import com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria;
+import com.raddle.crud.model.toolgen.CrudItem;
+import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.vo.CommonResult;
 import com.raddle.crud.vo.CrudDefinitionVo;
+import com.raddle.crud.web.toolbox.DynamicFormTool;
 
 @Controller
 public class DefinitionController extends BaseController {
@@ -32,6 +41,10 @@ public class DefinitionController extends BaseController {
     private CrudDatasourceDao crudDatasourceDao;
     @Autowired
     private CrudDefinitionManager crudDefinitionManager;
+    @Autowired
+    private CrudItemDao crudItemDao;
+    @Resource(name = "dynamicFormTool")
+    private DynamicFormTool dynamicFormTool;
 
     @RequestMapping(value = "def/def/list")
     public String list(ModelMap model, HttpServletResponse response, HttpServletRequest request) {
@@ -108,5 +121,57 @@ public class DefinitionController extends BaseController {
             model.put("message", "创建失败，" + commonResult.getMessage());
         }
         return "common/new-window-result";
+    }
+
+    @RequestMapping(value = "def/def/copy-item-index")
+    public String copyItemIndex(Long id, ItemFkType fkType, Long fromDefId, ItemCopyType[] copyType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (id == null) {
+            throw new RuntimeException("表单id不能为空");
+        }
+        if (fkType == null) {
+            throw new RuntimeException("外键类型不能为空");
+        }
+        model.put("id", id);
+        model.put("fkType", fkType);
+        model.put("fromDefId", fromDefId);
+        CrudDefinition def = crudDefinitionDao.selectByPrimaryKey(id);
+        if (StringUtils.isBlank(def.getTableName())) {
+            model.put("message", "表名为空，不能复制");
+            return "common/new-window-result";
+        }
+        CrudDefinitionExample where = new CrudDefinitionExample();
+        Criteria criteria = where.createCriteria();
+        criteria.andTableNameEqualTo(def.getTableName());
+        criteria.andDeletedEqualTo((short) 0);
+        criteria.andIdNotEqualTo(id);
+        List<CrudDefinition> defs = crudDefinitionDao.selectByExample(where);
+        model.put("def", def);
+        model.put("fromDefs", defs);
+        if (fromDefId != null) {
+            CrudItemExample itemWhere = new CrudItemExample();
+            com.raddle.crud.model.toolgen.CrudItemExample.Criteria criteriaItem = itemWhere.createCriteria();
+            criteriaItem.andDeletedEqualTo((short) 0);
+            criteriaItem.andCrudDefIdEqualTo(fromDefId);
+            criteriaItem.andFkTypeEqualTo(ItemFkType.DEF.name());
+            List<CrudItem> items = crudItemDao.selectByExample(itemWhere);
+            model.put("items", items);
+        }
+        model.put("copyTypes", ItemCopyType.values());
+        model.put("selectedCopyType", StringUtils.join(copyType, ","));
+        model.put("formTool", dynamicFormTool);
+        return "def/def/copy-item-index";
+    }
+
+    @RequestMapping(value = "def/def/copy-item")
+    public String copyItem(Long id, ItemFkType fkType, Long[] itemId, ItemCopyType[] copyType, ModelMap model, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        if (id == null) {
+            throw new RuntimeException("表单id不能为空");
+        }
+        if (fkType == null) {
+            throw new RuntimeException("外键类型不能为空");
+        }
+        CommonResult<?> commonResult = new CommonResult<Object>(false);
+        commonResult.setMessage("尚未实现");
+        return writeJson(commonResult, response);
     }
 }

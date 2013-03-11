@@ -14,12 +14,15 @@ $(function() {
 });
 // //////////////
 function ajaxSubmit(form) {
+	return ajaxSubmitWithUrl(form,$(form).attr("action"));
+}
+function ajaxSubmitWithUrl(form,url) {
 	if ($(form).data("submiting")) {
 		alert("处理中，请不要重复提交");
 	} else {
 		$(form).data("submiting", true)
 		jQuery.ajax({
-			url : $(form).attr("action"),
+			url : url,
 			type : $(form).attr("method"),
 			data : $(form).serialize(),
 			dataType : "json",
