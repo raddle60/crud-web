@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>crud-web</artifactId>
 	<name>${project.artifactId} v${project.version}</name>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<build>
         <finalName>crud-web</finalName>
