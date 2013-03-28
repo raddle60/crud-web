@@ -79,6 +79,9 @@ public class FormController extends BaseController {
         if (StringUtils.isNotBlank(readSql)) {
             Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             model.put("result", result);
+        } else if (DefType.ADD.name().equals(crudDefinition.getDefType())) {
+            // 如果是新增而且不从数据库取值,用请求里的
+            model.put("result", createParams(request));
         }
         List<CrudItem> defItems = queryDefItems(crudDefinition);
         model.put("defItems", defItems);
