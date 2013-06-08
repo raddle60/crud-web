@@ -195,6 +195,18 @@ $.validator.addMethod("msg_regex", function(value, element, param) {
 	return this.optional(element) || param.regex.test(value);
 }, '格式不匹配');
 
+$.validator.addMethod("msg_is_regex", function(value, element, param) {
+	if (this.optional(element)) {
+		return true;
+	}
+	try {
+		eval("/" + value + "/");
+		return true;
+	} catch (e) {
+		return false;
+	}
+}, '不正则表达式');
+
 $.validator.addMethod("msg_depend", function(value, element, param) {
 	if (!param.depend) {
 		alert("缺少验证属性depend");
