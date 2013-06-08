@@ -56,6 +56,7 @@
 				msg_idcard:{}<br>
 				msg_equalTo:{target:jquery筛选表达式}<br>
 				msg_regex:{regex:正则表达式(非字符串)}<br>
+				msg_is_regex:{}<br>
 				msg_depend:{depend:jquery筛选表达式}<br>
 				<textarea name="webChkRule" id="webChkRule" rows="10" cols="40">$!{item.webChkRule}</textarea>
 			</td>
