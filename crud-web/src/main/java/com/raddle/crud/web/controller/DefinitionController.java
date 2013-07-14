@@ -226,6 +226,7 @@ public class DefinitionController extends BaseController {
                 if (ArrayUtils.contains(selectedCopyTypes, ItemCopyType.OPTION)) {
                     updateItem.setOptionType(sourceItem.getOptionType());
                     updateItem.setOptionValue(sourceItem.getOptionValue());
+                    updateItem.setCrudDsId(sourceItem.getCrudDsId());
                 }
                 crudItemDao.updateByPrimaryKeySelective(updateItem);
                 updateCount++;
