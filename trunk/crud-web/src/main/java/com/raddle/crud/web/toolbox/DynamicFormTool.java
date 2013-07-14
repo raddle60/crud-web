@@ -74,7 +74,7 @@ public class DynamicFormTool {
             } else {
                 List<Map<String, Object>> ops = ops(item);
                 for (Map<String, Object> map : ops) {
-                    if (v.equals(map.get("key"))) {
+                    if (v.toString().equals(map.get("key").toString())) {
                         return map.get("value") + "[" + v + "]";
                     }
                 }
