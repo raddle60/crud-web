@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,8 @@ import com.raddle.crud.web.toolbox.DynamicFormTool;
 
 @Controller
 public class DefinitionController extends BaseController {
+
+    private static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$\\{def_(\\d+)\\}");
 
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
@@ -84,6 +88,22 @@ public class DefinitionController extends BaseController {
 
     @RequestMapping(value = "def/def/save")
     public String save(CrudDefinition def, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        // 校验参数
+        if (DefType.MULTI_LIST.name().equals(def.getDefType())) {
+            // 校验模板内容
+            Matcher matcher = COMP_DEF_ID_PATTERN.matcher(def.getCompositeTemplate());
+            while (matcher.find()) {
+                Long defId = Long.parseLong(matcher.group(1));
+                CrudDefinition subDef = crudDefinitionDao.selectByPrimaryKey(defId);
+                if (subDef == null) {
+                    model.put("message", "${def_" + defId + "}的模板不存在");
+                    return "common/new-window-result";
+                } else if (!DefType.LIST.name().equals(subDef.getDefType())) {
+                    model.put("message", "${def_" + defId + "}的模板不是列表模板");
+                    return "common/new-window-result";
+                }
+            }
+        }
         if (def.getId() != null) {
             crudDefinitionDao.updateByPrimaryKeySelective(def);
         } else {
