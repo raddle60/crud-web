@@ -1,25 +1,24 @@
 #set($page_title = ${def.name} + " - " + ${def.defType})
 <b class="title">${def.name} - ${def.defType}</b>
-<form id="j_form_${def.id}" action="#springUrl("/form/save.ajax")" method="post">
+<form id="j_form_${def.id}" action="#springUrl("/form/show.htm")" method="get">
 	<input type="hidden" name="defId" value="$!{def.id}">
 	## 输出hidden框
-	#foreach($item in $defItems)
+	#foreach($item in $defWheres)
 		#if($item.itemType == "HIDDEN")
-			#set($itemBean = $result)
+			#set($itemBean = $params)
 			#parse("/form/item/$formTool.getItemVmFileName($item)")
 		#end
 	#end
 	<table class="form">
-	#foreach($item in $defItems)
+	#foreach($item in $defWheres)
 		#if($item.itemType != "HIDDEN")
 		<tr>
 			<th #if($foreach.count == 1)width="200"#end>
 				$!item.title
 			</th>
 			<td>
-				#set($itemBean = $result)
+				#set($itemBean = $params)
 				#parse("/form/item/$formTool.getItemVmFileName($item)")
-				#if($item.itemType == "INPUT") #if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end #end
 			</td>
 		</tr>
 		#end
@@ -28,17 +27,17 @@
 			<th>
 			</th>
 			<td>
-				#if($def.defType == "ADD" || $def.defType == "EDIT")
-				<input type="submit" value="保存">
+				<input type="submit" value="查询">
+				#if($def.addHref)
+				<a href="$!formTool.randerExpr(${def.addHref},$params,$request)" target="_blank">新增</a>
+				#elseif($defAdd)
+				<a href="${request.contextPath}/form/show.htm?defId=${defAdd.id}" target="_blank">${defAdd.name}</a>
 				#end
-				#if($def.defType == "DELETE")
-				<input type="button" onclick="confirmDelete()" value="删除">
-				#end
-				<input type="button" onclick="window.close()" value="关闭">
 			</td>
 		</tr>
 	</table>
 </form>
+$!{noescape_composite_content}
 <script>
 $(function(){
 	try {
@@ -54,18 +53,10 @@ $(function(){
 						$item.varName : { $item.webChkRule }
 					#end
 				#end
-			},
-			submitHandler: function(form){
-				ajaxSubmit(form);
 			}
 		});
 	} catch(e) {
 		alert("js执行异常，"+e);
 	}
 });
-function confirmDelete(){
-	if(confirm("确定要删除这条记录吗？")){
-		$("#j_form_${def.id}").submit();
-	}
-}
 </script>

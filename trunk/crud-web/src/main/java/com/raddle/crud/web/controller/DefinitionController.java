@@ -40,7 +40,7 @@ import com.raddle.crud.web.toolbox.DynamicFormTool;
 @Controller
 public class DefinitionController extends BaseController {
 
-    private static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$\\{def_(\\d+)\\}");
+    public static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$\\{def_(\\d+)\\}");
 
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
