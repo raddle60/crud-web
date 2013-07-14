@@ -197,8 +197,12 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
         if (optionThreadCache.get() == null) {
             optionThreadCache.set(new HashMap<String, List<Map<String, Object>>>());
         }
-        if (optionThreadCache.get().containsKey(crudItem.getId().toString())) {
-            return optionThreadCache.get().get(crudItem.getId().toString());
+        String cacheKey = crudItem.getId().toString();
+        if (OptionType.STATIC.name().equals(crudItem.getOptionType()) || OptionType.ENUM_TABLE.name().equals(crudItem.getOptionType())) {
+            cacheKey = crudItem.getOptionValue();
+        }
+        if (optionThreadCache.get().containsKey(cacheKey)) {
+            return optionThreadCache.get().get(cacheKey);
         }
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         if (OptionType.STATIC.name().equals(crudItem.getOptionType())) {
@@ -237,7 +241,7 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
             Assert.notNull(crudItem.getCrudDsId(), "选项数据源为空");
             return queryForList(crudItem.getOptionValue(), new HashMap<String, Object>(), datasourceManager.getDatasource(crudItem.getCrudDsId()));
         }
-        optionThreadCache.get().put(crudItem.getId().toString(), list);
+        optionThreadCache.get().put(cacheKey, list);
         return list;
     }
 
