@@ -25,6 +25,7 @@
 				$!{def.defType}
 			</td>
 		</tr>
+		#if($def.defType != "MULTI_LIST")
 		<tr>
 			<th>
 				表名
@@ -34,6 +35,7 @@
 				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}">
 			</td>
 		</tr>
+		#end
 		<tr>
 			<th>
 				数据源
@@ -46,6 +48,7 @@
 				</select>
 			</td>
 		</tr>
+		#if($def.defType == "ADD" || $def.defType == "EDIT" || $def.defType == "DELETE")
 		<tr>
 			<th>
 				预检查SQL
@@ -55,6 +58,8 @@
 				<textarea name="preSql" id="preSql" rows="10" cols="80">$!{def.preSql}</textarea>
 			</td>
 		</tr>
+		#end
+		#if($def.defType == "VIEW" || $def.defType == "LIST" || $def.defType == "EDIT" || $def.defType == "DELETE")
 		<tr>
 			<th>
 				查询SQL
@@ -64,6 +69,8 @@
 				<textarea name="readSql" id="readSql" rows="20" cols="80">$!{def.readSql}</textarea>
 			</td>
 		</tr>
+		#end
+		#if($def.defType == "ADD")
 		<tr>
 			<th>
 				主键查询sql
@@ -73,6 +80,8 @@
 				<textarea name="keySelectSql" id="keySelectSql" rows="5" cols="80">$!{def.keySelectSql}</textarea>
 			</td>
 		</tr>
+		#end
+		#if($def.defType == "ADD" || $def.defType == "EDIT" || $def.defType == "DELETE")
 		<tr>
 			<th>
 				更新SQL
@@ -81,6 +90,19 @@
 				<textarea name="updateSql" id="updateSql" rows="20" cols="80">$!{def.updateSql}</textarea>
 			</td>
 		</tr>
+		#end
+		#if($def.defType == "MULTI_LIST")
+		<tr>
+			<th>
+				组合列表模板
+			</th>
+			<td>
+				vm表达式模板用${def_xxx}来表示 xxx是主键<br>
+				<textarea name="compositeTemplate" id="compositeTemplate" rows="20" cols="80">$!{def.compositeTemplate}</textarea>
+			</td>
+		</tr>
+		#end
+		#if($def.defType == "LIST")
 		<tr>
 			<th>
 				是否自动匹配按钮
@@ -110,6 +132,8 @@
 				如果不自动匹配，可以自定义新增按钮
 			</td>
 		</tr>
+		#end
+		#if($def.defType == "ADD" || $def.defType == "EDIT")
 		<tr>
 			<th>
 				创建时间列名
@@ -126,6 +150,7 @@
 				<input type="text" name="updateTmCol" id="updateTmCol" value="$!{def.updateTmCol}">更新时放入当前时间
 			</td>
 		</tr>
+		#end
 		<tr>
 			<th>
 			</th>
