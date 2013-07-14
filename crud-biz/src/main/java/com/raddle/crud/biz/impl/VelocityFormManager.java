@@ -32,6 +32,8 @@ import com.raddle.crud.model.toolgen.CrudItem;
  */
 public class VelocityFormManager implements DynamicFormManager, InitializingBean {
 
+    private static ThreadLocal<Map<String, List<Map<String, Object>>>> optionThreadCache = new ThreadLocal<Map<String, List<Map<String, Object>>>>();
+
     private Properties velocityProps;
 
     private VelocityEngine velocityEngine;
@@ -192,6 +194,12 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     @Override
     public List<Map<String, Object>> getItemOptions(CrudItem crudItem) {
         Assert.hasText(crudItem.getOptionType(), "选项类型为空");
+        if (optionThreadCache.get() == null) {
+            optionThreadCache.set(new HashMap<String, List<Map<String, Object>>>());
+        }
+        if (optionThreadCache.get().containsKey(crudItem.getId().toString())) {
+            return optionThreadCache.get().get(crudItem.getId().toString());
+        }
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         if (OptionType.STATIC.name().equals(crudItem.getOptionType())) {
             if (StringUtils.isNotBlank(crudItem.getOptionValue())) {
@@ -229,6 +237,7 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
             Assert.notNull(crudItem.getCrudDsId(), "选项数据源为空");
             return queryForList(crudItem.getOptionValue(), new HashMap<String, Object>(), datasourceManager.getDatasource(crudItem.getCrudDsId()));
         }
+        optionThreadCache.get().put(crudItem.getId().toString(), list);
         return list;
     }
 
@@ -246,5 +255,9 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
 
     public void setVelocityProps(Properties velocityProps) {
         this.velocityProps = velocityProps;
+    }
+
+    public static void clearThreadCache() {
+        optionThreadCache.remove();
     }
 }
