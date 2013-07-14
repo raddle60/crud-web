@@ -1,7 +1,6 @@
 package com.raddle.crud.web.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,7 +147,8 @@ public class FormController extends BaseController {
                 try {
                     velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
                 } catch (Exception e) {
-                    e.printStackTrace(new PrintWriter(sw));
+                    logger.error(e.getMessage(), e);
+                    sw.write(e.getMessage());
                 }
                 model.put("def_" + defId, sw.toString());
             }
@@ -157,7 +157,8 @@ public class FormController extends BaseController {
         try {
             velocityConfig.getVelocityEngine().evaluate(new VelocityContext(model), sw, "compositeTempl", crudDefinition.getCompositeTemplate());
         } catch (Exception e) {
-            e.printStackTrace(new PrintWriter(sw));
+            logger.error(e.getMessage(), e);
+            sw.write(e.getMessage());
         }
         model.put("noescape_composite_content", sw.toString());
         return "form/multi_list";
