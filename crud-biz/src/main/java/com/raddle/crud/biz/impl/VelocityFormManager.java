@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,9 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
 
     @Autowired
     private CrudDatasourceManager datasourceManager;
+
+    @Resource(name = "crudDataSource")
+    private DataSource crudDataSource;
 
     @Override
     public List<Map<String, Object>> queryForList(String dynamicSelectSql, Map<String, Object> params, DataSource dataSource) {
@@ -214,6 +218,11 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
                     }
                 }
             }
+        }
+        if (OptionType.ENUM_TABLE.name().equals(crudItem.getOptionType())) {
+            HashMap<String, Object> hashMap = new HashMap<String, Object>();
+            hashMap.put("enumType", crudItem.getOptionValue());
+            return queryForList("select key,value from crud_enums where enum_type = :enumType", hashMap, crudDataSource);
         }
         if (OptionType.SQL.name().equals(crudItem.getOptionType())) {
             Assert.hasText(crudItem.getOptionValue(), "选项sql为空");
