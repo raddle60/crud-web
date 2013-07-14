@@ -201,6 +201,9 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
         if (OptionType.STATIC.name().equals(crudItem.getOptionType()) || OptionType.ENUM_TABLE.name().equals(crudItem.getOptionType())) {
             cacheKey = crudItem.getOptionValue();
         }
+        if (OptionType.SQL.name().equals(crudItem.getOptionType())) {
+            cacheKey = crudItem.getCrudDsId() + "_" + crudItem.getOptionValue();
+        }
         if (optionThreadCache.get().containsKey(cacheKey)) {
             return optionThreadCache.get().get(cacheKey);
         }
