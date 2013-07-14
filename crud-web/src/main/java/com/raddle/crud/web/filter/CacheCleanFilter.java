@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.raddle.crud.biz.impl.CrudDatasourceManagerImpl;
 import com.raddle.crud.biz.impl.VelocityFormManager;
 import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 
@@ -30,6 +31,7 @@ public class CacheCleanFilter implements Filter {
         } finally {
             JdbcDynamicFormDao.clearThreadCache();
             VelocityFormManager.clearThreadCache();
+            CrudDatasourceManagerImpl.clearThreadCache();
         }
     }
 
