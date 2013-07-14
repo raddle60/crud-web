@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -77,22 +76,22 @@ public class FormController extends BaseController {
         model.put("formTool", dynamicFormTool);
         CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
         if (crudDefinition.getDefType().equals(DefType.LIST.name())) {
-            return toListResult(crudDefinition, model, request);
+            return toListResult(crudDefinition, model, null, request);
         } else if (crudDefinition.getDefType().equals(DefType.MULTI_LIST.name())) {
-            return toMultiListResult(crudDefinition, model, request);
+            return toMultiListResult(crudDefinition, model, null, request);
         } else {
-            return toSingleResult(crudDefinition, model, request);
+            return toSingleResult(crudDefinition, model, null, request);
         }
     }
 
-    private String toSingleResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+    private String toSingleResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
         String readSql = getReadSql(crudDefinition);
         if (StringUtils.isNotBlank(readSql)) {
-            Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            Object result = dynamicFormManager.queryForObject(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             model.put("result", result);
         } else if (DefType.ADD.name().equals(crudDefinition.getDefType())) {
             // 如果是新增而且不从数据库取值,用请求里的
-            model.put("result", createParams(request));
+            model.put("result", createParams(request, extraParams));
         }
         List<CrudItem> defItems = queryDefItems(crudDefinition);
         model.put("defItems", defItems);
@@ -111,9 +110,9 @@ public class FormController extends BaseController {
         return defItems;
     }
 
-    private String toListResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+    private String toListResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
         String readSql = getReadSql(crudDefinition);
-        Object result = dynamicFormManager.queryForList(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+        Object result = dynamicFormManager.queryForList(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
         model.put("defWheres", whereItems);
@@ -124,37 +123,56 @@ public class FormController extends BaseController {
         }
         model.put("defCols", defListItems);
         model.put("def", crudDefinition);
-        model.put("params", createParams(request));
+        model.put("params", createParams(request, extraParams));
         return "form/list";
     }
 
     @SuppressWarnings("unchecked")
-    private String toMultiListResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+    private String toMultiListResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
         model.put("defWheres", whereItems);
         model.put("def", crudDefinition);
-        model.put("params", createParams(request));
+        model.put("params", createParams(request, extraParams));
+        Map<String, Object> subResults = new HashMap<String, Object>();
         Matcher matcher = DefinitionController.COMP_DEF_ID_PATTERN.matcher(crudDefinition.getCompositeTemplate());
         while (matcher.find()) {
             Long defId = Long.parseLong(matcher.group(1));
             CrudDefinition subDef = crudDefinitionDao.selectByPrimaryKey(defId);
-            if (subDef != null && subDef.getDefType().equals(DefType.LIST.name())) {
+            if (subDef != null && (subDef.getDefType().equals(DefType.LIST.name()) || subDef.getDefType().equals(DefType.VIEW.name()))) {
                 ModelMap subModel = new ModelMap();
                 subModel.put("formTool", dynamicFormTool);
                 subModel.put("request", request);
                 subModel.put("isInMultiList", "true");
                 subModel.put("springMacroRequestContext", new RequestContext(request));
-                String templateName = toListResult(subDef, subModel, request) + ".vm";
-                Collection<Object> result = (Collection<Object>) subModel.get("result");
-                if (result.size() > 0) {
-                    StringWriter sw = new StringWriter();
-                    try {
-                        velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                        sw.write(e.getMessage());
+                if (subDef.getDefType().equals(DefType.LIST.name())) {
+                    String templateName = toListResult(subDef, subModel, subResults, request) + ".vm";
+                    List<Object> result = (List<Object>) subModel.get("result");
+                    if (result.size() > 0) {
+                        subResults.put("result_" + defId, result);
+                        subResults.put("result_" + defId + "_first", result.get(0));
+                        StringWriter sw = new StringWriter();
+                        try {
+                            velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
+                        } catch (Exception e) {
+                            logger.error(e.getMessage(), e);
+                            sw.write(e.getMessage());
+                        }
+                        model.put("def_" + defId, sw.toString());
                     }
-                    model.put("def_" + defId, sw.toString());
+                } else if (subDef.getDefType().equals(DefType.VIEW.name())) {
+                    String templateName = toSingleResult(subDef, subModel, subResults, request) + ".vm";
+                    Object result = subModel.get("result");
+                    if (result != null) {
+                        subResults.put("result_" + defId, result);
+                        StringWriter sw = new StringWriter();
+                        try {
+                            velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
+                        } catch (Exception e) {
+                            logger.error(e.getMessage(), e);
+                            sw.write(e.getMessage());
+                        }
+                        model.put("def_" + defId, sw.toString());
+                    }
                 }
             }
         }
@@ -247,7 +265,7 @@ public class FormController extends BaseController {
             }
             CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
             String updateSql = getUpdateSql(crudDefinition);
-            Map<String, Object> params = createParams(request);
+            Map<String, Object> params = createParams(request, null);
             if (crudDefinition.getDefType().equals(DefType.ADD.name()) && StringUtils.isNotBlank(crudDefinition.getKeySelectSql())) {
                 Map<String, Object> insertKey = dynamicFormManager.queryForObject(crudDefinition.getKeySelectSql(), params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
                 DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
@@ -291,7 +309,7 @@ public class FormController extends BaseController {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> createParams(HttpServletRequest request) {
+    private Map<String, Object> createParams(HttpServletRequest request, Map<String, Object> extraParams) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("request", request);
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -314,6 +332,9 @@ public class FormController extends BaseController {
                     }
                 }
             }
+        }
+        if (extraParams != null) {
+            params.putAll(extraParams);
         }
         return params;
     }

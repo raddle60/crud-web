@@ -98,8 +98,8 @@ public class DefinitionController extends BaseController {
                 if (subDef == null) {
                     model.put("message", "${def_" + defId + "}的模板不存在");
                     return "common/new-window-result";
-                } else if (!DefType.LIST.name().equals(subDef.getDefType())) {
-                    model.put("message", "${def_" + defId + "}的模板不是列表模板");
+                } else if (!DefType.LIST.name().equals(subDef.getDefType()) && !DefType.VIEW.name().equals(subDef.getDefType())) {
+                    model.put("message", "${def_" + defId + "}的模板不是列表模板或查看");
                     return "common/new-window-result";
                 }
             }
