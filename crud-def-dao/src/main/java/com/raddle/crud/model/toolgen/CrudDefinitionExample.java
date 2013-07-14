@@ -1314,6 +1314,76 @@ public class CrudDefinitionExample {
             addCriterion("UPDATED_AT not between", value1, value2, "updatedAt");
             return (Criteria) this;
         }
+
+        public Criteria andCompositeTemplateIsNull() {
+            addCriterion("COMPOSITE_TEMPLATE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateIsNotNull() {
+            addCriterion("COMPOSITE_TEMPLATE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateEqualTo(String value) {
+            addCriterion("COMPOSITE_TEMPLATE =", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateNotEqualTo(String value) {
+            addCriterion("COMPOSITE_TEMPLATE <>", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateGreaterThan(String value) {
+            addCriterion("COMPOSITE_TEMPLATE >", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateGreaterThanOrEqualTo(String value) {
+            addCriterion("COMPOSITE_TEMPLATE >=", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateLessThan(String value) {
+            addCriterion("COMPOSITE_TEMPLATE <", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateLessThanOrEqualTo(String value) {
+            addCriterion("COMPOSITE_TEMPLATE <=", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateLike(String value) {
+            addCriterion("COMPOSITE_TEMPLATE like", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateNotLike(String value) {
+            addCriterion("COMPOSITE_TEMPLATE not like", value, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateIn(List<String> values) {
+            addCriterion("COMPOSITE_TEMPLATE in", values, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateNotIn(List<String> values) {
+            addCriterion("COMPOSITE_TEMPLATE not in", values, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateBetween(String value1, String value2) {
+            addCriterion("COMPOSITE_TEMPLATE between", value1, value2, "compositeTemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompositeTemplateNotBetween(String value1, String value2) {
+            addCriterion("COMPOSITE_TEMPLATE not between", value1, value2, "compositeTemplate");
+            return (Criteria) this;
+        }
     }
 
     /**
