@@ -9,7 +9,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -172,18 +174,70 @@ public class DefinitionController extends BaseController {
         if (fkType == null) {
             throw new RuntimeException("外键类型不能为空");
         }
+        if (ArrayUtils.isEmpty(itemIds)) {
+            throw new RuntimeException("源选项不能为空");
+        }
+        if (ArrayUtils.isEmpty(selectedCopyTypes)) {
+            throw new RuntimeException("复制类型不能为空");
+        }
         CommonResult<?> commonResult = new CommonResult<Object>(false);
-        commonResult.setMessage("尚未实现");
         CrudItemExample itemWhere = new CrudItemExample();
         com.raddle.crud.model.toolgen.CrudItemExample.Criteria criteriaItem = itemWhere.createCriteria();
         criteriaItem.andDeletedEqualTo((short) 0);
         criteriaItem.andCrudDefIdEqualTo(id);
         criteriaItem.andFkTypeEqualTo(fkType.name());
         // 目标表单的items
+        int insertCount = 0;
+        int updateCount = 0;
         List<CrudItem> targetItems = crudItemDao.selectByExample(itemWhere);
         for (Long itemId : itemIds) {
-
+            CrudItem sourceItem = crudItemDao.selectByPrimaryKey(itemId);
+            boolean exist = false;
+            Long existItemId = null;
+            for (CrudItem crudItem : targetItems) {
+                if (crudItem.getVarName().equals(sourceItem.getVarName())) {
+                    exist = true;
+                    existItemId = crudItem.getId();
+                    break;
+                }
+            }
+            if (exist) {
+                CrudItem updateItem = new CrudItem();
+                updateItem.setId(existItemId);
+                // 存在就修改
+                if (ArrayUtils.contains(selectedCopyTypes, ItemCopyType.TITLE)) {
+                    updateItem.setTitle(sourceItem.getTitle());
+                }
+                if (ArrayUtils.contains(selectedCopyTypes, ItemCopyType.ORDER)) {
+                    updateItem.setItemOrder(sourceItem.getItemOrder());
+                }
+                if (ArrayUtils.contains(selectedCopyTypes, ItemCopyType.TYPE)) {
+                    updateItem.setItemType(sourceItem.getItemType());
+                    updateItem.setFormat(sourceItem.getFormat());
+                    updateItem.setWebChkRule(sourceItem.getWebChkRule());
+                    updateItem.setInputType(sourceItem.getInputType());
+                    updateItem.setInputSize(sourceItem.getInputSize());
+                    updateItem.setOptionType(sourceItem.getOptionType());
+                    updateItem.setOptionValue(sourceItem.getOptionValue());
+                    updateItem.setActionType(sourceItem.getActionType());
+                    updateItem.setHref(sourceItem.getHref());
+                    updateItem.setDescript(sourceItem.getDescript());
+                }
+                crudItemDao.updateByPrimaryKeySelective(updateItem);
+                updateCount++;
+            } else {
+                // 不存在，直接插入
+                CrudItem newItem = new CrudItem();
+                BeanUtils.copyProperties(sourceItem, newItem);
+                newItem.setId(null);
+                newItem.setCrudDefId(id);
+                newItem.setFkType(fkType.name());
+                crudItemDao.insert(newItem);
+                insertCount++;
+            }
         }
+        commonResult.setSuccess(true);
+        commonResult.setMessage("复制成功,插入" + insertCount + "条,更新" + updateCount + "条");
         return writeJson(commonResult, response);
     }
 }
