@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -127,6 +128,7 @@ public class FormController extends BaseController {
         return "form/list";
     }
 
+    @SuppressWarnings("unchecked")
     private String toMultiListResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
         model.put("defWheres", whereItems);
@@ -143,14 +145,17 @@ public class FormController extends BaseController {
                 subModel.put("isInMultiList", "true");
                 subModel.put("springMacroRequestContext", new RequestContext(request));
                 String templateName = toListResult(subDef, subModel, request) + ".vm";
-                StringWriter sw = new StringWriter();
-                try {
-                    velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                    sw.write(e.getMessage());
+                Collection<Object> result = (Collection<Object>) subModel.get("result");
+                if (result.size() > 0) {
+                    StringWriter sw = new StringWriter();
+                    try {
+                        velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                        sw.write(e.getMessage());
+                    }
+                    model.put("def_" + defId, sw.toString());
                 }
-                model.put("def_" + defId, sw.toString());
             }
         }
         StringWriter sw = new StringWriter();
