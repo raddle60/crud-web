@@ -24,6 +24,7 @@
 		</tr>
 		#end
 	#end
+	#if(!$isInMultiList)
 		<tr>
 			<th>
 			</th>
@@ -38,34 +39,37 @@
 			</td>
 		</tr>
 	</table>
+	#end
 </form>
+#if(!$isInMultiList)
 <script>
-$(function(){
-	try {
-		J_formValidator = $("#j_form_${def.id}").validate({
-			onclick: false,
-			onkeyup : false,
-			rules : {
-				#set($hasRule = false)
-				#foreach($item in $defItems)
-					#if($item.webChkRule)
-						#if($hasRule) , #end
-						#set($hasRule = true)
-						$item.varName : { $item.webChkRule }
+	$(function(){
+		try {
+			J_formValidator = $("#j_form_${def.id}").validate({
+				onclick: false,
+				onkeyup : false,
+				rules : {
+					#set($hasRule = false)
+					#foreach($item in $defItems)
+						#if($item.webChkRule)
+							#if($hasRule) , #end
+							#set($hasRule = true)
+							$item.varName : { $item.webChkRule }
+						#end
 					#end
-				#end
-			},
-			submitHandler: function(form){
-				ajaxSubmit(form);
-			}
-		});
-	} catch(e) {
-		alert("js执行异常，"+e);
+				},
+				submitHandler: function(form){
+					ajaxSubmit(form);
+				}
+			});
+		} catch(e) {
+			alert("js执行异常，"+e);
+		}
+	});
+	function confirmDelete(){
+		if(confirm("确定要删除这条记录吗？")){
+			$("#j_form_${def.id}").submit();
+		}
 	}
-});
-function confirmDelete(){
-	if(confirm("确定要删除这条记录吗？")){
-		$("#j_form_${def.id}").submit();
-	}
-}
 </script>
+#end
