@@ -1,22 +1,28 @@
 package com.raddle.crud.web.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.view.velocity.VelocityConfig;
 
 import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.DynamicFormManager;
@@ -60,6 +66,9 @@ public class FormController extends BaseController {
     @Resource(name = "dynamicFormTool")
     private DynamicFormTool dynamicFormTool;
 
+    @Autowired
+    private VelocityConfig velocityConfig;
+
     @RequestMapping(value = "form/show")
     public String showForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (defId == null) {
@@ -67,15 +76,17 @@ public class FormController extends BaseController {
         }
         model.put("formTool", dynamicFormTool);
         CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
-        String readSql = getReadSql(crudDefinition);
         if (crudDefinition.getDefType().equals(DefType.LIST.name())) {
-            return toListResult(crudDefinition, readSql, model, request);
+            return toListResult(crudDefinition, model, request);
+        } else if (crudDefinition.getDefType().equals(DefType.MULTI_LIST.name())) {
+            return toMultiListResult(crudDefinition, model, request);
         } else {
-            return toSingleResult(crudDefinition, readSql, model, request);
+            return toSingleResult(crudDefinition, model, request);
         }
     }
 
-    private String toSingleResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
+    private String toSingleResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+        String readSql = getReadSql(crudDefinition);
         if (StringUtils.isNotBlank(readSql)) {
             Object result = dynamicFormManager.queryForObject(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             model.put("result", result);
@@ -100,7 +111,8 @@ public class FormController extends BaseController {
         return defItems;
     }
 
-    private String toListResult(CrudDefinition crudDefinition, String readSql, ModelMap model, HttpServletRequest request) {
+    private String toListResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+        String readSql = getReadSql(crudDefinition);
         Object result = dynamicFormManager.queryForList(readSql, createParams(request), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         model.put("result", result);
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
@@ -114,6 +126,41 @@ public class FormController extends BaseController {
         model.put("def", crudDefinition);
         model.put("params", createParams(request));
         return "form/list";
+    }
+
+    private String toMultiListResult(CrudDefinition crudDefinition, ModelMap model, HttpServletRequest request) {
+        List<CrudItem> whereItems = queryDefItems(crudDefinition);
+        model.put("defWheres", whereItems);
+        model.put("def", crudDefinition);
+        model.put("params", createParams(request));
+        Matcher matcher = DefinitionController.COMP_DEF_ID_PATTERN.matcher(crudDefinition.getCompositeTemplate());
+        while (matcher.find()) {
+            Long defId = Long.parseLong(matcher.group(1));
+            CrudDefinition subDef = crudDefinitionDao.selectByPrimaryKey(defId);
+            if (subDef != null && subDef.getDefType().equals(DefType.LIST.name())) {
+                ModelMap subModel = new ModelMap();
+                subModel.put("formTool", dynamicFormTool);
+                subModel.put("request", request);
+                subModel.put("isInMultiList", "true");
+                subModel.put("springMacroRequestContext", new RequestContext(request));
+                String templateName = toListResult(subDef, subModel, request) + ".vm";
+                StringWriter sw = new StringWriter();
+                try {
+                    velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
+                } catch (Exception e) {
+                    e.printStackTrace(new PrintWriter(sw));
+                }
+                model.put("def_" + defId, sw.toString());
+            }
+        }
+        StringWriter sw = new StringWriter();
+        try {
+            velocityConfig.getVelocityEngine().evaluate(new VelocityContext(model), sw, "compositeTempl", crudDefinition.getCompositeTemplate());
+        } catch (Exception e) {
+            e.printStackTrace(new PrintWriter(sw));
+        }
+        model.put("noescape_composite_content", sw.toString());
+        return "form/multi_list";
     }
 
     private void putUpdateDef(CrudDefinition crudDefinition, List<CrudItem> defListItems, HttpServletRequest request) {

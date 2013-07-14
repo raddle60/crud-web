@@ -28,7 +28,7 @@
 				<prop key="contentType">text/html;charset=UTF-8</prop>
 				<prop key="velocimacro.library">macro/macros.vm</prop>
 				<prop key="eventhandler.referenceinsertion.class">com.raddle.crud.web.velocity.NoEscapeHtmlReference</prop>
-				<prop key="eventhandler.noescape.html.match">/(?:screen_content)|(?:noescape_.*)/</prop>
+				<prop key="eventhandler.noescape.html.match">/(?:screen_content)|(?:noescape_.*)|(?:def_\d+)/</prop>
 			</props>
 		</property>
 	</bean>
