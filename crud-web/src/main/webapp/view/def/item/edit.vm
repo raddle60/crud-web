@@ -112,8 +112,9 @@
 				选项值
 			</th>
 			<td>
+				枚举表就是在配置表配置的，选项值填enum_type的值
 				静态类型就是value,value或key:value,key:value<br>
-				sql类型就是sql语句，返回KEY和VALUE列<br>
+				sql类型就是sql语句，返回key和value列<br>
 				<textarea name="optionValue" id="optionValue" rows="20" cols="80">$!{item.optionValue}</textarea>
 			</td>
 		</tr>
