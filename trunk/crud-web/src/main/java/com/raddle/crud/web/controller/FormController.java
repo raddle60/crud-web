@@ -14,7 +14,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -144,6 +147,10 @@ public class FormController extends BaseController {
                 subModel.put("request", request);
                 subModel.put("isInMultiList", "true");
                 subModel.put("springMacroRequestContext", new RequestContext(request));
+                subModel.put("stringUtils", new StringUtils());
+                subModel.put("stringEscapeUtils", new StringEscapeUtils());
+                subModel.put("dateUtils", new DateUtils());
+                subModel.put("dateFormatUtils", new DateFormatUtils());
                 if (subDef.getDefType().equals(DefType.LIST.name())) {
                     String templateName = toListResult(subDef, subModel, subResults, request) + ".vm";
                     List<Object> result = (List<Object>) subModel.get("result");
@@ -336,6 +343,11 @@ public class FormController extends BaseController {
         if (extraParams != null) {
             params.putAll(extraParams);
         }
+        // 放一些utils类进去，方便模板渲染
+        params.put("stringUtils", new StringUtils());
+        params.put("stringEscapeUtils", new StringEscapeUtils());
+        params.put("dateUtils", new DateUtils());
+        params.put("dateFormatUtils", new DateFormatUtils());
         return params;
     }
 }
