@@ -17,7 +17,7 @@
 	<tbody>
 		#foreach($def in $list)
 		<tr>
-			<td>$!{def.name}</td>
+			<td>$!{def.name}[$!{def.id}]</td>
 			<td>$!{def.defType}</td>
 			<td>$!{def.crudDsName}</td>
 			<td>$!{def.tableName}</td>
@@ -26,6 +26,9 @@
 				<a href="#springUrl("/form/show.htm")?defId=$!{def.id}" target="_blank" >进入页面</a>
 				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑条件</a>
 				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF_LIST" target="_blank" >编辑显示列</a>
+			#elseif($def.defType == "MULTI_LIST")
+				<a href="#springUrl("/form/show.htm")?defId=$!{def.id}" target="_blank" >进入页面</a>
+				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑条件</a>
 			#else
 				<a href="#springUrl("/def/item/list.htm")?defId=$!{def.id}&fkType=DEF" target="_blank" >编辑表单项</a>
 			#end
