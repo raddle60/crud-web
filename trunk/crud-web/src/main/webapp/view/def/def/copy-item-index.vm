@@ -10,7 +10,7 @@
 复制表单项到[${def.name}]<br>
 复制内容
 #foreach($copyType in $copyTypes)
-	<label><input type="checkbox" name="copyType" value="$!copyType" #if($!formTool.in($copyType,$selectedCopyType)) checked #end>$copyType</label>
+	<label><input type="checkbox" name="selectedCopyTypes" value="$!copyType" #if($!formTool.in($copyType,$selectedCopyTypes)) checked #end>$copyType</label>
 #end
 #if($items)
 	<table class="list">
@@ -28,7 +28,7 @@
 		<tbody>
 			#foreach($item in $items)
 			<tr>
-				<td><input type="checkbox" id="itemId" name="itemId" value="$!{item.id}"></td>
+				<td><input type="checkbox" id="itemIds" name="itemIds" value="$!{item.id}"></td>
 				<td>$!{item.title}</td>
 				<td>$!{item.varName}</td>
 				<td>$!{item.itemType}</td>
@@ -48,7 +48,7 @@ $(function(){
 		$("#J_form").submit();
 	});
 	$("#chkAll").click(function(){
-		$("input[name=itemId]").attr("checked",$(this)[0].checked);
+		$("input[name=itemIds]").attr("checked",$(this)[0].checked);
 	});
 	$("#copyBtn").click(function(){
 		if(confirm("确定要复制属性吗？")){

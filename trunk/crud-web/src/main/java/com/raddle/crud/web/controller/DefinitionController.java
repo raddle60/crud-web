@@ -1,6 +1,7 @@
 package com.raddle.crud.web.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -124,7 +125,7 @@ public class DefinitionController extends BaseController {
     }
 
     @RequestMapping(value = "def/def/copy-item-index")
-    public String copyItemIndex(Long id, ItemFkType fkType, Long fromDefId, ItemCopyType[] copyType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String copyItemIndex(Long id, ItemFkType fkType, Long fromDefId, ItemCopyType[] selectedCopyTypes, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (id == null) {
             throw new RuntimeException("表单id不能为空");
         }
@@ -152,18 +153,19 @@ public class DefinitionController extends BaseController {
             com.raddle.crud.model.toolgen.CrudItemExample.Criteria criteriaItem = itemWhere.createCriteria();
             criteriaItem.andDeletedEqualTo((short) 0);
             criteriaItem.andCrudDefIdEqualTo(fromDefId);
-            criteriaItem.andFkTypeEqualTo(ItemFkType.DEF.name());
+            criteriaItem.andFkTypeIn(Arrays.asList(new String[] { ItemFkType.DEF.name(), ItemFkType.DEF_LIST.name() }));
+            itemWhere.setOrderByClause("fk_type,item_order");
             List<CrudItem> items = crudItemDao.selectByExample(itemWhere);
             model.put("items", items);
         }
         model.put("copyTypes", ItemCopyType.values());
-        model.put("selectedCopyType", StringUtils.join(copyType, ","));
+        model.put("selectedCopyTypes", StringUtils.join(selectedCopyTypes, ","));
         model.put("formTool", dynamicFormTool);
         return "def/def/copy-item-index";
     }
 
     @RequestMapping(value = "def/def/copy-item")
-    public String copyItem(Long id, ItemFkType fkType, Long[] itemId, ItemCopyType[] copyType, ModelMap model, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public String copyItem(Long id, ItemFkType fkType, Long[] itemIds, ItemCopyType[] selectedCopyTypes, ModelMap model, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if (id == null) {
             throw new RuntimeException("表单id不能为空");
         }
@@ -172,6 +174,16 @@ public class DefinitionController extends BaseController {
         }
         CommonResult<?> commonResult = new CommonResult<Object>(false);
         commonResult.setMessage("尚未实现");
+        CrudItemExample itemWhere = new CrudItemExample();
+        com.raddle.crud.model.toolgen.CrudItemExample.Criteria criteriaItem = itemWhere.createCriteria();
+        criteriaItem.andDeletedEqualTo((short) 0);
+        criteriaItem.andCrudDefIdEqualTo(id);
+        criteriaItem.andFkTypeEqualTo(fkType.name());
+        // 目标表单的items
+        List<CrudItem> targetItems = crudItemDao.selectByExample(itemWhere);
+        for (Long itemId : itemIds) {
+
+        }
         return writeJson(commonResult, response);
     }
 }
