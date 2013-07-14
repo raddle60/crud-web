@@ -5,5 +5,5 @@ package com.raddle.crud.enums;
  * @author raddle60 2013-3-5 下午9:07:25
  */
 public enum DefType {
-    ADD, DELETE, EDIT, VIEW, LIST;
+    ADD, DELETE, EDIT, VIEW, LIST, MULTI_LIST;
 }
