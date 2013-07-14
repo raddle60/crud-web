@@ -12,5 +12,9 @@ public enum ItemCopyType {
     /**
      * 拷贝类型（表单类型和输入信息）
      */
-    TYPE
+    TYPE,
+    /**
+     * 拷贝选项信息
+     */
+    OPTION
 }
