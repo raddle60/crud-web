@@ -59,6 +59,31 @@ public class DynamicFormTool {
     }
 
     /**
+     * 获得变量的枚举名称，如果不是枚举，返回值
+     * @return
+     * @throws Exception
+     */
+    public Object lOfv(CrudItem item, Object bean, String varName) throws Exception {
+        if (item == null || bean == null || StringUtils.isEmpty(varName)) {
+            return null;
+        }
+        Object v = v(bean, varName);
+        if (v != null) {
+            if (StringUtils.isBlank(item.getOptionType())) {
+                return v;
+            } else {
+                List<Map<String, Object>> ops = ops(item);
+                for (Map<String, Object> map : ops) {
+                    if (v.equals(map.get("key"))) {
+                        return map.get("value") + "[" + v + "]";
+                    }
+                }
+            }
+        }
+        return v;
+    }
+
+    /**
      * 获得行数
      * @param inputSize
      * @return

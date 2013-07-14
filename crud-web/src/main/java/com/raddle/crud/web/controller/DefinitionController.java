@@ -223,6 +223,10 @@ public class DefinitionController extends BaseController {
                     updateItem.setHref(sourceItem.getHref());
                     updateItem.setDescript(sourceItem.getDescript());
                 }
+                if (ArrayUtils.contains(selectedCopyTypes, ItemCopyType.OPTION)) {
+                    updateItem.setOptionType(sourceItem.getOptionType());
+                    updateItem.setOptionValue(sourceItem.getOptionValue());
+                }
                 crudItemDao.updateByPrimaryKeySelective(updateItem);
                 updateCount++;
             } else {
