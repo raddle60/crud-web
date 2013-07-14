@@ -42,8 +42,9 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
         if (tableInfoThreadCache.get() == null) {
             tableInfoThreadCache.set(new HashMap<String, TableInfo>());
         }
-        if (tableInfoThreadCache.get().containsKey(tableName)) {
-            return tableInfoThreadCache.get().get(tableName);
+        String cacheKey = dataSource.toString() + "_" + tableName;
+        if (tableInfoThreadCache.get().containsKey(cacheKey)) {
+            return tableInfoThreadCache.get().get(cacheKey);
         }
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         TableInfo tableInfo = jdbcTemplate.execute(new ConnectionCallback<TableInfo>() {
@@ -58,7 +59,7 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
                 return null;
             }
         });
-        tableInfoThreadCache.get().put(tableName, tableInfo);
+        tableInfoThreadCache.get().put(cacheKey, tableInfo);
         return tableInfo;
     }
 
