@@ -2,6 +2,7 @@ package com.raddle.crud.extdao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ import com.raddle.crud.extdao.dbinfo.model.TableInfo;
  */
 public class JdbcDynamicFormDao implements DynamicFormDao {
 
+    private static ThreadLocal<Map<String, TableInfo>> tableInfoThreadCache = new ThreadLocal<Map<String, TableInfo>>();
+
     private DataSource dataSource;
 
     public JdbcDynamicFormDao(){
@@ -36,8 +39,14 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
 
     @Override
     public TableInfo getTableInfo(final String tableName) {
+        if (tableInfoThreadCache.get() == null) {
+            tableInfoThreadCache.set(new HashMap<String, TableInfo>());
+        }
+        if (tableInfoThreadCache.get().containsKey(tableName)) {
+            return tableInfoThreadCache.get().get(tableName);
+        }
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        return jdbcTemplate.execute(new ConnectionCallback<TableInfo>() {
+        TableInfo tableInfo = jdbcTemplate.execute(new ConnectionCallback<TableInfo>() {
 
             @Override
             public TableInfo doInConnection(Connection con) throws SQLException, DataAccessException {
@@ -49,6 +58,8 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
                 return null;
             }
         });
+        tableInfoThreadCache.get().put(tableName, tableInfo);
+        return tableInfo;
     }
 
     @Override
@@ -97,4 +108,7 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
         this.dataSource = dataSource;
     }
 
+    public static void clearThreadCache() {
+        tableInfoThreadCache.remove();
+    }
 }
