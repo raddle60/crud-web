@@ -12,7 +12,6 @@
 			<th>输入类型</th>
 			<th>动作类型</th>
 			<th>顺序</th>
-			<th>已删除</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -25,10 +24,13 @@
 			<td>$!{item.inputType}</td>
 			<td>$!{item.actionType}</td>
 			<td>$!{item.itemOrder}</td>
-			<td>#if($item.deleted == 0)否#else 是#end</td>
 			<td>
 				<a href="#springUrl("/def/item/edit.htm")?id=$!{item.id}" target="_blank" >编辑</a>
+				#if($item.deleted == 0)
 				<input type="button" id="del_btn_$!{item.id}" dbid="$!{item.id}" msg="$!{item.title}" value="删除">
+				#else
+				<input type="button" id="res_btn_$!{item.id}" dbid="$!{item.id}" msg="$!{item.title}" value="恢复">
+				#end
 			</td>
 		</tr>
 		#end
@@ -39,6 +41,11 @@ $(function(){
 	$("input[id^=del_btn_]").click(function(){
 		if(confirm("你确定要删除表单项["+$(this).attr("msg")+"]的配置吗？")){
 			window.open("#springUrl("/def/item/delete.htm")?id="+$(this).attr("dbid"));
+		};
+	});
+	$("input[id^=res_btn_]").click(function(){
+		if(confirm("你确定要恢复表单项["+$(this).attr("msg")+"]的配置吗？")){
+			window.open("#springUrl("/def/item/restore.htm")?id="+$(this).attr("dbid"));
 		};
 	});
 });
