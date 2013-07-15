@@ -141,4 +141,16 @@ public class ItemController extends BaseController {
         return "common/new-window-result";
     }
 
+    @RequestMapping(value = "def/item/restore")
+    public String restore(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (id != null) {
+            CrudItem item = new CrudItem();
+            item.setId(id);
+            item.setDeleted((short) 0);
+            crudItemDao.updateByPrimaryKeySelective(item);
+        }
+        model.put("message", "恢复成功");
+        return "common/new-window-result";
+    }
+
 }
