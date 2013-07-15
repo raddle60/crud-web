@@ -115,6 +115,15 @@ public class ItemController extends BaseController {
             item.setDeleted((short) 0);
             item.setCreatedAt(new Date());
             item.setUpdatedAt(new Date());
+            // 获取排序值
+            if (item.getItemOrder() == null) {
+                Integer selectMaxOrder = crudItemDao.selectMaxOrder(item.getCrudDefId(), item.getFkType());
+                if (selectMaxOrder == null) {
+                    item.setItemOrder(1);
+                } else {
+                    item.setItemOrder(selectMaxOrder + 1);
+                }
+            }
             crudItemDao.insertSelective(item);
         }
         model.put("message", "保存成功");
