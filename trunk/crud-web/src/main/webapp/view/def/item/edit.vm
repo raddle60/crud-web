@@ -73,7 +73,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr id="tr_inputType">
 			<th>
 				输入项类型
 			</th>
@@ -86,7 +86,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr id="tr_inputSize">
 			<th>
 				输入项大小
 			</th>
@@ -94,7 +94,7 @@
 				<input type="text" name="inputSize" id="inputSize" value="$!{item.inputSize}">输入框的size，Textarea的rows,cols
 			</td>
 		</tr>
-		<tr>
+		<tr id="tr_optionType">
 			<th>
 				选项类型
 			</th>
@@ -107,18 +107,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
-			<th>
-				选项值
-			</th>
-			<td>
-				枚举表就是在配置表配置的，选项值填enum_type的值
-				静态类型就是value,value或key:value,key:value<br>
-				sql类型就是sql语句，返回key和value列<br>
-				<textarea name="optionValue" id="optionValue" rows="20" cols="80">$!{item.optionValue}</textarea>
-			</td>
-		</tr>
-		<tr>
+		<tr id="tr_crudDsId">
 			<th>
 				数据源
 			</th>
@@ -131,7 +120,18 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr id="tr_optionValue">
+			<th>
+				选项值
+			</th>
+			<td>
+				枚举表就是在配置表配置的，选项值填enum_type的值<br>
+				静态类型就是value,value或key:value,key:value<br>
+				sql类型就是sql语句，返回key和value列<br>
+				<textarea name="optionValue" id="optionValue" rows="20" cols="80">$!{item.optionValue}</textarea>
+			</td>
+		</tr>
+		<tr id="tr_actionType">
 			<th>
 				动作按钮类型
 			</th>
@@ -144,7 +144,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr id="tr_href">
 			<th>
 				超链接
 			</th>
@@ -201,5 +201,77 @@ $(function(){
 			webChkRule : { msg_jsformat:{}},
 		}
 	});
+	function itemTypeChanged(){
+		var itemTypeTr = {};
+		var itemAllTr = ["tr_inputType","tr_inputSize","tr_optionType","tr_optionValue","tr_crudDsId","tr_actionType","tr_href"];
+		itemTypeTr["LABEL"]=["tr_optionType","tr_optionValue"];
+		itemTypeTr["INPUT"]=["tr_inputType"];
+		itemTypeTr["HIDDEN"]=[];
+		itemTypeTr["ACTION"]=["tr_actionType","tr_href"];
+		for(var i=0 ; i<itemAllTr.length ; i++){
+			var showTr = itemTypeTr[$("#itemType").val()];
+			var hasShow = false;
+			if(showTr != null && showTr.length){
+				for(var j=0 ; j<showTr.length ; j++){
+					if(showTr[j] == itemAllTr[i]){
+						$("#"+showTr[j]).show();
+						hasShow = true;
+						break;
+					}
+				}
+			}
+			if(!hasShow){
+				$("#"+itemAllTr[i]).hide();
+			}
+		}
+		if("INPUT" == $("#itemType").val()){
+			inputTypeChanged();
+		}
+		if("LABEL" == $("#itemType").val()){
+			optionTypeChanged();
+		}
+	}
+	function inputTypeChanged(){
+		var inputTypeTr = {};
+		var itemAllTr = ["tr_inputSize","tr_optionType","tr_optionValue","tr_crudDsId"];
+		inputTypeTr["TEXT"]=["tr_inputSize"];
+		inputTypeTr["TEXTAREA"]=["tr_inputSize"];
+		inputTypeTr["CHECKBOX"]=["tr_optionType","tr_optionValue","tr_crudDsId"];
+		inputTypeTr["RADIO"]=["tr_optionType","tr_optionValue","tr_crudDsId"];
+		inputTypeTr["SELECT"]=["tr_optionType","tr_optionValue","tr_crudDsId"];
+		inputTypeTr["MULTI_SELECT"]=["tr_optionType","tr_optionValue","tr_crudDsId"];
+		for(var i=0 ; i<itemAllTr.length ; i++){
+			var showTr = inputTypeTr[$("#inputType").val()];
+			var hasShow = false;
+			if(showTr != null && showTr.length){
+				for(var j=0 ; j<showTr.length ; j++){
+					if(showTr[j] == itemAllTr[i]){
+						$("#"+showTr[j]).show();
+						hasShow = true;
+						break;
+					}
+				}
+			}
+			if(!hasShow){
+				$("#"+itemAllTr[i]).hide();
+			}
+		}
+		if("CHECKBOX" == $("#inputType").val() ||"RADIO" == $("#inputType").val() ||"SELECT" == $("#inputType").val() 
+			|| "MULTI_SELECT" == $("#inputType").val() ){
+			optionTypeChanged();
+		}
+	}
+	function optionTypeChanged(){
+		if("SQL" == $("#optionType").val()){
+			$("#tr_crudDsId").show();
+		} else {
+			$("#tr_crudDsId").hide();
+		}
+	}
+	$("#itemType").change(itemTypeChanged);
+	$("#inputType").change(inputTypeChanged);
+	$("#optionType").change(optionTypeChanged);
+	
+	itemTypeChanged();
 });
 </script>
