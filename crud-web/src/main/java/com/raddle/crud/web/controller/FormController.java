@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import javax.annotation.Resource;
@@ -138,8 +140,12 @@ public class FormController extends BaseController {
         model.put("params", createParams(request, extraParams));
         Map<String, Object> subResults = new HashMap<String, Object>();
         Matcher matcher = DefinitionController.COMP_DEF_ID_PATTERN.matcher(crudDefinition.getCompositeTemplate());
+        Set<Long> generated = new HashSet<Long>();
         while (matcher.find()) {
             Long defId = Long.parseLong(matcher.group(1));
+            if (generated.contains(defId)) {
+                continue;
+            }
             CrudDefinition subDef = crudDefinitionDao.selectByPrimaryKey(defId);
             if (subDef != null && (subDef.getDefType().equals(DefType.LIST.name()) || subDef.getDefType().equals(DefType.VIEW.name()))) {
                 ModelMap subModel = new ModelMap();
@@ -182,6 +188,7 @@ public class FormController extends BaseController {
                     }
                 }
             }
+            generated.add(defId);
         }
         StringWriter sw = new StringWriter();
         try {
