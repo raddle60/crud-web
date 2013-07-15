@@ -199,7 +199,6 @@ $(function(){
 			title : { msg_required:{} },
 			itemType : { msg_required:{} },
 			webChkRule : { msg_jsformat:{}},
-			itemOrder : { msg_required:{},msg_digits:{}}
 		}
 	});
 });
