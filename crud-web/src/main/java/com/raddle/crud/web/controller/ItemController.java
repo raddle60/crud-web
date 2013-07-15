@@ -48,10 +48,9 @@ public class ItemController extends BaseController {
         }
         CrudItemExample example = new CrudItemExample();
         Criteria criteria = example.createCriteria();
-        criteria.andDeletedEqualTo((short) 0);
         criteria.andCrudDefIdEqualTo(defId);
         criteria.andFkTypeEqualTo(fkType.name());
-        example.setOrderByClause("item_order");
+        example.setOrderByClause("deleted,item_order");
         List<CrudItem> list = crudItemDao.selectByExample(example);
         model.put("list", list);
         model.put("defId", defId);
