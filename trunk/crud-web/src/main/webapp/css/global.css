@@ -41,6 +41,9 @@ table.list tr.over {
 	background: #FFFFCC;
 }
 
+tr.deleted td {
+	color : #CCC;
+}
 /************************* 编辑表单 ************************/
 table.form {
 	width: 100%;
