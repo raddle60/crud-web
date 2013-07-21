@@ -3,12 +3,17 @@ package com.raddle.crud.web.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,8 +43,12 @@ public class ItemController extends BaseController {
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
 
+    @Resource(name = "crudTransactionManager")
+    private PlatformTransactionManager transactionManager;
+
     @RequestMapping(value = "def/item/list")
-    public String list(Long defId, ItemFkType fkType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String list(Long defId, ItemFkType fkType, ModelMap model, HttpServletResponse response,
+            HttpServletRequest request) {
         if (defId == null) {
             throw new RuntimeException("表单id不能为空");
         }
@@ -71,7 +80,8 @@ public class ItemController extends BaseController {
     }
 
     @RequestMapping(value = "def/item/edit")
-    public String edit(Long id, Long defId, ItemFkType fkType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String edit(Long id, Long defId, ItemFkType fkType, ModelMap model, HttpServletResponse response,
+            HttpServletRequest request) {
         if (id != null) {
             CrudItem selectByPrimaryKey = crudItemDao.selectByPrimaryKey(id);
             model.put("item", selectByPrimaryKey);
@@ -100,7 +110,7 @@ public class ItemController extends BaseController {
     }
 
     @RequestMapping(value = "def/item/save")
-    public String save(CrudItem item, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String save(final CrudItem item, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (item.getCrudDefId() == null) {
             throw new RuntimeException("表单id不能为空");
         }
@@ -109,7 +119,35 @@ public class ItemController extends BaseController {
         }
         item.setVarName(StringUtils.lowerCase(item.getVarName()));
         if (item.getId() != null) {
-            crudItemDao.updateByPrimaryKeySelective(item);
+            CrudItem crudItem = crudItemDao.selectByPrimaryKey(item.getId());
+            if (crudItem.getItemOrder().equals(item.getItemOrder())) {
+                // 排序相等,不需要调整
+                crudItemDao.updateByPrimaryKeySelective(item);
+            } else {
+                // 排序不等,需要调整
+                CrudItemExample existExample = new CrudItemExample();
+                Criteria existWhere = existExample.createCriteria();
+                existWhere.andCrudDefIdEqualTo(item.getCrudDefId());
+                existWhere.andFkTypeEqualTo(item.getFkType());
+                existWhere.andItemOrderEqualTo(item.getItemOrder());
+                List<CrudItem> existList = crudItemDao.selectByExample(existExample);
+                if (existList.size() == 0) {
+                    // 新排序没被占用,直接使用
+                    crudItemDao.updateByPrimaryKeySelective(item);
+                } else {
+                    // 新排序被占用了,需要往下调
+                    TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+                    transactionTemplate.execute(new TransactionCallback<Object>() {
+
+                        @Override
+                        public Object doInTransaction(TransactionStatus status) {
+                            crudItemDao.downItemOrder(item.getCrudDefId(), item.getFkType(), item.getItemOrder());
+                            crudItemDao.updateByPrimaryKeySelective(item);
+                            return null;
+                        }
+                    });
+                }
+            }
         } else {
             item.setDeleted((short) 0);
             item.setCreatedAt(new Date());
