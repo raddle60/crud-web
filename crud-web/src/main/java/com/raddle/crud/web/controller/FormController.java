@@ -158,33 +158,33 @@ public class FormController extends BaseController {
                 subModel.put("dateUtils", new DateUtils());
                 subModel.put("dateFormatUtils", new DateFormatUtils());
                 if (subDef.getDefType().equals(DefType.LIST.name())) {
-                    String templateName = toListResult(subDef, subModel, subResults, request) + ".vm";
-                    List<Object> result = (List<Object>) subModel.get("result");
-                    if (result.size() > 0) {
-                        subResults.put("result_" + defId, result);
-                        subResults.put("result_" + defId + "_first", result.get(0));
-                        StringWriter sw = new StringWriter();
-                        try {
+                    try {
+                        String templateName = toListResult(subDef, subModel, subResults, request) + ".vm";
+                        List<Object> result = (List<Object>) subModel.get("result");
+                        if (result.size() > 0) {
+                            subResults.put("result_" + defId, result);
+                            subResults.put("result_" + defId + "_first", result.get(0));
+                            StringWriter sw = new StringWriter();
                             velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
-                        } catch (Exception e) {
-                            logger.error(e.getMessage(), e);
-                            sw.write(e.getMessage());
+                            model.put("def_" + defId, sw.toString());
                         }
-                        model.put("def_" + defId, sw.toString());
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                        model.put("def_" + defId, "def_" + defId + "异常:" + e.getMessage());
                     }
                 } else if (subDef.getDefType().equals(DefType.VIEW.name())) {
-                    String templateName = toSingleResult(subDef, subModel, subResults, request) + ".vm";
-                    Object result = subModel.get("result");
-                    if (result != null) {
-                        subResults.put("result_" + defId, result);
-                        StringWriter sw = new StringWriter();
-                        try {
+                    try {
+                        String templateName = toSingleResult(subDef, subModel, subResults, request) + ".vm";
+                        Object result = subModel.get("result");
+                        if (result != null) {
+                            subResults.put("result_" + defId, result);
+                            StringWriter sw = new StringWriter();
                             velocityConfig.getVelocityEngine().mergeTemplate(templateName, "utf-8", new VelocityContext(subModel), sw);
-                        } catch (Exception e) {
-                            logger.error(e.getMessage(), e);
-                            sw.write(e.getMessage());
+                            model.put("def_" + defId, sw.toString());
                         }
-                        model.put("def_" + defId, sw.toString());
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                        model.put("def_" + defId, "def_" + defId + "异常:" + e.getMessage());
                     }
                 }
             }
