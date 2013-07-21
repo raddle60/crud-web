@@ -3,6 +3,7 @@ package com.raddle.crud.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.raddle.crud.dao.annotation.SqlMapper;
 import com.raddle.crud.dao.toolgen.CrudItemMapper;
@@ -20,4 +21,11 @@ public interface CrudItemDao extends CrudItemMapper {
     })
     @ResultType(Integer.class)
     Integer selectMaxOrder(@Param("defId") Long defId, @Param("fkType") String fkType);
+
+    @Update({
+        "update CRUD_ITEM",
+        "set ITEM_ORDER = ITEM_ORDER + 1 ",
+        "where CRUD_DEF_ID = #{defId} and FK_TYPE = #{fkType} and ITEM_ORDER &gt;= #{itemOrder}"
+    })
+    int downItemOrder(@Param("defId") Long defId, @Param("fkType") String fkType,@Param("itemOrder") Integer itemOrder);
 }
