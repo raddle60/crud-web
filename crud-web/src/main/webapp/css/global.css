@@ -1,5 +1,11 @@
 @CHARSET "utf-8";
 
+body {font-family:Arial, sans-serif;margin:0; padding:0; background: #FFF; font-size:12px; color:#000;}
+div,form,img,ul,ol,li,dl,dt,dd {margin: 0; padding: 0; border: 0; }
+li{list-style-type:none;}
+img{vertical-align:top;}
+h1,h2,h3,h4,h5,h6 { margin:0; padding:0;font-size:12px; font-weight:normal;}
+
 label.error {
 	color: red;
 }
@@ -12,14 +18,14 @@ table.list {
 	width: 100%;
 	border: 1px solid #b6c3d3;
 	border-collapse: collapse;
-	margin: 10px 0;
+	margin: 2px 0;
 }
 
 table.list th {
 	border: 1px solid #d8e4f2;
 	background: #e4f4fd;
 	color: #3a6fa5;
-	height: 28px;
+	height: 20px;
 	vertical-align: middle;
 }
 
@@ -49,14 +55,14 @@ table.form {
 	width: 100%;
 	border: 1px solid #b6c3d3;
 	border-collapse: collapse;
-	margin: 10px 0;
+	margin: 5px 0;
 }
 
 table.form th {
 	border: 1px solid #d8e4f2;
 	background: #e4f4fd;
 	color: #3a6fa5;
-	height: 28px;
+	height: 20px;
 	vertical-align: middle;
 }
 
