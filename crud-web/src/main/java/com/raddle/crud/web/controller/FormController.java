@@ -47,6 +47,7 @@ import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 import com.raddle.crud.vo.CommonResult;
 import com.raddle.crud.web.toolbox.DynamicFormTool;
+import com.raddle.crud.web.toolbox.SqlUtils;
 
 /**
  * 类FormController.java的实现描述：表单页面
@@ -355,6 +356,7 @@ public class FormController extends BaseController {
         params.put("stringEscapeUtils", new StringEscapeUtils());
         params.put("dateUtils", new DateUtils());
         params.put("dateFormatUtils", new DateFormatUtils());
+        params.put("sqlUtils", new SqlUtils());
         return params;
     }
 }
