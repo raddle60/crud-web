@@ -1,10 +1,11 @@
 package com.raddle.crud.web.toolbox;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -48,7 +49,7 @@ public class SqlUtils {
         if (columnName == null) {
             throw new IllegalArgumentException("joinIn columnName is empty");
         }
-        List<Object> ins = new ArrayList<Object>();
+        Set<Object> ins = new HashSet<Object>();
         for (Map<String, Object> map : list) {
             Object o = map.get(columnName);
             if (o != null) {
@@ -58,12 +59,13 @@ public class SqlUtils {
         if (ins.size() == 0) {
             throw new IllegalArgumentException("joinIn column:" + columnName + " all values is null");
         }
-        if (ins.get(0) instanceof String) {
+        Object value = ins.iterator().next();
+        if (value instanceof String) {
             return "'" + StringUtils.join(ins, "','") + "'";
-        } else if (ins.get(0) instanceof Number) {
+        } else if (value instanceof Number) {
             return StringUtils.join(ins, ",");
         } else {
-            throw new IllegalArgumentException("joinIn unsupport type :" + ins.get(0).getClass().getSimpleName());
+            throw new IllegalArgumentException("joinIn unsupport type :" + value.getClass().getSimpleName());
         }
     }
 }
