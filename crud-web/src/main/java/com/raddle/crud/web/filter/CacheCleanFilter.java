@@ -11,7 +11,6 @@ import javax.servlet.ServletResponse;
 
 import com.raddle.crud.biz.impl.CrudDatasourceManagerImpl;
 import com.raddle.crud.biz.impl.VelocityFormManager;
-import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 
 /**
  * 类ThreadCacheClearFilter.java的实现描述：清除线程缓存
@@ -29,7 +28,6 @@ public class CacheCleanFilter implements Filter {
         try {
             chain.doFilter(request, response);
         } finally {
-            JdbcDynamicFormDao.clearThreadCache();
             VelocityFormManager.clearThreadCache();
             CrudDatasourceManagerImpl.clearThreadCache();
         }

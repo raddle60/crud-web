@@ -1,8 +1,9 @@
 #set($page_title = "表单列表")
 <b class="title">表单列表</b>
 #foreach($defType in $defTypes)
-<a href="#springUrl("/def/def/edit.htm")?defType=${defType}" target="_blank">新增${defType}表单</a>
+<a href="#springUrl("/def/def/edit.htm")?defType=${defType}" target="_blank">新增${defType}表单</a>&nbsp;&nbsp;
 #end
+<a href="#springUrl("/def/datasource/clear-table-cache.htm")" target="_blank">清除表缓存</a>
 <table class="list">
 	<thead>
 		<tr>

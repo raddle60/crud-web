@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.raddle.crud.dao.CrudDatasourceDao;
+import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 
@@ -89,5 +90,11 @@ public class DatasourceController extends BaseController {
 
         return "common/new-window-result";
     }
-
+    
+    @RequestMapping(value = "def/datasource/clear-table-cache")
+    public String clearTableCache(ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        JdbcDynamicFormDao.clearCache();
+        model.put("message", "清除缓存成功");
+        return "common/new-window-result";
+    }
 }
