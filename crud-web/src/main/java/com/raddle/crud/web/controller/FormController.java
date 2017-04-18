@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.view.velocity.VelocityConfig;
 
 import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.DynamicFormManager;
+import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
 import com.raddle.crud.dao.CrudItemDao;
 import com.raddle.crud.enums.ActionType;
@@ -40,6 +42,7 @@ import com.raddle.crud.extdao.DynamicFormDao;
 import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
 import com.raddle.crud.extdao.dbinfo.model.TableInfo;
 import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
+import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.model.toolgen.CrudDefinitionExample;
 import com.raddle.crud.model.toolgen.CrudItem;
@@ -60,6 +63,9 @@ public class FormController extends BaseController {
     private CrudDefinitionDao crudDefinitionDao;
 
     @Autowired
+    private CrudDatasourceDao crudDatasourceDao;
+    
+    @Autowired
     private CrudItemDao crudItemDao;
 
     @Autowired
@@ -75,11 +81,17 @@ public class FormController extends BaseController {
     private VelocityConfig velocityConfig;
 
     @RequestMapping(value = "form/show")
-    public String showForm(Long defId, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+    public String showForm(Long defId, String envCode, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (defId == null) {
             throw new RuntimeException("表单id不能为空");
         }
         model.put("formTool", dynamicFormTool);
+        if (StringUtils.isNotEmpty(envCode)) {
+            request.getSession().setAttribute("curEnvCode", envCode);
+            model.put("envCode", envCode);
+        } else {
+            model.put("envCode", request.getSession().getAttribute("curEnvCode"));
+        }
         CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
         if (crudDefinition.getDefType().equals(DefType.LIST.name())) {
             return toListResult(crudDefinition, model, null, request);
@@ -89,11 +101,26 @@ public class FormController extends BaseController {
             return toSingleResult(crudDefinition, model, null, request);
         }
     }
+    
+    private CrudDatasource getDatasourceByEnvCode(CrudDefinition crudDefinition, HttpServletRequest request) {
+        String curEnvCode = (String) request.getSession().getAttribute("curEnvCode");
+        CrudDatasource crudDatasource = crudDatasourceDao.selectByPrimaryKey(crudDefinition.getCrudDsId());
+        CrudDatasource retCrudDatasource = null;
+        if (StringUtils.isNotEmpty(curEnvCode)) {
+            retCrudDatasource = datasourceManager.getDatasource(crudDatasource.getCode(), curEnvCode);
+        }
+        if (retCrudDatasource == null) {
+            retCrudDatasource = crudDatasource;
+        }
+        return retCrudDatasource;
+    }
 
     private String toSingleResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
         String readSql = getReadSql(crudDefinition);
         if (StringUtils.isNotBlank(readSql)) {
-            Object result = dynamicFormManager.queryForObject(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            CrudDatasource crudDatasource = getDatasourceByEnvCode(crudDefinition, request);
+            model.put("dsConfig", crudDatasource);
+            Object result = dynamicFormManager.queryForObject(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDatasource.getId()));
             model.put("result", result);
         } else if (DefType.ADD.name().equals(crudDefinition.getDefType())) {
             // 如果是新增而且不从数据库取值,用请求里的
@@ -118,7 +145,9 @@ public class FormController extends BaseController {
 
     private String toListResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
         String readSql = getReadSql(crudDefinition);
-        Object result = dynamicFormManager.queryForList(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+        CrudDatasource crudDatasource = getDatasourceByEnvCode(crudDefinition, request);
+        model.put("dsConfig", crudDatasource);
+        Object result = dynamicFormManager.queryForList(readSql, createParams(request, extraParams), datasourceManager.getDatasource(crudDatasource.getId()));
         model.put("result", result);
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
         model.put("defWheres", whereItems);
@@ -279,11 +308,14 @@ public class FormController extends BaseController {
                 throw new RuntimeException("表单id不能为空");
             }
             CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
+            CrudDatasource crudDatasource = getDatasourceByEnvCode(crudDefinition, request);
+            model.put("dsConfig", crudDatasource);
             String updateSql = getUpdateSql(crudDefinition);
             Map<String, Object> params = createParams(request, null);
+            DataSource datasource = datasourceManager.getDatasource(crudDatasource.getId());
             if (crudDefinition.getDefType().equals(DefType.ADD.name()) && StringUtils.isNotBlank(crudDefinition.getKeySelectSql())) {
-                Map<String, Object> insertKey = dynamicFormManager.queryForObject(crudDefinition.getKeySelectSql(), params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
-                DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                Map<String, Object> insertKey = dynamicFormManager.queryForObject(crudDefinition.getKeySelectSql(), params, datasource);
+                DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasource);
                 TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
                 for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
                     if (columnInfo.isPrimaryKey()) {
@@ -293,7 +325,7 @@ public class FormController extends BaseController {
                     }
                 }
             }
-            int count = dynamicFormManager.update(updateSql, params, datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            int count = dynamicFormManager.update(updateSql, params, datasource);
             result.setSuccess(true);
             result.setMessage("操作成功，影响条数[" + count + "]");
             return writeJson(result, response);

@@ -51,12 +51,14 @@ public interface CrudDatasourceMapper {
         "DIRVER_CLASS_NAME, URL, ",
         "USERNAME, PASSWORD, ",
         "DELETED, CREATED_AT, ",
-        "UPDATED_AT)",
+        "UPDATED_AT, CODE, ",
+        "ENV_CODE)",
         "values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, ",
         "#{dirverClassName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, ",
         "#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
         "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
-        "#{updatedAt,jdbcType=TIMESTAMP})"
+        "#{updatedAt,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, ",
+        "#{envCode,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_DATASOURCE.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudDatasource record);
@@ -85,7 +87,8 @@ public interface CrudDatasourceMapper {
      */
     @Select({
         "select",
-        "ID, NAME, DIRVER_CLASS_NAME, URL, USERNAME, PASSWORD, DELETED, CREATED_AT, UPDATED_AT",
+        "ID, NAME, DIRVER_CLASS_NAME, URL, USERNAME, PASSWORD, DELETED, CREATED_AT, UPDATED_AT, ",
+        "CODE, ENV_CODE",
         "from CRUD_DATASOURCE",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -131,7 +134,9 @@ public interface CrudDatasourceMapper {
           "PASSWORD = #{password,jdbcType=VARCHAR},",
           "DELETED = #{deleted,jdbcType=DECIMAL},",
           "CREATED_AT = #{createdAt,jdbcType=TIMESTAMP},",
-          "UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP}",
+          "UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP},",
+          "CODE = #{code,jdbcType=VARCHAR},",
+          "ENV_CODE = #{envCode,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
     int updateByPrimaryKey(CrudDatasource record);

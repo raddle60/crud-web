@@ -2,6 +2,8 @@ create table CRUD_WEB.CRUD_DATASOURCE
 (
   id                NUMBER(18) not null,
   name              VARCHAR2(64) not null,
+  code              VARCHAR2(64) not null,
+  env_code          VARCHAR2(32) not null,  
   dirver_class_name VARCHAR2(64) not null,
   url               VARCHAR2(256) not null,
   username          VARCHAR2(64) not null,
@@ -23,6 +25,7 @@ create table CRUD_WEB.CRUD_DEFINITION
   def_type           VARCHAR2(32) not null,
   table_name         VARCHAR2(64),
   crud_ds_id         NUMBER(18) not null,
+  crud_ds_code       VARCHAR2(64) not null,
   pre_sql            VARCHAR2(4000),
   read_sql           VARCHAR2(4000),
   key_select_sql     VARCHAR2(4000),

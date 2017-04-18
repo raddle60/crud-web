@@ -1,5 +1,5 @@
 #set($page_title = ${def.name} + " - " + ${def.defType})
-<b class="title">${def.name} - ${def.defType}</b>
+<b class="title">${def.name} - ${def.defType} - [$!{dsConfig.code} - $!{dsConfig.envCode}]</b>
 #if(!$isInMultiList)
 	<form id="j_form_${def.id}" action="#springUrl("/form/show.htm")" method="get">
 		<input type="hidden" name="defId" value="$!{def.id}">
@@ -11,6 +11,14 @@
 			#end
 		#end
 		<table class="form">
+		<tr>
+			<th width="200" >
+				当前环境：
+			</th>
+			<td>
+				<input type="text" name="envCode" id="envCode" value="$!envCode">
+			</td>
+		</tr>
 		#foreach($item in $defWheres)
 			#if($item.itemType != "HIDDEN")
 			<tr>

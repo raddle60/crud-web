@@ -784,6 +784,146 @@ public class CrudDatasourceExample {
             addCriterion("UPDATED_AT not between", value1, value2, "updatedAt");
             return (Criteria) this;
         }
+
+        public Criteria andCodeIsNull() {
+            addCriterion("CODE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeIsNotNull() {
+            addCriterion("CODE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeEqualTo(String value) {
+            addCriterion("CODE =", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotEqualTo(String value) {
+            addCriterion("CODE <>", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeGreaterThan(String value) {
+            addCriterion("CODE >", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("CODE >=", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLessThan(String value) {
+            addCriterion("CODE <", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLessThanOrEqualTo(String value) {
+            addCriterion("CODE <=", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLike(String value) {
+            addCriterion("CODE like", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotLike(String value) {
+            addCriterion("CODE not like", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeIn(List<String> values) {
+            addCriterion("CODE in", values, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotIn(List<String> values) {
+            addCriterion("CODE not in", values, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeBetween(String value1, String value2) {
+            addCriterion("CODE between", value1, value2, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotBetween(String value1, String value2) {
+            addCriterion("CODE not between", value1, value2, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeIsNull() {
+            addCriterion("ENV_CODE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeIsNotNull() {
+            addCriterion("ENV_CODE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeEqualTo(String value) {
+            addCriterion("ENV_CODE =", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeNotEqualTo(String value) {
+            addCriterion("ENV_CODE <>", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeGreaterThan(String value) {
+            addCriterion("ENV_CODE >", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("ENV_CODE >=", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeLessThan(String value) {
+            addCriterion("ENV_CODE <", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeLessThanOrEqualTo(String value) {
+            addCriterion("ENV_CODE <=", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeLike(String value) {
+            addCriterion("ENV_CODE like", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeNotLike(String value) {
+            addCriterion("ENV_CODE not like", value, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeIn(List<String> values) {
+            addCriterion("ENV_CODE in", values, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeNotIn(List<String> values) {
+            addCriterion("ENV_CODE not in", values, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeBetween(String value1, String value2) {
+            addCriterion("ENV_CODE between", value1, value2, "envCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvCodeNotBetween(String value1, String value2) {
+            addCriterion("ENV_CODE not between", value1, value2, "envCode");
+            return (Criteria) this;
+        }
     }
 
     /**

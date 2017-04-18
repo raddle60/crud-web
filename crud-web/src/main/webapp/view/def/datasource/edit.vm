@@ -18,6 +18,22 @@
 		</tr>
 		<tr>
 			<th>
+				编码
+			</th>
+			<td>
+				<input type="text" name="code" id="code" value="$!{datasource.code}">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				环境编码
+			</th>
+			<td>
+				<input type="text" name="envCode" id="envCode" value="$!{datasource.envCode}">
+			</td>
+		</tr>				
+		<tr>
+			<th>
 				驱动类名
 			</th>
 			<td>
@@ -65,6 +81,8 @@ $(function(){
 		onkeyup : false,
 		rules : {
 			name : { msg_required:{} },
+			code : { msg_required:{} },
+			envCode : { msg_required:{} },
 			dirverClassName : { msg_required:{}},
 			url : { msg_required:{}},
 			username : { msg_required:{}}

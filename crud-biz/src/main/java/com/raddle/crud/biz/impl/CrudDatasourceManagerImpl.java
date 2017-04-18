@@ -1,6 +1,7 @@
 package com.raddle.crud.biz.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.model.toolgen.CrudDatasource;
+import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 
 /**
  * 类CrudDatasourceManagerImpl.java的实现描述：获得数据源
@@ -42,8 +44,22 @@ public class CrudDatasourceManagerImpl implements CrudDatasourceManager {
         datasourceThreadCache.get().put(id, ds);
         return ds;
     }
+    
+    @Override
+    public CrudDatasource getDatasource(String code, String envCode) {
+        CrudDatasourceExample example = new CrudDatasourceExample();
+        example.createCriteria().andCodeEqualTo(code).andEnvCodeEqualTo(envCode);
 
+        List<CrudDatasource> list = crudDatasourceDao.selectByExample(example);
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        return null;
+    }
+    
     public static void clearThreadCache() {
         datasourceThreadCache.remove();
     }
+
+
 }

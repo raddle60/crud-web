@@ -14,14 +14,14 @@
 	<tbody>
 		#foreach($datasource in $list)
 		<tr>
-			<td>$!{datasource.name}</td>
+			<td>$!{datasource.name} - $!{datasource.code} - $!{datasource.envCode}</td>
 			<td>$!{datasource.dirverClassName}</td>
 			<td>$!{datasource.url}</td>
 			<td>$!{datasource.username}</td>
 			<td>
 				<a href="#springUrl("/def/datasource/edit.htm")?id=$!{datasource.id}" target="_blank" >编辑</a>
-				<input type="button" id="del_btn_$!{datasource.id}" dbid="$!{datasource.id}" msg="$!{datasource.name}" value="删除">
-				<input type="button" id="test_btn_$!{datasource.id}" dbid="$!{datasource.id}" msg="$!{datasource.name}" value="测试连接">
+				<input type="button" id="del_btn_$!{datasource.id}" dbid="$!{datasource.id}" msg="$!{datasource.name} - $!{datasource.code} - $!{datasource.envCode}" value="删除">
+				<input type="button" id="test_btn_$!{datasource.id}" dbid="$!{datasource.id}" msg="$!{datasource.name} - $!{datasource.code} - $!{datasource.envCode}" value="测试连接">
 			</td>
 		</tr>
 		#end

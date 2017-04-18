@@ -11,6 +11,14 @@
 	#end
 	<table class="form">
 	#foreach($item in $defWheres)
+		<tr>
+			<th width="200" >
+				当前环境：
+			</th>
+			<td>
+				<input type="text" name="envCode" id="envCode" value="$!envCode">
+			</td>
+		</tr>
 		#if($item.itemType != "HIDDEN")
 		<tr>
 			<th #if($foreach.count == 1)width="200"#end>
