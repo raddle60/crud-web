@@ -116,6 +116,7 @@ public class FormController extends BaseController {
     }
 
     private String toSingleResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         String readSql = getReadSql(crudDefinition);
         if (StringUtils.isNotBlank(readSql)) {
             CrudDatasource crudDatasource = getDatasourceByEnvCode(crudDefinition, request);
@@ -129,6 +130,7 @@ public class FormController extends BaseController {
         List<CrudItem> defItems = queryDefItems(crudDefinition);
         model.put("defItems", defItems);
         model.put("def", crudDefinition);
+        model.put("duration", (System.currentTimeMillis() - start) + "ms");
         return "form/show";
     }
 
@@ -144,6 +146,7 @@ public class FormController extends BaseController {
     }
 
     private String toListResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         String readSql = getReadSql(crudDefinition);
         CrudDatasource crudDatasource = getDatasourceByEnvCode(crudDefinition, request);
         model.put("dsConfig", crudDatasource);
@@ -159,11 +162,13 @@ public class FormController extends BaseController {
         model.put("defCols", defListItems);
         model.put("def", crudDefinition);
         model.put("params", createParams(request, extraParams));
+        model.put("duration", (System.currentTimeMillis() - start) + "ms");
         return "form/list";
     }
 
     @SuppressWarnings("unchecked")
     private String toMultiListResult(CrudDefinition crudDefinition, ModelMap model, Map<String, Object> extraParams, HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         List<CrudItem> whereItems = queryDefItems(crudDefinition);
         model.put("defWheres", whereItems);
         model.put("def", crudDefinition);
@@ -228,6 +233,7 @@ public class FormController extends BaseController {
             sw.write(e.getMessage());
         }
         model.put("noescape_composite_content", sw.toString());
+        model.put("duration", (System.currentTimeMillis() - start) + "ms");
         return "form/multi_list";
     }
 
