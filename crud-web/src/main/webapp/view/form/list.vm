@@ -38,6 +38,7 @@
 				</th>
 				<td>
 					<input type="submit" value="查询">
+					<input type="button" value="清空" onclick="$('#j_form_${def.id} input[type=text][name!=envCode]').val('');">
 					#if($def.addHref)
 					<a href="$!formTool.randerExpr(${def.addHref},$params,$request)" target="_blank">新增</a>
 					#elseif($defAdd)
