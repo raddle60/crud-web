@@ -19,7 +19,7 @@
 	<!-- velocity config -->
 	<bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
 		<property name="resourceLoaderPath">
-			<value>view</value>
+			<value>WEB-INF/view</value>
 		</property>
 		<property name="velocityProperties">
 			<props>
