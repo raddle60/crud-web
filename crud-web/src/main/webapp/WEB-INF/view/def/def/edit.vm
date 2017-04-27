@@ -14,7 +14,7 @@
 				名称
 			</th>
 			<td>
-				<input type="text" name="name" id="name" value="$!{def.name}">
+				<input type="text" name="name" id="name" value="$!{def.name}" size="40">
 			</td>
 		</tr>
 		<tr>
@@ -32,7 +32,7 @@
 			</th>
 			<td>
 				自动生成sql时用来获得列名，大小写敏感<br>
-				<input type="text" name="tableSchema" id="tableSchema" value="$!{def.tableSchema}">
+				<input type="text" name="tableSchema" id="tableSchema" value="$!{def.tableSchema}" size="30">
                 <input type="button" value="大写" onclick="$('#tableSchema').val($('#tableSchema').val().toUpperCase())">
                 <input type="button" value="小写" onclick="$('#tableSchema').val($('#tableSchema').val().toLowerCase())">
 
@@ -44,7 +44,7 @@
 			</th>
 			<td>
 				自动生成sql时用来获得列名，大小写敏感<br>
-				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}">
+				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}" size="40">
                 <input type="button" value="大写" onclick="$('#tableName').val($('#tableName').val().toUpperCase())">
                 <input type="button" value="小写" onclick="$('#tableName').val($('#tableName').val().toLowerCase())">				
 			</td>

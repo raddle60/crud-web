@@ -15,7 +15,7 @@
 				标题
 			</th>
 			<td>
-				<input type="text" name="title" id="title" value="$!{item.title}">
+				<input type="text" name="title" id="title" value="$!{item.title}" size="40">
 			</td>
 		</tr>
 		<tr>
@@ -24,7 +24,7 @@
 			</th>
 			<td>
 				全小写,一般就是列名<br>
-				<input type="text" name="varName" id="varName" value="$!{item.varName}">
+				<input type="text" name="varName" id="varName" value="$!{item.varName}" size="40">
 			</td>
 		</tr>
 		<tr>
