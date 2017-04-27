@@ -38,35 +38,39 @@ public interface DynamicFormManager {
 
     /**
      * 根据表自动生成查询sql
+     * @param tableSchema TODO
      * @param tableName
      * @param dataSource
      * @return
      */
-    public String generateDynamicSelectSql(String tableName, DataSource dataSource);
+    public String generateDynamicSelectSql(String tableSchema, String tableName, DataSource dataSource);
 
     /**
      * 根据表自动生成插入sql
+     * @param tableSchema TODO
      * @param tableName
      * @param dataSource
      * @return
      */
-    public String generateDynamicInsertSql(String tableName, DataSource dataSource);
+    public String generateDynamicInsertSql(String tableSchema, String tableName, DataSource dataSource);
 
     /**
      * 根据表自动生成更新sql
+     * @param tableSchema TODO
      * @param tableName
      * @param dataSource
      * @return
      */
-    public String generateDynamicUpdateSql(String tableName, DataSource dataSource);
+    public String generateDynamicUpdateSql(String tableSchema, String tableName, DataSource dataSource);
 
     /**
      * 根据表自动生成删除sql
+     * @param tableSchema TODO
      * @param tableName
      * @param dataSource
      * @return
      */
-    public String generateDynamicDeleteSql(String tableName, DataSource dataSource);
+    public String generateDynamicDeleteSql(String tableSchema, String tableName, DataSource dataSource);
 
     /**
      * 获得选项

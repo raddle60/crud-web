@@ -55,7 +55,8 @@ public interface CrudDefinitionMapper {
         "IS_PAGING, AUTO_MATCH_BTN, ",
         "CREATE_TM_COL, UPDATE_TM_COL, ",
         "DELETED, CREATED_AT, ",
-        "UPDATED_AT, COMPOSITE_TEMPLATE)",
+        "UPDATED_AT, COMPOSITE_TEMPLATE, ",
+        "TABLE_SCHEMA)",
         "values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, ",
         "#{defType,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, ",
         "#{crudDsId,jdbcType=DECIMAL}, #{preSql,jdbcType=VARCHAR}, ",
@@ -64,7 +65,8 @@ public interface CrudDefinitionMapper {
         "#{isPaging,jdbcType=DECIMAL}, #{autoMatchBtn,jdbcType=DECIMAL}, ",
         "#{createTmCol,jdbcType=VARCHAR}, #{updateTmCol,jdbcType=VARCHAR}, ",
         "#{deleted,jdbcType=DECIMAL}, #{createdAt,jdbcType=TIMESTAMP}, ",
-        "#{updatedAt,jdbcType=TIMESTAMP}, #{compositeTemplate,jdbcType=VARCHAR})"
+        "#{updatedAt,jdbcType=TIMESTAMP}, #{compositeTemplate,jdbcType=VARCHAR}, ",
+        "#{tableSchema,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT SEQ_CRUD_DEFINITION.NEXTVAL FROM DUAL", keyProperty="id", before=true, resultType=Long.class)
     int insert(CrudDefinition record);
@@ -95,7 +97,7 @@ public interface CrudDefinitionMapper {
         "select",
         "ID, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, READ_SQL, KEY_SELECT_SQL, ",
         "UPDATE_SQL, ADD_HREF, IS_PAGING, AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, ",
-        "DELETED, CREATED_AT, UPDATED_AT, COMPOSITE_TEMPLATE",
+        "DELETED, CREATED_AT, UPDATED_AT, COMPOSITE_TEMPLATE, TABLE_SCHEMA",
         "from CRUD_DEFINITION",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
@@ -150,7 +152,8 @@ public interface CrudDefinitionMapper {
           "DELETED = #{deleted,jdbcType=DECIMAL},",
           "CREATED_AT = #{createdAt,jdbcType=TIMESTAMP},",
           "UPDATED_AT = #{updatedAt,jdbcType=TIMESTAMP},",
-          "COMPOSITE_TEMPLATE = #{compositeTemplate,jdbcType=VARCHAR}",
+          "COMPOSITE_TEMPLATE = #{compositeTemplate,jdbcType=VARCHAR},",
+          "TABLE_SCHEMA = #{tableSchema,jdbcType=VARCHAR}",
         "where ID = #{id,jdbcType=DECIMAL}"
     })
     int updateByPrimaryKey(CrudDefinition record);

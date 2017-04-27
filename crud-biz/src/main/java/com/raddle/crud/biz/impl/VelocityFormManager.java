@@ -86,11 +86,19 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
         }
         return map;
     }
+    
+    private String getTableSchemaPrefix(String tableSchema) {
+        if (StringUtils.isNotEmpty(tableSchema)) {
+            return tableSchema + ".";
+        } else {
+            return "";
+        }
+    }
 
     @Override
-    public String generateDynamicSelectSql(String tableName, DataSource dataSource) {
+    public String generateDynamicSelectSql(String tableSchema, String tableName, DataSource dataSource) {
         DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
-        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
         int i = 0;
@@ -101,7 +109,7 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
             sb.append(columnInfo.getColumnName());
             i++;
         }
-        sb.append(" from " + tableName + " where 1=1 \n");
+        sb.append(" from " + getTableSchemaPrefix(tableSchema) + tableName + " where 1=1 \n");
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
             sb.append(" #if($" + columnInfo.getColumnName().toLowerCase() + ") \n");
             sb.append(" and " + columnInfo.getColumnName() + "= :" + columnInfo.getColumnName().toLowerCase() + " \n");
@@ -117,11 +125,11 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     }
 
     @Override
-    public String generateDynamicInsertSql(String tableName, DataSource dataSource) {
+    public String generateDynamicInsertSql(String tableSchema, String tableName, DataSource dataSource) {
         DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
-        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
         StringBuilder sb = new StringBuilder();
-        sb.append("insert into " + tableName + " ( ");
+        sb.append("insert into " + getTableSchemaPrefix(tableSchema) + tableName + " ( ");
         sb.append(" #set($hasInsert = false) \n");
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
             sb.append(" #if($" + columnInfo.getColumnName().toLowerCase() + ") \n");
@@ -144,11 +152,11 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     }
 
     @Override
-    public String generateDynamicUpdateSql(String tableName, DataSource dataSource) {
+    public String generateDynamicUpdateSql(String tableSchema, String tableName, DataSource dataSource) {
         DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
-        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
         StringBuilder sb = new StringBuilder();
-        sb.append("update " + tableName + " set ");
+        sb.append("update " + getTableSchemaPrefix(tableSchema) + tableName + " set ");
         sb.append(" #set($hasUpdate = false) \n");
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
             sb.append(" #if($" + columnInfo.getColumnName().toLowerCase() + ") \n");
@@ -172,11 +180,11 @@ public class VelocityFormManager implements DynamicFormManager, InitializingBean
     }
 
     @Override
-    public String generateDynamicDeleteSql(String tableName, DataSource dataSource) {
+    public String generateDynamicDeleteSql(String tableSchema, String tableName, DataSource dataSource) {
         DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
-        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableName);
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
         StringBuilder sb = new StringBuilder();
-        sb.append("delete from " + tableName + " ");
+        sb.append("delete from " + getTableSchemaPrefix(tableSchema) + tableName + " ");
         sb.append(" where 1=1 \n");
         boolean hasPk = false;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {

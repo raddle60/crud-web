@@ -38,9 +38,10 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
     }
 
     @Override
-    public TableInfo getTableInfo(final String tableName) {
-        if (tableInfoCache.containsKey(tableName)) {
-            return tableInfoCache.get(tableName);
+    public TableInfo getTableInfo(final String tableSchema, final String tableName) {
+        String tableKey = tableSchema + "." + tableName;
+        if (tableInfoCache.containsKey(tableKey)) {
+            return tableInfoCache.get(tableKey);
         }
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         TableInfo tableInfo = jdbcTemplate.execute(new ConnectionCallback<TableInfo>() {
@@ -48,14 +49,14 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
             @Override
             public TableInfo doInConnection(Connection con) throws SQLException, DataAccessException {
                 TableMetaHelper metaHelper = new TableMetaHelper(con);
-                List<TableInfo> tableInfo = metaHelper.getTableInfo(new String[] { tableName }, new String[] { "TABLE", "VIEW", "SYNONYM" });
+                List<TableInfo> tableInfo = metaHelper.getTableInfo(new String[] { tableName }, StringUtils.defaultIfBlank(tableSchema, null), new String[] { "TABLE", "VIEW", "SYNONYM" });
                 if (tableInfo.size() > 0) {
                     return tableInfo.get(0);
                 }
                 return null;
             }
         });
-        tableInfoCache.put(tableName, tableInfo);
+        tableInfoCache.put(tableKey, tableInfo);
         return tableInfo;
     }
 

@@ -13,10 +13,11 @@ public interface DynamicFormDao {
 
     /**
      * 根据表名获得列信息
+     * @param tableSchema
      * @param tableName
      * @return
      */
-    public TableInfo getTableInfo(String tableName);
+    public TableInfo getTableInfo(String tableSchema ,String tableName);
 
     /**
      * 执行select语句

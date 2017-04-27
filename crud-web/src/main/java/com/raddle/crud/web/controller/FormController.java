@@ -255,7 +255,7 @@ public class FormController extends BaseController {
                 StringBuilder href = new StringBuilder();
                 href.append(request.getContextPath() + "/form/show.htm?defId=" + updateDef.getId());
                 DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
-                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableSchema(), crudDefinition.getTableName());
                 boolean hasPk = false;
                 for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
                     if (columnInfo.isPrimaryKey()) {
@@ -301,7 +301,7 @@ public class FormController extends BaseController {
         }
         String readSql = crudDefinition.getReadSql();
         if (StringUtils.isBlank(readSql) && !DefType.ADD.name().equals(crudDefinition.getDefType())) {
-            readSql = dynamicFormManager.generateDynamicSelectSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+            readSql = dynamicFormManager.generateDynamicSelectSql(crudDefinition.getTableSchema(), crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
         }
         return readSql;
     }
@@ -322,7 +322,7 @@ public class FormController extends BaseController {
             if (crudDefinition.getDefType().equals(DefType.ADD.name()) && StringUtils.isNotBlank(crudDefinition.getKeySelectSql())) {
                 Map<String, Object> insertKey = dynamicFormManager.queryForObject(crudDefinition.getKeySelectSql(), params, datasource);
                 DynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(datasource);
-                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+                TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableSchema(), crudDefinition.getTableName());
                 for (ColumnInfo columnInfo : tableInfo.getColumnInfos()) {
                     if (columnInfo.isPrimaryKey()) {
                         // 这种方式，只支持单主键的
@@ -349,13 +349,13 @@ public class FormController extends BaseController {
         String updateSql = crudDefinition.getUpdateSql();
         if (StringUtils.isBlank(updateSql)) {
             if (crudDefinition.getDefType().equals(DefType.ADD.name())) {
-                updateSql = dynamicFormManager.generateDynamicInsertSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                updateSql = dynamicFormManager.generateDynamicInsertSql(crudDefinition.getTableSchema(), crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             }
             if (crudDefinition.getDefType().equals(DefType.EDIT.name())) {
-                updateSql = dynamicFormManager.generateDynamicUpdateSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                updateSql = dynamicFormManager.generateDynamicUpdateSql(crudDefinition.getTableSchema(), crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             }
             if (crudDefinition.getDefType().equals(DefType.DELETE.name())) {
-                updateSql = dynamicFormManager.generateDynamicDeleteSql(crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
+                updateSql = dynamicFormManager.generateDynamicDeleteSql(crudDefinition.getTableSchema(), crudDefinition.getTableName(), datasourceManager.getDatasource(crudDefinition.getCrudDsId()));
             }
         }
         return updateSql;

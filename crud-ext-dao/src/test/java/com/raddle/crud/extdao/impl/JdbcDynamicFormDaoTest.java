@@ -22,7 +22,7 @@ public class JdbcDynamicFormDaoTest {
 
     @Test
     public void testGetTableInfo() {
-        TableInfo tableInfo = jdbcDynamicFormDao.getTableInfo("TEST_CRUD");
+        TableInfo tableInfo = jdbcDynamicFormDao.getTableInfo(null, "TEST_CRUD");
         System.out.println(tableInfo.getColumnInfos().size());
     }
 

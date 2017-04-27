@@ -53,7 +53,7 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
         }
         DataSource dataSource = crudDatasourceManager.getDatasource(crudDefinition.getCrudDsId());
         JdbcDynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
-        TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableName());
+        TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableSchema(), crudDefinition.getTableName());
         if (tableInfo == null) {
             return new CommonResult<Object>(false, "没获得到表结构信息");
         }

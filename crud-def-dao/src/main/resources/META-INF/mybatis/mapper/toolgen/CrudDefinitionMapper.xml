@@ -24,6 +24,7 @@
     <result column="CREATED_AT" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="UPDATED_AT" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="COMPOSITE_TEMPLATE" jdbcType="VARCHAR" property="compositeTemplate" />
+    <result column="TABLE_SCHEMA" jdbcType="VARCHAR" property="tableSchema" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -98,7 +99,7 @@
     -->
     ID, NAME, DEF_TYPE, TABLE_NAME, CRUD_DS_ID, PRE_SQL, READ_SQL, KEY_SELECT_SQL, UPDATE_SQL, 
     ADD_HREF, IS_PAGING, AUTO_MATCH_BTN, CREATE_TM_COL, UPDATE_TM_COL, DELETED, CREATED_AT, 
-    UPDATED_AT, COMPOSITE_TEMPLATE
+    UPDATED_AT, COMPOSITE_TEMPLATE, TABLE_SCHEMA
   </sql>
   <select id="selectByExample" parameterType="com.raddle.crud.model.toolgen.CrudDefinitionExample" resultMap="BaseResultMap">
     <!--
@@ -190,6 +191,9 @@
       <if test="compositeTemplate != null">
         COMPOSITE_TEMPLATE,
       </if>
+      <if test="tableSchema != null">
+        TABLE_SCHEMA,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       #{id,jdbcType=DECIMAL},
@@ -243,6 +247,9 @@
       </if>
       <if test="compositeTemplate != null">
         #{compositeTemplate,jdbcType=VARCHAR},
+      </if>
+      <if test="tableSchema != null">
+        #{tableSchema,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -317,6 +324,9 @@
       <if test="record.compositeTemplate != null">
         COMPOSITE_TEMPLATE = #{record.compositeTemplate,jdbcType=VARCHAR},
       </if>
+      <if test="record.tableSchema != null">
+        TABLE_SCHEMA = #{record.tableSchema,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -345,7 +355,8 @@
       DELETED = #{record.deleted,jdbcType=DECIMAL},
       CREATED_AT = #{record.createdAt,jdbcType=TIMESTAMP},
       UPDATED_AT = #{record.updatedAt,jdbcType=TIMESTAMP},
-      COMPOSITE_TEMPLATE = #{record.compositeTemplate,jdbcType=VARCHAR}
+      COMPOSITE_TEMPLATE = #{record.compositeTemplate,jdbcType=VARCHAR},
+      TABLE_SCHEMA = #{record.tableSchema,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -407,6 +418,9 @@
       </if>
       <if test="compositeTemplate != null">
         COMPOSITE_TEMPLATE = #{compositeTemplate,jdbcType=VARCHAR},
+      </if>
+      <if test="tableSchema != null">
+        TABLE_SCHEMA = #{tableSchema,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}

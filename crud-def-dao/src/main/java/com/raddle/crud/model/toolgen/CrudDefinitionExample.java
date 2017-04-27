@@ -1384,6 +1384,76 @@ public class CrudDefinitionExample {
             addCriterion("COMPOSITE_TEMPLATE not between", value1, value2, "compositeTemplate");
             return (Criteria) this;
         }
+
+        public Criteria andTableSchemaIsNull() {
+            addCriterion("TABLE_SCHEMA is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaIsNotNull() {
+            addCriterion("TABLE_SCHEMA is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaEqualTo(String value) {
+            addCriterion("TABLE_SCHEMA =", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaNotEqualTo(String value) {
+            addCriterion("TABLE_SCHEMA <>", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaGreaterThan(String value) {
+            addCriterion("TABLE_SCHEMA >", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaGreaterThanOrEqualTo(String value) {
+            addCriterion("TABLE_SCHEMA >=", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaLessThan(String value) {
+            addCriterion("TABLE_SCHEMA <", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaLessThanOrEqualTo(String value) {
+            addCriterion("TABLE_SCHEMA <=", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaLike(String value) {
+            addCriterion("TABLE_SCHEMA like", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaNotLike(String value) {
+            addCriterion("TABLE_SCHEMA not like", value, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaIn(List<String> values) {
+            addCriterion("TABLE_SCHEMA in", values, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaNotIn(List<String> values) {
+            addCriterion("TABLE_SCHEMA not in", values, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaBetween(String value1, String value2) {
+            addCriterion("TABLE_SCHEMA between", value1, value2, "tableSchema");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableSchemaNotBetween(String value1, String value2) {
+            addCriterion("TABLE_SCHEMA not between", value1, value2, "tableSchema");
+            return (Criteria) this;
+        }
     }
 
     /**

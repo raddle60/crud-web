@@ -101,6 +101,7 @@ public class TableMetaHelper {
     private void fillTableInfo(List<TableInfo> tableInfoList, String schema, DatabaseMetaData dbMeta, ResultSet rs) throws SQLException {
         while (rs.next()) {
             TableInfo tableInfo = new TableInfo();
+            tableInfo.setTableSchema(rs.getString("TABLE_SCHEM"));
             tableInfo.setTableName(rs.getString("TABLE_NAME"));
             logger.info("Getting information for table [{}] .", tableInfo.getTableName());
             TableCommentGetter commentGetter = getTableCommentGetter(dbMeta.getConnection());

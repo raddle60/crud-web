@@ -24,6 +24,7 @@ create table CRUD_WEB.CRUD_DEFINITION
   name               VARCHAR2(64) not null,
   def_type           VARCHAR2(32) not null,
   table_name         VARCHAR2(64),
+  table_schema       VARCHAR2(64),
   crud_ds_id         NUMBER(18) not null,
   crud_ds_code       VARCHAR2(64) not null,
   pre_sql            VARCHAR2(4000),

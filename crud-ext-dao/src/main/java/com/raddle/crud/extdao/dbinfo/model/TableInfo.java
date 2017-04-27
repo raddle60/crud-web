@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TableInfo {
-
+    private String tableSchema;
     private String tableName;
     private String comment;
     private Map<String, ColumnInfo> columnMap = new HashMap<String, ColumnInfo>();
@@ -48,5 +48,13 @@ public class TableInfo {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getTableSchema() {
+        return tableSchema;
+    }
+
+    public void setTableSchema(String tableSchema) {
+        this.tableSchema = tableSchema;
     }
 }
