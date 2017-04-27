@@ -33,6 +33,9 @@
 			<td>
 				自动生成sql时用来获得列名，大小写敏感<br>
 				<input type="text" name="tableSchema" id="tableSchema" value="$!{def.tableSchema}">
+                <input type="button" value="大写" onclick="$('#tableSchema').val($('#tableSchema').val().toUpperCase())">
+                <input type="button" value="小写" onclick="$('#tableSchema').val($('#tableSchema').val().toLowerCase())">
+
 			</td>
 		</tr>		
 		<tr>
@@ -42,6 +45,8 @@
 			<td>
 				自动生成sql时用来获得列名，大小写敏感<br>
 				<input type="text" name="tableName" id="tableName" value="$!{def.tableName}">
+                <input type="button" value="大写" onclick="$('#tableName').val($('#tableName').val().toUpperCase())">
+                <input type="button" value="小写" onclick="$('#tableName').val($('#tableName').val().toLowerCase())">				
 			</td>
 		</tr>
 		#end
