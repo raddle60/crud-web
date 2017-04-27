@@ -19,7 +19,7 @@
 			<td>
 				#set($itemBean = $result)
 				#parse("/form/item/$formTool.getItemVmFileName($item)")
-				#if($item.itemType == "INPUT") #if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end #end
+				#if($item.format)格式$!item.format#end	#if($item.descript)$!item.descript#end
 			</td>
 		</tr>
 		#end
