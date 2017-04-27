@@ -21,7 +21,7 @@
 			<td>$!{def.name}[$!{def.id}]</td>
 			<td>$!{def.defType}</td>
 			<td>$!{def.crudDsName}</td>
-			<td>$!{def.tableName}</td>
+			<td>#if($!{def.tableSchema})$!{def.tableSchema}.#end$!{def.tableName}</td>
 			<td>
 			#if($def.defType == "LIST")
 				<a href="#springUrl("/form/show.htm")?defId=$!{def.id}" target="_blank" >进入页面</a>
