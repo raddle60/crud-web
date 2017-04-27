@@ -28,7 +28,7 @@
 		#if($def.defType != "MULTI_LIST")
 		<tr>
 			<th>
-				表名
+				表Schema
 			</th>
 			<td>
 				自动生成sql时用来获得列名，大小写敏感<br>
