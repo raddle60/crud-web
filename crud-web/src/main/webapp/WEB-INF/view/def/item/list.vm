@@ -23,7 +23,7 @@
 			<td>$!{item.itemType}</td>
 			<td>$!{item.inputType}</td>
 			<td>$!{item.actionType}</td>
-			<td>$!{item.itemOrder}</td>
+			<td>#if($item.deleted == 0)<input id="ord_$!{item.id}" type="text" value="$!{item.itemOrder}" size="1"><input type="button" id="ord_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.itemOrder}#end</td>
 			<td>
 				<a href="#springUrl("/def/item/edit.htm")?id=$!{item.id}" target="_blank" >编辑</a>
 				#if($item.deleted == 0)
@@ -38,6 +38,9 @@
 </table>
 <script>
 $(function(){
+	$("input[id^=ord_btn_]").click(function(){
+		window.open("#springUrl("/def/item/setOrder.htm")?id="+$(this).attr("dbid")+"&itemOrder="+$("#ord_"+$(this).attr("dbid")).val());
+	});
 	$("input[id^=del_btn_]").click(function(){
 		if(confirm("你确定要删除表单项["+$(this).attr("msg")+"]的配置吗？")){
 			window.open("#springUrl("/def/item/delete.htm")?id="+$(this).attr("dbid"));

@@ -166,6 +166,49 @@ public class ItemController extends BaseController {
         model.put("message", "保存成功");
         return "common/new-window-result";
     }
+    
+    @RequestMapping(value = "def/item/setOrder")
+    public String setOrder(Long id, final Integer itemOrder, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (id == null) {
+            throw new RuntimeException("表单项id不能为空");
+        }
+        if (itemOrder == null) {
+            throw new RuntimeException("顺序号不能为空");
+        }
+        final CrudItem crudItem = crudItemDao.selectByPrimaryKey(id);
+        final CrudItem item = new CrudItem();
+        item.setId(id);
+        item.setItemOrder(itemOrder);
+        if (crudItem.getItemOrder().equals(itemOrder)) {
+            // 排序相等,不需要调整
+            crudItemDao.updateByPrimaryKeySelective(item);
+        } else {
+            // 排序不等,需要调整
+            CrudItemExample existExample = new CrudItemExample();
+            Criteria existWhere = existExample.createCriteria();
+            existWhere.andCrudDefIdEqualTo(crudItem.getCrudDefId());
+            existWhere.andFkTypeEqualTo(crudItem.getFkType());
+            existWhere.andItemOrderEqualTo(crudItem.getItemOrder());
+            List<CrudItem> existList = crudItemDao.selectByExample(existExample);
+            if (existList.size() == 0) {
+                // 新排序没被占用,直接使用
+                crudItemDao.updateByPrimaryKeySelective(item);
+            } else {
+                // 新排序被占用了,需要往下调
+                TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+                transactionTemplate.execute(new TransactionCallback<Object>() {
+
+                    @Override
+                    public Object doInTransaction(TransactionStatus status) {
+                        crudItemDao.downItemOrder(crudItem.getCrudDefId(), crudItem.getFkType(), itemOrder);
+                        crudItemDao.updateByPrimaryKeySelective(item);
+                        return null;
+                    }
+                });
+            }
+        }
+        return "common/new-window-result";
+    }
 
     @RequestMapping(value = "def/item/delete")
     public String delete(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
@@ -175,7 +218,7 @@ public class ItemController extends BaseController {
             item.setDeleted((short) 1);
             crudItemDao.updateByPrimaryKeySelective(item);
         }
-        model.put("message", "删除成功");
+        // model.put("message", "删除成功");
         return "common/new-window-result";
     }
 
@@ -187,7 +230,7 @@ public class ItemController extends BaseController {
             item.setDeleted((short) 0);
             crudItemDao.updateByPrimaryKeySelective(item);
         }
-        model.put("message", "恢复成功");
+        // model.put("message", "恢复成功");
         return "common/new-window-result";
     }
 
