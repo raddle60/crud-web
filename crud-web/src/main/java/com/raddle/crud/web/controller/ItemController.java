@@ -1,7 +1,11 @@
 package com.raddle.crud.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -207,6 +211,30 @@ public class ItemController extends BaseController {
                 });
             }
         }
+        return "common/new-window-result";
+    }
+
+    @RequestMapping(value = "def/item/setTitle")
+    public String setTitle(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (id == null) {
+            throw new RuntimeException("表单项id不能为空");
+        }
+        String title = null;
+        Matcher matcher = Pattern.compile("title=([%\\w]+)").matcher(request.getQueryString());
+        if (matcher.find()) {
+            new URLDecoder();
+            try {
+                title = URLDecoder.decode(matcher.group(1), "utf-8");
+            } catch (UnsupportedEncodingException e) {
+            }
+        }
+        if (StringUtils.isEmpty(title)) {
+            throw new RuntimeException("标题不能为空");
+        }
+        final CrudItem item = new CrudItem();
+        item.setId(id);
+        item.setTitle(title);
+        crudItemDao.updateByPrimaryKeySelective(item);
         return "common/new-window-result";
     }
 

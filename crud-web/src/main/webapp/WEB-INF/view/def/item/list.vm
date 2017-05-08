@@ -6,19 +6,19 @@
 <table class="list">
 	<thead>
 		<tr>
-			<th>标题</th>
-			<th>变量名</th>
-			<th>表单项类型</th>
-			<th>输入类型</th>
-			<th>动作类型</th>
-			<th>顺序</th>
+			<th style="width:300px">标题</th>
+			<th style="width:200px">变量名</th>
+			<th style="width:100px">表单项类型</th>
+			<th style="width:100px">输入类型</th>
+			<th style="width:100px">动作类型</th>
+			<th style="width:100px">顺序</th>
 			<th>操作</th>
 		</tr>
 	</thead>
 	<tbody>
 		#foreach($item in $list)
 		<tr #if($item.deleted == 1)class="deleted"#end>
-			<td>$!{item.title}</td>
+			<td>#if($item.deleted == 0)<input id="tit_$!{item.id}" type="text" value="$!{item.title}" size="30"><input type="button" id="tit_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.title}#end</td>
 			<td>$!{item.varName}</td>
 			<td>$!{item.itemType}</td>
 			<td>$!{item.inputType}</td>
@@ -38,6 +38,9 @@
 </table>
 <script>
 $(function(){
+	$("input[id^=tit_btn_]").click(function(){
+		window.open("#springUrl("/def/item/setTitle.htm")?id="+$(this).attr("dbid")+"&title="+encodeURIComponent($("#tit_"+$(this).attr("dbid")).val()));
+	});
 	$("input[id^=ord_btn_]").click(function(){
 		window.open("#springUrl("/def/item/setOrder.htm")?id="+$(this).attr("dbid")+"&itemOrder="+$("#ord_"+$(this).attr("dbid")).val());
 	});
