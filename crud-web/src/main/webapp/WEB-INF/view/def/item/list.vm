@@ -18,12 +18,12 @@
 	<tbody>
 		#foreach($item in $list)
 		<tr #if($item.deleted == 1)class="deleted"#end>
-			<td>#if($item.deleted == 0)<input id="tit_$!{item.id}" type="text" value="$!{item.title}" size="30"><input type="button" id="tit_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.title}#end</td>
+			<td>#if($item.deleted == 0)<input id="tit_$!{item.id}" type="text" value="$!{item.title}" size="30" autocomplete="off"><input type="button" id="tit_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.title}#end</td>
 			<td>$!{item.varName}</td>
 			<td>$!{item.itemType}</td>
 			<td>$!{item.inputType}</td>
 			<td>$!{item.actionType}</td>
-			<td>#if($item.deleted == 0)<input id="ord_$!{item.id}" type="text" value="$!{item.itemOrder}" size="1"><input type="button" id="ord_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.itemOrder}#end</td>
+			<td>#if($item.deleted == 0)<input id="ord_$!{item.id}" type="text" value="$!{item.itemOrder}" size="1" autocomplete="off"><input type="button" id="ord_btn_$!{item.id}" dbid="$!{item.id}" value="设置">#else$!{item.itemOrder}#end</td>
 			<td>
 				<a href="#springUrl("/def/item/edit.htm")?id=$!{item.id}" target="_blank" >编辑</a>
 				#if($item.deleted == 0)
