@@ -1,5 +1,5 @@
 #set($page_title = ${def.name} + " - " + ${def.defType})
-<b class="title">${def.name} - ${def.defType} - [$!{dsConfig.code} - $!{dsConfig.envCode}] - $!{duration}</b>
+<b class="title">${def.name}[${def.id}] - ${def.defType} - [$!{dsConfig.code} - $!{dsConfig.envCode}] - $!{duration}</b>
 <form id="j_form_${def.id}" action="#springUrl("/form/save.ajax")" method="post">
 	<input type="hidden" name="defId" value="$!{def.id}">
 	## 输出hidden框
