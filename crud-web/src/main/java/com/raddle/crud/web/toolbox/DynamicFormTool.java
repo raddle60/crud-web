@@ -147,6 +147,24 @@ public class DynamicFormTool {
         return writer.toString();
     }
 
+    /**
+     * 渲染href表达式,trim所有空白符
+     * @param expr vm表达式
+     * @param context map或pojo
+     * @param request
+     * @return null或非空白
+     */
+    public String randerHref(String expr, Object context, HttpServletRequest request) {
+        String content = randerExpr(expr, context, request);
+        if (content != null) {
+            content = content.replaceAll("\\s", "");
+        }
+        if (StringUtils.isEmpty(content)) {
+            return null;
+        }
+        return content;
+    }
+
     public List<Map<String, Object>> ops(CrudItem crudItem) {
         return dynamicFormManager.getItemOptions(crudItem);
     }

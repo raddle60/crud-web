@@ -149,7 +149,7 @@
 				超链接
 			</th>
 			<td>
-				<input type="text" name="href" id="href" size="80" value="$!{item.href}">
+				<textarea name="href" id="href" rows="10" cols="80">$!{item.href}</textarea>
 			</td>
 		</tr>
 		<tr>

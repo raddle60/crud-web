@@ -1,3 +1,7 @@
 #if($item)
-	<a href="$!formTool.randerExpr(${item.href},$itemBean,$request)" target="_blank">#if($item.varName)$!formTool.v($itemBean,$item.varName)#else$!{item.title}#end</a>
+    #if($!formTool.randerHref(${item.href},$itemBean,$request))
+        <a href="$!formTool.randerHref(${item.href},$itemBean,$request)" target="_blank">#if($item.varName)$!formTool.lOfv($item,$itemBean,$item.varName)#else$!{item.title}#end</a>
+    #else
+        #if($item.varName)$!formTool.lOfv($item,$itemBean,$item.varName)#else$!{item.title}
+    #end
 #end
