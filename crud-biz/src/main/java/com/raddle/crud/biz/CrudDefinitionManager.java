@@ -1,7 +1,10 @@
 package com.raddle.crud.biz;
 
+import java.util.List;
+
 import com.raddle.crud.enums.DefType;
 import com.raddle.crud.enums.ItemFkType;
+import com.raddle.crud.model.toolgen.CrudDefinition;
 import com.raddle.crud.vo.CommonResult;
 
 /**
@@ -20,4 +23,6 @@ public interface CrudDefinitionManager {
     public CommonResult<?> autoCreateItemsByTable(Long id, ItemFkType fkType);
     
     public boolean isExistByTable(DefType defType, String tableSchema, String tableName);
+    
+    public List<CrudDefinition> getByTable(DefType defType, String tableSchema, String tableName);
 }

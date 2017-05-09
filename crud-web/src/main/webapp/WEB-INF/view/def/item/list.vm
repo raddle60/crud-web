@@ -3,6 +3,7 @@
 <a href="#springUrl("/def/item/edit.htm")?defId=$!{defId}&fkType=$!{fkType}" target="_blank">新增</a>
 <a href="#springUrl("/def/def/auto-create-item.htm")?id=$!{defId}&fkType=$!{fkType}" target="_blank">根据表名自动生成</a>
 <a href="#springUrl("/def/def/copy-item-index.htm")?id=$!{defId}&fkType=$!{fkType}" target="_blank">复制表单项</a>
+<a href="#springUrl("/def/item/match-form.htm")?defId=$!{defId}&fkType=$!{fkType}&defType=VIEW" target="_blank">匹配VIEW</a>
 <table class="list">
 	<thead>
 		<tr>

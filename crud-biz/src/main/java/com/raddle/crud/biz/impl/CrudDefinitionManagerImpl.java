@@ -128,4 +128,15 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
         List<CrudDefinitionVo> list = crudDefinitionDao.selectCrudDefinitionVoByExample(where);
         return list.size() > 0;
     }
+
+    @Override
+    public List<CrudDefinition> getByTable(DefType defType, String tableSchema, String tableName) {
+        CrudDefinitionExample where = new CrudDefinitionExample();
+        Criteria criteria = where.createCriteria().andDefTypeEqualTo(defType.name()).andTableNameEqualTo(tableName);
+        if (StringUtils.isNotEmpty(tableSchema)) {
+            criteria.andTableSchemaEqualTo(tableSchema);
+        }
+        List<CrudDefinition> list = crudDefinitionDao.selectByExample(where);
+        return list;
+    }
 }

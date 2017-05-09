@@ -2,7 +2,9 @@ package com.raddle.crud.web.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.raddle.crud.biz.CrudDatasourceManager;
+import com.raddle.crud.biz.CrudDefinitionManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
 import com.raddle.crud.dao.CrudItemDao;
@@ -30,6 +35,9 @@ import com.raddle.crud.enums.InputType;
 import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.enums.ItemType;
 import com.raddle.crud.enums.OptionType;
+import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
+import com.raddle.crud.extdao.dbinfo.model.TableInfo;
+import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
@@ -46,6 +54,10 @@ public class ItemController extends BaseController {
     private CrudDatasourceDao crudDatasourceDao;
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
+    @Autowired
+    private CrudDefinitionManager crudDefinitionManager;
+    @Autowired
+    private CrudDatasourceManager crudDatasourceManager;
 
     @Resource(name = "crudTransactionManager")
     private PlatformTransactionManager transactionManager;
@@ -235,6 +247,57 @@ public class ItemController extends BaseController {
         item.setId(id);
         item.setTitle(title);
         crudItemDao.updateByPrimaryKeySelective(item);
+        return "common/new-window-result";
+    }
+    
+    @RequestMapping(value = "def/item/match-form")
+    public String matchForm(Long defId, ItemFkType fkType, DefType defType, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        if (defId == null) {
+            throw new RuntimeException("表单id不能为空");
+        }
+        if (fkType == null) {
+            throw new RuntimeException("fkType不能为空");
+        }
+        if (defType == null) {
+            throw new RuntimeException("defType不能为空");
+        }
+        CrudDefinition crudDefinition = crudDefinitionDao.selectByPrimaryKey(defId);
+        List<CrudDefinition> byTable = crudDefinitionManager.getByTable(defType, crudDefinition.getTableSchema(), crudDefinition.getTableName());
+        if (byTable.size() == 0) {
+            model.put("message", "未找到" + crudDefinition.getTableSchema() + "." + crudDefinition.getTableName() + "-" + defType + "的表单");
+        } else if (byTable.size() > 0) {
+            CrudItemExample example = new CrudItemExample();
+            Criteria criteria = example.createCriteria();
+            criteria.andCrudDefIdEqualTo(defId);
+            criteria.andFkTypeEqualTo(fkType.name());
+            example.setOrderByClause("deleted,item_order");
+            List<CrudItem> list = crudItemDao.selectByExample(example);
+            //
+            DataSource dataSource = crudDatasourceManager.getDatasource(crudDefinition.getCrudDsId());
+            JdbcDynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
+            TableInfo tableInfo = dynamicFormDao.getTableInfo(crudDefinition.getTableSchema(), crudDefinition.getTableName());
+            for (CrudItem crudItem : list) {
+                Iterator<ColumnInfo> it = tableInfo.getPKColumnInfos().iterator();
+                while (it.hasNext()) {
+                    ColumnInfo col = it.next();
+                    if (col.getColumnName().toLowerCase().equals(crudItem.getVarName())) {
+                        CrudItem update = new CrudItem();
+                        update.setId(crudItem.getId());
+                        update.setItemType(ItemType.ACTION.name());
+                        update.setActionType(ActionType.HREF.name());
+                        Iterator<ColumnInfo> it2 = tableInfo.getPKColumnInfos().iterator();
+                        List<String> whereCols = new ArrayList<String>();
+                        while (it2.hasNext()) {
+                            ColumnInfo col2 = it2.next();
+                            whereCols.add(col2.getColumnName().toLowerCase() + "=${" + col2.getColumnName().toLowerCase() + "}");
+                        }
+                        update.setHref("/crud-web/form/show.htm?defId=" + byTable.get(0).getId() + "&" + StringUtils.join(whereCols, "&"));
+                        crudItemDao.updateByPrimaryKeySelective(update);
+                        break;
+                    }
+                }
+            }
+        }
         return "common/new-window-result";
     }
 
