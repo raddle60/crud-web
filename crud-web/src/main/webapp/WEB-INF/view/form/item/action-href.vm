@@ -2,6 +2,6 @@
     #if($!formTool.randerHref(${item.href},$itemBean,$request))
         <a href="$!formTool.randerHref(${item.href},$itemBean,$request)" target="_blank">#if($item.varName)$!formTool.lOfv($item,$itemBean,$item.varName)#else$!{item.title}#end</a>
     #else
-        #if($item.varName)$!formTool.lOfv($item,$itemBean,$item.varName)#else$!{item.title}
+        #if($item.varName)$!formTool.lOfv($item,$itemBean,$item.varName)#else$!{item.title}#end
     #end
 #end
