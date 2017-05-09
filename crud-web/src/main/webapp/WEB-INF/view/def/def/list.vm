@@ -3,6 +3,7 @@
 #foreach($defType in $defTypes)
 <a href="#springUrl("/def/def/edit.htm")?defType=${defType}" target="_blank">新增${defType}表单</a>&nbsp;&nbsp;
 #end
+<a href="#springUrl("/def/def/batch-add.htm")" target="_blank">批量新增表单</a>&nbsp;&nbsp;
 <a href="#springUrl("/def/datasource/clear-table-cache.htm")" target="_blank">清除表缓存</a>
 <table class="list">
 	<thead>

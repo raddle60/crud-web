@@ -1,5 +1,6 @@
 package com.raddle.crud.biz;
 
+import com.raddle.crud.enums.DefType;
 import com.raddle.crud.enums.ItemFkType;
 import com.raddle.crud.vo.CommonResult;
 
@@ -17,4 +18,6 @@ public interface CrudDefinitionManager {
      * @return
      */
     public CommonResult<?> autoCreateItemsByTable(Long id, ItemFkType fkType);
+    
+    public boolean isExistByTable(DefType defType, String tableSchema, String tableName);
 }

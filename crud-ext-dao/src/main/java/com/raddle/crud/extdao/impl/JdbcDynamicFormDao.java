@@ -56,7 +56,9 @@ public class JdbcDynamicFormDao implements DynamicFormDao {
                 return null;
             }
         });
-        tableInfoCache.put(tableKey, tableInfo);
+        if (tableInfo != null) {
+            tableInfoCache.put(tableKey, tableInfo);
+        }
         return tableInfo;
     }
 

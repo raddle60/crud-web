@@ -1,6 +1,7 @@
 package com.raddle.crud.biz.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -21,9 +22,12 @@ import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
 import com.raddle.crud.extdao.dbinfo.model.TableInfo;
 import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDefinition;
+import com.raddle.crud.model.toolgen.CrudDefinitionExample;
+import com.raddle.crud.model.toolgen.CrudDefinitionExample.Criteria;
 import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.vo.CommonResult;
+import com.raddle.crud.vo.CrudDefinitionVo;
 
 /**
  * 类CrudDefinitionManagerImpl.java的实现描述：
@@ -112,5 +116,16 @@ public class CrudDefinitionManagerImpl implements CrudDefinitionManager {
         item.setCreatedAt(new Date());
         item.setUpdatedAt(new Date());
         crudItemDao.insertSelective(item);
+    }
+
+    @Override
+    public boolean isExistByTable(DefType defType, String tableSchema, String tableName) {
+        CrudDefinitionExample where = new CrudDefinitionExample();
+        Criteria criteria = where.createCriteria().andDefTypeEqualTo(defType.name()).andTableNameEqualTo(tableName);
+        if (StringUtils.isNotEmpty(tableSchema)) {
+            criteria.andTableSchemaEqualTo(tableSchema);
+        }
+        List<CrudDefinitionVo> list = crudDefinitionDao.selectCrudDefinitionVoByExample(where);
+        return list.size() > 0;
     }
 }

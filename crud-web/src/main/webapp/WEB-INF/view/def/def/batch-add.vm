@@ -1,0 +1,27 @@
+#set($page_title = "批量新增")
+<form name="J_form" id="J_form" action="#springUrl("/def/def/batch-add-save.htm")" method="post">
+<label><input type="checkbox" name="defTypes" value="LIST" checked>LIST</label><label><input type="checkbox" name="defTypes" value="VIEW" checked>VIEW</label>
+<br/>
+<select name="crudDsId" id="crudDsId">
+    <option value="">    </option>
+	#foreach($datasource in $datasources)
+		<option value="$datasource.id">$datasource.name</option>
+	#end
+</select>
+<br/>
+表列表：schema.tableName<br>
+<textarea name="tables" id="tables" rows="20" cols="60"></textarea>
+<input type="button" value="大写" onclick="$('#tables').val($('#tables').val().toUpperCase())">
+<input type="button" value="小写" onclick="$('#tables').val($('#tables').val().toLowerCase())">	
+<br/>
+<input type="button" id="addBtn" value="新增">
+</form>
+<script>
+$(function(){
+	$("#addBtn").click(function(){
+		if(confirm("确定要批量新增吗？")){
+			ajaxSubmitWithUrl($("#J_form"),"#springUrl("/def/def/batch-add-save.htm")");
+		}
+	});
+});
+</script>

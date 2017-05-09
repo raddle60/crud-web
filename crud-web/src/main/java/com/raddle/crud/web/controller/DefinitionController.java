@@ -1,8 +1,10 @@
 package com.raddle.crud.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.raddle.crud.biz.CrudDatasourceManager;
 import com.raddle.crud.biz.CrudDefinitionManager;
 import com.raddle.crud.dao.CrudDatasourceDao;
 import com.raddle.crud.dao.CrudDefinitionDao;
@@ -26,6 +30,9 @@ import com.raddle.crud.dao.CrudItemDao;
 import com.raddle.crud.enums.DefType;
 import com.raddle.crud.enums.ItemCopyType;
 import com.raddle.crud.enums.ItemFkType;
+import com.raddle.crud.extdao.dbinfo.model.ColumnInfo;
+import com.raddle.crud.extdao.dbinfo.model.TableInfo;
+import com.raddle.crud.extdao.impl.JdbcDynamicFormDao;
 import com.raddle.crud.model.toolgen.CrudDatasource;
 import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 import com.raddle.crud.model.toolgen.CrudDefinition;
@@ -40,6 +47,8 @@ import com.raddle.crud.web.toolbox.DynamicFormTool;
 @Controller
 public class DefinitionController extends BaseController {
 
+    private static final Pattern TABLE_SCHEMA_PATTERN = Pattern.compile("([^\\s]+)\\.([^\\s]+)");
+
     public static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$\\{def_(\\d+)\\}");
 
     @Autowired
@@ -48,6 +57,8 @@ public class DefinitionController extends BaseController {
     private CrudDatasourceDao crudDatasourceDao;
     @Autowired
     private CrudDefinitionManager crudDefinitionManager;
+    @Autowired
+    private CrudDatasourceManager crudDatasourceManager;
     @Autowired
     private CrudItemDao crudItemDao;
     @Resource(name = "dynamicFormTool")
@@ -116,6 +127,93 @@ public class DefinitionController extends BaseController {
         return "common/new-window-result";
     }
 
+    @RequestMapping(value = "def/def/batch-add")
+    public String batchAdd(ModelMap model, HttpServletResponse response, HttpServletRequest request) {
+        CrudDatasourceExample example = new CrudDatasourceExample();
+        example.createCriteria().andDeletedEqualTo((short) 0);
+        example.setOrderByClause("created_at desc");
+        List<CrudDatasource> datasources = crudDatasourceDao.selectByExample(example);
+        model.put("datasources", datasources);
+        return "def/def/batch-add";
+    }
+
+    @RequestMapping(value = "def/def/batch-add-save")
+    public String batchAddSave(DefType[] defTypes, Long crudDsId, String tables, ModelMap model, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        CommonResult<?> commonResult = new CommonResult<Object>(false);
+        if (defTypes == null) {
+            commonResult.setMessage("未选择新增类型");
+            return writeJson(commonResult, response);
+        }
+        if (crudDsId == null) {
+            commonResult.setMessage("未选择数据源");
+            return writeJson(commonResult, response);
+        }
+        if (StringUtils.isEmpty(tables)) {
+            commonResult.setMessage("未填写表列表");
+            return writeJson(commonResult, response);
+        }
+        Matcher matcher = TABLE_SCHEMA_PATTERN.matcher(tables);
+        DataSource dataSource = crudDatasourceManager.getDatasource(crudDsId);
+        JdbcDynamicFormDao dynamicFormDao = new JdbcDynamicFormDao(dataSource);
+        while (matcher.find()) {
+            String tableSchema = matcher.group(1);
+            String tableName = matcher.group(2);
+            TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
+            if (tableInfo == null) {
+                commonResult.setMessage("没获得到表结构信息" + matcher.group());
+                return writeJson(commonResult, response);
+            }
+        }
+        // 创建
+        Matcher matcher2 = TABLE_SCHEMA_PATTERN.matcher(tables);
+        List<String> inserted = new ArrayList<String>();
+        List<String> skipped = new ArrayList<String>();
+        while (matcher2.find()) {
+            String tableSchema = matcher2.group(1);
+            String tableName = matcher2.group(2);
+            TableInfo tableInfo = dynamicFormDao.getTableInfo(tableSchema, tableName);
+            for (DefType defType : defTypes) {
+                // 检查是否存在
+                if (!crudDefinitionManager.isExistByTable(defType, tableSchema, tableName)) {
+                    CrudDefinition def = new CrudDefinition();
+                    def.setName(tableName);
+                    def.setDefType(defType.name());
+                    def.setTableSchema(tableSchema);
+                    def.setTableName(tableName);
+                    def.setCrudDsId(crudDsId);
+                    ItemFkType itemFkType = null;
+                    if (defType == DefType.VIEW) {
+                        List<String> whereCols = new ArrayList<String>();
+                        Iterator<ColumnInfo> it = tableInfo.getPKColumnInfos().iterator();
+                        while (it.hasNext()) {
+                            ColumnInfo col = it.next();
+                            whereCols.add("t." + col.getColumnName() + " = '${" + col.getColumnName().toLowerCase() + "}'");
+                        }
+                        def.setReadSql("select * from " + tableSchema + "." + tableName + " t where " + StringUtils.join(whereCols, " and "));
+                        itemFkType = ItemFkType.DEF;
+                    } else if (defType == DefType.LIST) {
+                        def.setReadSql("select * from " + tableSchema + "." + tableName + " t where 1<>1 ");
+                        itemFkType = ItemFkType.DEF_LIST;
+                    } else {
+                        skipped.add(tableSchema + "." + tableName + "-" + defType);
+                        continue;
+                    }
+                    def.setDeleted((short) 0);
+                    def.setCreatedAt(new Date());
+                    def.setUpdatedAt(new Date());
+                    inserted.add(tableSchema + "." + tableName + "-" + defType);
+                    crudDefinitionDao.insertSelective(def);
+                    crudDefinitionManager.autoCreateItemsByTable(def.getId(), itemFkType);
+                } else {
+                    skipped.add(tableSchema + "." + tableName + "-" + defType);
+                }
+            }
+        }
+        commonResult.setMessage("批量增加成功\n插入" + inserted.size() + "个\n" + StringUtils.join(inserted, "\n") + "已存在" + skipped.size() + "个\n" + StringUtils.join(skipped, "\n"));
+        commonResult.setSuccess(inserted.size() > 0);
+        return writeJson(commonResult, response);
+    }
+    
     @RequestMapping(value = "def/def/delete")
     public String delete(Long id, ModelMap model, HttpServletResponse response, HttpServletRequest request) {
         if (id != null) {
