@@ -23,4 +23,8 @@ public class DateTool {
     public String getCurDateStrByFormat(String format) {
         return DateFormatUtils.format(new Date(), format);
     }
+
+    public Date getCurDate() {
+        return new Date();
+    }
 }
