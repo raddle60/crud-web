@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.tools.generic.EscapeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,7 +49,6 @@ import com.raddle.crud.model.toolgen.CrudItem;
 import com.raddle.crud.model.toolgen.CrudItemExample;
 import com.raddle.crud.model.toolgen.CrudItemExample.Criteria;
 import com.raddle.crud.vo.CommonResult;
-import com.raddle.crud.web.toolbox.DateTool;
 import com.raddle.crud.web.toolbox.DynamicFormTool;
 import com.raddle.crud.web.toolbox.SqlUtils;
 
@@ -194,8 +192,6 @@ public class FormController extends BaseController {
                 subModel.put("stringEscapeUtils", new StringEscapeUtils());
                 subModel.put("dateUtils", new DateUtils());
                 subModel.put("dateFormatUtils", new DateFormatUtils());
-                subModel.put("dateTool", new DateTool());
-                subModel.put("escape", new EscapeTool());
                 if (subDef.getDefType().equals(DefType.LIST.name())) {
                     try {
                         String templateName = toListResult(subDef, subModel, subResults, request) + ".vm";
