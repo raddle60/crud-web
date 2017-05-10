@@ -2,6 +2,7 @@ package com.raddle.crud.biz.impl;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,29 +26,26 @@ import com.raddle.crud.model.toolgen.CrudDatasourceExample;
 @Service("crudDatasourceManager")
 public class CrudDatasourceManagerImpl implements CrudDatasourceManager {
 
-    private static ThreadLocal<Map<Long, CachedDataSource>> datasourceThreadCache = new ThreadLocal<Map<Long, CachedDataSource>>();
+    private static Map<Long, CachedDataSource> datasourceCache = new HashMap<Long, CrudDatasourceManagerImpl.CachedDataSource>();
 
     @Autowired
     private CrudDatasourceDao crudDatasourceDao;
 
     @Override
     public DataSource getDatasource(Long id) {
-        if (datasourceThreadCache.get() == null) {
-            datasourceThreadCache.set(new HashMap<Long, CachedDataSource>());
-        }
         CrudDatasource crudDatasource = crudDatasourceDao.selectByPrimaryKey(id);
-        if (datasourceThreadCache.get().containsKey(id)) {
-            if (datasourceThreadCache.get().get(id).isSameDs(crudDatasource)) {
-                return datasourceThreadCache.get().get(id).dataSource;
+        if (datasourceCache.containsKey(id)) {
+            if (datasourceCache.get(id).isSameDs(crudDatasource)) {
+                return datasourceCache.get(id).dataSource;
             } else {
                 // 关闭数据源
-                PooledDataSource dataSource = datasourceThreadCache.get().get(id).dataSource;
+                PooledDataSource dataSource = datasourceCache.get(id).dataSource;
                 try {
                     dataSource.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
-                datasourceThreadCache.get().remove(id);
+                datasourceCache.remove(id);
             }
         }
         ComboPooledDataSource cpds = new ComboPooledDataSource();
@@ -64,7 +62,7 @@ public class CrudDatasourceManagerImpl implements CrudDatasourceManager {
         cpds.setMaxPoolSize(10);
         cpds.setMaxIdleTime(1800);
         cpds.setIdleConnectionTestPeriod(300);
-        datasourceThreadCache.get().put(id, new CachedDataSource(crudDatasource, cpds));
+        datasourceCache.put(id, new CachedDataSource(crudDatasource, cpds));
         return cpds;
     }
 
@@ -81,7 +79,17 @@ public class CrudDatasourceManagerImpl implements CrudDatasourceManager {
     }
 
     public static void clearThreadCache() {
-        datasourceThreadCache.remove();
+        List<CachedDataSource> list = new ArrayList<CrudDatasourceManagerImpl.CachedDataSource>(datasourceCache.values());
+        datasourceCache.clear();
+        for (CachedDataSource cachedDataSource : list) {
+            // 关闭数据源
+            PooledDataSource dataSource = cachedDataSource.dataSource;
+            try {
+                dataSource.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class CachedDataSource {

@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.raddle.crud.biz.impl.CrudDatasourceManagerImpl;
 import com.raddle.crud.biz.impl.VelocityFormManager;
 
 /**
@@ -29,7 +28,6 @@ public class CacheCleanFilter implements Filter {
             chain.doFilter(request, response);
         } finally {
             VelocityFormManager.clearThreadCache();
-            CrudDatasourceManagerImpl.clearThreadCache();
         }
     }
 
