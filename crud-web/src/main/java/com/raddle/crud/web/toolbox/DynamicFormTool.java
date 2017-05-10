@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.tools.generic.EscapeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.velocity.VelocityConfig;
 
@@ -141,7 +145,14 @@ public class DynamicFormTool {
         if (velocityContext == null) {
             velocityContext = new VelocityContext();
         }
+        velocityContext.put("formTool", this);
         velocityContext.put("request", request);
+        velocityContext.put("stringUtils", new StringUtils());
+        velocityContext.put("stringEscapeUtils", new StringEscapeUtils());
+        velocityContext.put("dateUtils", new DateUtils());
+        velocityContext.put("dateFormatUtils", new DateFormatUtils());
+        velocityContext.put("dateTool", new DateTool());
+        velocityContext.put("escape", new EscapeTool());
         StringWriter writer = new StringWriter();
         velocityConfig.getVelocityEngine().evaluate(velocityContext, writer, "randerExpr", expr);
         return writer.toString();
