@@ -149,6 +149,7 @@
 				超链接
 			</th>
 			<td>
+				字段值：${colunmName},结果集：${result_xx},结果第一条${result_xx_first}<br>
 				<textarea name="href" id="href" rows="10" cols="80">$!{item.href}</textarea>
 			</td>
 		</tr>

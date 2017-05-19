@@ -15,6 +15,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.view.velocity.VelocityConfig;
 
 import com.raddle.crud.biz.DynamicFormManager;
@@ -125,7 +126,7 @@ public class DynamicFormTool {
      * @param request
      * @return
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public String randerExpr(String expr, Object context, HttpServletRequest request) {
         if (StringUtils.isBlank(expr)) {
             return null;
@@ -145,8 +146,15 @@ public class DynamicFormTool {
         if (velocityContext == null) {
             velocityContext = new VelocityContext();
         }
+        Map<String, Object> subResults = (Map<String, Object>) request.getAttribute("subResults");
+        if (subResults != null) {
+            for (Map.Entry<String, Object> entry : subResults.entrySet()) {
+                velocityContext.put(entry.getKey(), entry.getValue());
+            }
+        }
         velocityContext.put("formTool", this);
         velocityContext.put("request", request);
+        velocityContext.put("springMacroRequestContext", new RequestContext(request));
         velocityContext.put("stringUtils", new StringUtils());
         velocityContext.put("stringEscapeUtils", new StringEscapeUtils());
         velocityContext.put("dateUtils", new DateUtils());

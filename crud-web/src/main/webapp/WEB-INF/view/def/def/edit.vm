@@ -80,6 +80,7 @@
 			</th>
 			<td>
 				查询列表或为更新页面查询单条显示记录<br>
+				字段值：${colunmName},结果集：${result_xx},结果第一条${result_xx_first},join多个记录字段 IN ($sqlUtils.joinIn($result_xx,"colunmName"))<br>
 				<textarea name="readSql" id="readSql" rows="20" cols="80">$!{def.readSql}</textarea>
 			</td>
 		</tr>

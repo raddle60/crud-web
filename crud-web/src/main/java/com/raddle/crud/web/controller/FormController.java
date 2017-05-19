@@ -176,6 +176,7 @@ public class FormController extends BaseController {
         model.put("def", crudDefinition);
         model.put("params", createParams(request, extraParams));
         Map<String, Object> subResults = new HashMap<String, Object>();
+        request.setAttribute("subResults", subResults);
         Matcher matcher = DefinitionController.COMP_DEF_ID_PATTERN.matcher(crudDefinition.getCompositeTemplate());
         Set<Long> generated = new HashSet<Long>();
         while (matcher.find()) {
