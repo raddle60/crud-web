@@ -49,7 +49,7 @@ public class DefinitionController extends BaseController {
 
     private static final Pattern TABLE_SCHEMA_PATTERN = Pattern.compile("([^\\s]+)\\.([^\\s]+)");
 
-    public static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$\\{def_(\\d+)\\}");
+    public static final Pattern COMP_DEF_ID_PATTERN = Pattern.compile("\\$!?\\{def_(\\d+)\\}");
 
     @Autowired
     private CrudDefinitionDao crudDefinitionDao;
@@ -209,7 +209,7 @@ public class DefinitionController extends BaseController {
                 }
             }
         }
-        commonResult.setMessage("批量增加成功\n插入" + inserted.size() + "个\n" + StringUtils.join(inserted, "\n") + "已存在" + skipped.size() + "个\n" + StringUtils.join(skipped, "\n"));
+        commonResult.setMessage("批量增加成功\n插入" + inserted.size() + "个\n" + StringUtils.join(inserted, "\n") + "\n已存在" + skipped.size() + "个\n" + StringUtils.join(skipped, "\n"));
         commonResult.setSuccess(inserted.size() > 0);
         return writeJson(commonResult, response);
     }

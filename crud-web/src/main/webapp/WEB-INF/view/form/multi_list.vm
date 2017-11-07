@@ -56,7 +56,7 @@ $(function(){
 			onkeyup : false,
 			rules : {
 				#set($hasRule = false)
-				#foreach($item in $defItems)
+				#foreach($item in $defWheres)
 					#if($item.webChkRule)
 						#if($hasRule) , #end
 						#set($hasRule = true)
